@@ -1,0 +1,55 @@
+{% extends 'base_painel.html' %}
+{% load staticfiles %}
+{% load filters %}
+
+{% block content %}
+    {% include 'loading.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function getList(data) {
+                data = data || {};
+                $.ajax({
+                    url: "/get-entregas",
+                    type: "GET", // http method
+                    data: data,
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#list').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    }
+                });
+            }
+
+            getList();
+
+
+            $('#entregas').addClass('active');
+        });
+
+    </script>
+
+    <!-- /.row -->
+
+{% endblock %}

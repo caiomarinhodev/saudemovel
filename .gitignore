@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+tmp
+venv
+*.pyc
+.env
+.idea/
+.report

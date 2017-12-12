@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    {% include 'carrossel.html' %}
+
+    <section class="bar background-gray no-mb padding-big text-center-sm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-uppercase" style="color: #000;">Quem Somos?</h2>
+                    <p class="lead mb-small">Já existem mais de 40 Instituições cadastradas</p>
+
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="{% static 'img/template-easy-customize.png' %}" alt="" class="img-responsive">
+                </div>
+            </div>
+        </div>
+    </section>
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#home_base').addClass('active');
+        });
+    </script>
+{% endblock %}
