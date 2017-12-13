@@ -167,10 +167,10 @@ def liberar_corrida(request, pk_pedido):
     n.save()
     return redirect('/app/acompanhar')
 
-# TODO: Implementar botao em acompanhamentos da loja para liberar pedido para entrega.
 # TODO: Motorista ao logar, ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
 # TODO: Implementar botao em acompanhamentos da loja para acompanhar entrega, apos liberado.
 # TODO: Implementar notificacao p/ motorista de que o produto foi liberado para entrega, e mostrar rota(mapa).
 # TODO: Notificar Loja de que motorista X saiu para entrega e pode ser acompanhado em acompanhamentos id #.
 # TODO: Implementar botao de Finalizar Entrega em entregas do motorista, para finalizar uma entrega.
 # TODO: Implementar notificacao p/ loja de que o produto foi entregue.
+# TODO: Definir Times de acordo com prioridades e testes.

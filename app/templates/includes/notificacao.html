@@ -1,7 +1,18 @@
 <script>
     $(document).ready(function () {
         {% if notificacao.type_message == 'NOVO_PEDIDO' %}
-            swal("Um novo pedido foi cadastrado!", "{{ notificacao.message }}", "success");
+            swal({
+                title: "Um novo pedido foi cadastrado!",
+                text: '{{ notificacao.message }}',
+                type: 'success',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '{% url 'pedidos_motorista' %}'
+                }, 2000);
+            });
+{#            swal("Um novo pedido foi cadastrado!", "{{ notificacao.message }}", "success");#}
         {% elif notificacao.type_message == 'DELETE_LOJA' %}
             swal({
                 title: "ALERTA!",

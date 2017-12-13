@@ -17,13 +17,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="id_nome_cliente">Nome do Cliente:</label>
-                            {{ form.nome_cliente }}
-                        </div>
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label for="id_valor_total">Valor Total:</label>
                             {{ form.valor_total }}
                         </div>
@@ -62,7 +55,6 @@
                                 </tr>
                             {% endfor %}
                         </table>
-                        <a href="">back to the list</a>
                     </div>
                     <script src="{% static 'js/jquery.formset.js' %}"></script>
                     <script type="text/javascript">

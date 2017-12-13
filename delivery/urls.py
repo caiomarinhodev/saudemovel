@@ -7,7 +7,7 @@ from app.views.HomeView import AppView
 from app.views.LoginView import LoginView, LogoutView
 from app.views.pedidos.AcompanharView import AcompanharListView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_cancel_order_loja, notificar_enable_rota_motorista
+    notificar_accept_order_loja, notificar_cancel_order_loja, notificar_enable_rota_motorista, NotificacoesListView
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, cancel_corrida_motorista, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida
@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'^cancel-corrida-motorista/(?P<pk_pedido>[0-9]+)/$', cancel_corrida_motorista,
         name="cancel_corrida_motorista"),
 
+    url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
     url(r'^notificacao/delete-loja/motorista/$', notificar_delete_loja_motorista, name="notify_delete_loja_motorista"),
     url(r'^notificacao/accept-order/loja/$', notificar_accept_order_loja, name="notify_accept_order_loja"),
