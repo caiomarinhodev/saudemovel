@@ -22,12 +22,12 @@ class PercursoAdmin(admin.ModelAdmin):
 
 
 class PontoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_at')
+    list_display = ('id', 'nome_cliente', 'endereco', 'numero', 'bairro', 'created_at')
 
 
 class PedidoAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'nome_cliente', 'estabelecimento', 'motorista', 'valor_total', 'status', 'is_complete', 'coletado',
+    'id', 'estabelecimento', 'motorista', 'valor_total', 'status', 'is_complete', 'coletado',
     'created_at')
 
 

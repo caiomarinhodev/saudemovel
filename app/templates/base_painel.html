@@ -131,6 +131,11 @@
                             <i class="fa fa-dashboard"></i> <span>Pedidos</span>
                         </a>
                     </li>
+                    <li id="acompanhar">
+                        <a href="{% url 'acompanhar_list' %}">
+                            <i class="fa fa-dashboard"></i> <span>Acompanhar</span>
+                        </a>
+                    </li>
                 {% endif %}
                 {#                <li id="novo_pedido">#}
                 {#                    <a href="#">#}
@@ -220,13 +225,10 @@
 
 <script src="{% static "dist/js/chartReport.js" %}"></script>
 
+<div id="notify"></div>
+
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $('#table').DataTable({
-            responsive: true,
-            order: [[4, "desc"]]
-        });
 
         $('.datepicker').datepicker({
             clearBtn: true,
@@ -294,6 +296,107 @@
             idade = now.diff(dtNascimento, 'years');
             $('[name=age]').val(idade);
         });
+
+
+
+        {% if user.motorista %}
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_novo_pedido_motorista' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 8000);
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_delete_loja_motorista' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 20000);
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_enable_rota_motorista' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 10000);
+
+        {% else %}
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_accept_order_loja' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 10000);
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_cancel_order_loja' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 10000);
+        {% endif %}
 
     });
 

@@ -1,0 +1,57 @@
+<script>
+    $(document).ready(function () {
+        {% if notificacao.type_message == 'NOVO_PEDIDO' %}
+            swal("Um novo pedido foi cadastrado!", "{{ notificacao.message }}", "success");
+        {% elif notificacao.type_message == 'DELETE_LOJA' %}
+            swal({
+                title: "ALERTA!",
+                text: '{{ notificacao.message }}',
+                type: 'warning',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '{% url 'pedidos_motorista' %}'
+                }, 2000);
+            });
+        {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
+            swal({
+                title: "Motorista a caminho!",
+                text: '{{ notificacao.message }}',
+                type: 'success',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '/app/acompanhar'
+                }, 2000);
+            });
+
+        {% elif notificacao.type_message == 'CANCEL_ORDER' %}
+            swal({
+                title: "Motorista desistiu!",
+                text: '{{ notificacao.message }}',
+                type: 'warning',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '{% url 'pedidos_estabelecimento' %}'
+                }, 2000);
+            });
+        {% elif notificacao.type_message == 'ENABLE_ROTA' %}
+            swal({
+                title: "Rota gerada!",
+                text: '{{ notificacao.message }}',
+                type: 'warning',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    // TODO: Setar a page para ROTAS.
+                    window.location.href = ''
+                }, 2000);
+            });
+        {% endif %}
+    });
+</script>

@@ -47,7 +47,7 @@ class FormPedido(ModelForm, BaseForm):
 class FormPonto(ModelForm, BaseForm):
     class Meta:
         model = Ponto
-        fields = ['cep', 'endereco', 'numero', 'bairro', 'complemento']
+        fields = ['nome_cliente', 'endereco', 'numero', 'bairro', 'complemento']
 
 
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)

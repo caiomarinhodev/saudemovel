@@ -16,7 +16,17 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-6">
-                        {{ form.valor_total }}
+                        <div class="form-group">
+                            <label for="id_nome_cliente">Nome do Cliente:</label>
+                            {{ form.nome_cliente }}
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_valor_total">Valor Total:</label>
+                            {{ form.valor_total }}
+                        </div>
                     </div>
                     <div class="col-md-12">
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,7 +13,7 @@ from django.views.generic import CreateView
 from django.views.generic import ListView
 
 from app.forms import PontoFormSet
-from app.models import Pedido, Estabelecimento, Motorista
+from app.models import Pedido, Estabelecimento, Motorista, Notification
 from app.views.snippet_template import render_block_to_string
 
 
@@ -73,7 +74,10 @@ class PedidoCreateView(LoginRequiredMixin, CreateView):
             if pontoset.is_valid():
                 pontoset.instance = self.object
                 pontoset.save()
-        # TODO: Implementar sistema para notificar Motorista de que Novo Pedido foi adicionado. BIPAR em todos.
+        message = "Um novo pedido foi feito pela " + self.request.user.first_name
+        for m in Motorista.objects.all():
+            n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
+            n.save()
         return super(PedidoCreateView, self).form_valid(form)
 
 
@@ -92,8 +96,11 @@ def delete_pedido(request, pk):
             if user_motorista.pedido_set.last() == pedido:
                 motorista.ocupado = False
                 motorista.save()
+                loja = Estabelecimento.objects.get(user=request.user)
+                message = "O Pedido que voce ia entregar foi deletado pela loja " + request.user.first_name + ". Desculpe pelo transtorno! Qualquer coisa, ligue para a loja: " + loja.phone
+                n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
+                n.save()
         pedido.delete()
-        # TODO: Implementar sistema para notificar Motorista que A Coleta/Pedido dele foi cancelada/deletado pela Loja.
         messages.success(request, "Pedido deletado com sucesso")
         return HttpResponseRedirect('/app/pedidos/loja/')
 
@@ -127,12 +134,14 @@ def accept_corrida(request, pk_pedido):
         motorista = Motorista.objects.get(user=request.user)
         motorista.ocupado = True
         motorista.save()
-        # TODO: Notificar a loja de que UM motorista aceitou fazer a entrega do pedido X e esta a caminho.
+        message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
+        n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)
+        n.save()
         return redirect('/app/entregas/motorista')
 
 
 @require_http_methods(["GET"])
-def cancel_corrida(request, pk_pedido):
+def cancel_corrida_motorista(request, pk_pedido):
     pedido = Pedido.objects.get(id=pk_pedido)
     pedido.status = True
     pedido.motorista = None
@@ -142,15 +151,26 @@ def cancel_corrida(request, pk_pedido):
     motorista = Motorista.objects.get(user=request.user)
     motorista.ocupado = False
     motorista.save()
-    # TODO: Implementar sistema que notifica a loja de que O motorista cancelou a entrega, e o pedido esta disponivel.
+    message = "O motorista "+ motorista.user.first_name+" cancelou a entrega do Pedido ID #" + str(pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
+    n = Notification(type_message='CANCEL_ORDER', to=pedido.estabelecimento.user, message=message)
+    n.save()
     return redirect('/app/pedidos/motorista')
+
+
+@require_http_methods(["GET"])
+def liberar_corrida(request, pk_pedido):
+    pedido = Pedido.objects.get(id=pk_pedido)
+    pedido.coletado = True
+    pedido.save()
+    message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual estara no menu ROTAS. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
+    n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
+    n.save()
+    return redirect('/app/acompanhar')
 
 # TODO: Implementar botao em acompanhamentos da loja para liberar pedido para entrega.
 # TODO: Motorista ao logar, ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
-# TODO: Implementar botao em acompanhamentos da loja para liberar pedido para entrega.
 # TODO: Implementar botao em acompanhamentos da loja para acompanhar entrega, apos liberado.
 # TODO: Implementar notificacao p/ motorista de que o produto foi liberado para entrega, e mostrar rota(mapa).
 # TODO: Notificar Loja de que motorista X saiu para entrega e pode ser acompanhado em acompanhamentos id #.
 # TODO: Implementar botao de Finalizar Entrega em entregas do motorista, para finalizar uma entrega.
 # TODO: Implementar notificacao p/ loja de que o produto foi entregue.
-

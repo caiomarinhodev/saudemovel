@@ -17,7 +17,7 @@ class BaseAddress(models.Model):
     class Meta:
         abstract = True
 
-    cep = models.CharField(max_length=15, blank=True, null=True)
+    nome_cliente = models.CharField(max_length=100, blank=True, null=True, verbose_name='Cliente')
     bairro = models.CharField(max_length=100, blank=True, verbose_name='Bairro')
     endereco = models.CharField(max_length=100, blank=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
@@ -52,7 +52,6 @@ class Estabelecimento(TimeStamped, BaseAddress):
 
 
 class Pedido(TimeStamped):
-    nome_cliente = models.CharField(max_length=100)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     status = models.BooleanField(default=True)
     coletado = models.BooleanField(default=False)
@@ -86,3 +85,17 @@ class Position(TimeStamped):
     lng = models.CharField(max_length=100, blank=True, null=True)
     lat_map = models.CharField(max_length=100)
     lng_map = models.CharField(max_length=100)
+
+
+type_notification = (
+    ('NOVO_PEDIDO', 'NOVO_PEDIDO'),
+    ('warning', 'warning'),
+    ('danger', 'danger')
+)
+
+
+class Notification(TimeStamped):
+    message = models.TextField()
+    to = models.ForeignKey(User, on_delete=models.CASCADE)
+    type_message = models.CharField(choices=type_notification, max_length=100)
+    is_read = models.BooleanField(default=False)

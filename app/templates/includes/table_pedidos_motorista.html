@@ -79,6 +79,13 @@
                 </script>
             </td>
         </tr>
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
     {% endfor %}
     </tbody>
 </table>
