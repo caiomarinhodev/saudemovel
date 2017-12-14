@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+from app.views.geocoding import geocode
+
 
 class TimeStamped(models.Model):
     class Meta:
@@ -60,17 +62,25 @@ class Pedido(TimeStamped):
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.nome_cliente
+        return u'%s - %s' % (self.estabelecimento, self.valor_total)
 
     def __str__(self):
-        return self.nome_cliente
+        return u'%s - %s' % (self.estabelecimento, self.valor_total)
 
 
 class Ponto(BaseAddress, TimeStamped):
     descricao = models.TextField()
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    lng = models.CharField(max_length=100, blank=True, null=True)
+    # lat_map = models.CharField(max_length=100)
+    # lng_map = models.CharField(max_length=100)
 
     # status = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
+        geocode(address)
+        super(Ponto, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u'%s' % self.endereco
