@@ -31,7 +31,12 @@ class PedidoAdmin(admin.ModelAdmin):
     'created_at')
 
 
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'message', 'type_message', 'to', 'is_read')
+
+
 admin.site.register(Motorista, MotoristaAdmin)
 admin.site.register(Estabelecimento, EstabelecimentoAdmin)
 admin.site.register(Ponto, PontoAdmin)
 admin.site.register(Pedido, PedidoAdmin)
+admin.site.register(Notification, NotificationAdmin)

@@ -4,10 +4,10 @@
     <tr>
         <th>ID</th>
         <th>LOJA</th>
-        <th>ENDEREÇO LOJA</th>
-        <th>N° ENTREGAS</th>
+        {#        <th>ENDEREÇO LOJA</th>#}
+        {#        <th>N° ENTREGAS</th>#}
         <th>VALOR TOTAL</th>
-        <th>COLETADO?</th>
+        {#        <th>COLETADO?</th>#}
         <th>STATUS</th>
         <th></th>
     </tr>
@@ -19,26 +19,26 @@
             <td>
                 {{ pedido.estabelecimento }}
             </td>
-            <td>
-                {{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}
-            </td>
-            <td>
-                {{ pedido.ponto_set.all|length }}
-            </td>
+            {#            <td>#}
+            {#                {{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}#}
+            {#            </td>#}
+            {#            <td>#}
+            {#                {{ pedido.ponto_set.all|length }}#}
+            {#            </td>#}
             <td>
                 {{ pedido.valor_total }}
             </td>
 
-            <td>
-                {% if pedido.coletado %}
-                    <label class="label label-success"><i
-                            class=""></i>
-                        COLETADO</label>
-                {% else %}
-                    <label class="label label-danger"><i
-                            class=""></i> NÃO COLETADO</label>
-                {% endif %}
-            </td>
+            {#            <td>#}
+            {#                {% if pedido.coletado %}#}
+            {#                    <label class="label label-success"><i#}
+            {#                            class=""></i>#}
+            {#                        COLETADO</label>#}
+            {#                {% else %}#}
+            {#                    <label class="label label-danger"><i#}
+            {#                            class=""></i> NÃO COLETADO</label>#}
+            {#                {% endif %}#}
+            {#            </td>#}
             <td>
                 {% if pedido.is_complete %}
                     <label class="label label-success"><i
@@ -50,40 +50,12 @@
                 {% endif %}
             </td>
             <td>
-                <a href="#" class="btn btn-danger cancelar_corrida_{{ pedido.pk }}">
-                    Cancelar Corrida
-                </a>
-                <script>
-                    $(document).ready(function () {
-                        $('.cancelar_corrida_{{ pedido.pk }}').click(function () {
-                            swal({
-                                    title: "Deseja  cancelar a corrida ?",
-                                    text: "Avisaremos a Loja {{ pedido.estabelecimento.first_name }}, e colocaremos no seu histórico este cancelamento.",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonClass: "btn-danger",
-                                    confirmButtonText: "Cancelar Corrida",
-                                    cancelButtonText: "Voltar",
-                                    closeOnConfirm: false
-                                },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        swal({
-                                                title: "Corrida Cancelada!",
-                                                text: "Esta corrida foi cancelada e está disponível novamente",
-                                                type: "success",
-                                                confirmButtonClass: "btn-success",
-                                                confirmButtonText: "OK",
-                                                showLoaderOnConfirm: true
-                                            },
-                                            function () {
-                                                window.location.href = '/cancel-corrida-motorista/{{ pedido.pk }}';
-                                            });
-                                    }
-                                });
-                        });
-                    });
-                </script>
+                {% if not pedido.is_complete %}
+                    <a href="{% url 'route_pedido_view' pedido.pk %}" class="btn btn-info">
+                        Ver Rota
+                    </a>
+                {% endif %}
+
             </td>
         </tr>
         <script>

@@ -10,11 +10,36 @@ from django.shortcuts import redirect
 from django.template import Context
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView
+from django.views.generic import DetailView
 from django.views.generic import ListView
 
 from app.forms import PontoFormSet
 from app.models import Pedido, Estabelecimento, Motorista, Notification
 from app.views.snippet_template import render_block_to_string
+
+
+class OrderMotoristaDetailView(LoginRequiredMixin, DetailView):
+    model = Pedido
+    template_name = 'pedidos/order_view.html'
+    context_object_name = 'pedido'
+
+
+class RouteMotoristaDetailView(LoginRequiredMixin, DetailView):
+    model = Pedido
+    template_name = 'pedidos/route_view.html'
+    context_object_name = 'pedido'
+
+
+class MapRouteMotoristaView(LoginRequiredMixin, DetailView):
+    model = Pedido
+    template_name = 'pedidos/map_view.html'
+    context_object_name = 'pedido'
+
+    # def get_context_data(self, **kwargs):
+        # if 'loja_address' not in kwargs:
+            # address = {'lat': self.get_object().lat, 'lng': self.get_object().lng}
+            # kwargs['loja_address'] = address
+        # return self.get_context_data(**kwargs)
 
 
 class PedidosLojaListView(LoginRequiredMixin, ListView):
@@ -134,7 +159,8 @@ def accept_corrida(request, pk_pedido):
         motorista = Motorista.objects.get(user=request.user)
         motorista.ocupado = True
         motorista.save()
-        message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
+        message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(
+            pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
         n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)
         n.save()
         return redirect('/app/entregas/motorista')
@@ -151,7 +177,8 @@ def cancel_corrida_motorista(request, pk_pedido):
     motorista = Motorista.objects.get(user=request.user)
     motorista.ocupado = False
     motorista.save()
-    message = "O motorista "+ motorista.user.first_name+" cancelou a entrega do Pedido ID #" + str(pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
+    message = "O motorista " + motorista.user.first_name + " cancelou a entrega do Pedido ID #" + str(
+        pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
     n = Notification(type_message='CANCEL_ORDER', to=pedido.estabelecimento.user, message=message)
     n.save()
     return redirect('/app/pedidos/motorista')
@@ -167,10 +194,15 @@ def liberar_corrida(request, pk_pedido):
     n.save()
     return redirect('/app/acompanhar')
 
-# TODO: Motorista ao logar, ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
+# TODO: Implementar nova tela de login
+# TODO: Motorista ao logar ou ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
 # TODO: Implementar botao em acompanhamentos da loja para acompanhar entrega, apos liberado.
 # TODO: Implementar notificacao p/ motorista de que o produto foi liberado para entrega, e mostrar rota(mapa).
 # TODO: Notificar Loja de que motorista X saiu para entrega e pode ser acompanhado em acompanhamentos id #.
 # TODO: Implementar botao de Finalizar Entrega em entregas do motorista, para finalizar uma entrega.
 # TODO: Implementar notificacao p/ loja de que o produto foi entregue.
 # TODO: Definir Times de acordo com prioridades e testes.
+# TODO: Refatorar codigo duplicado
+# TODO: Remover codigo comentado
+# TODO: Organizar as pastas de templates
+# TODO: Fechar Release e Deploy

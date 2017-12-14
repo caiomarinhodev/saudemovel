@@ -45,6 +45,17 @@ class Estabelecimento(TimeStamped, BaseAddress):
     photo = models.URLField(blank=True)
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)
+    full_address = models.CharField(max_length=300, blank=True, null=True)
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    lng = models.CharField(max_length=100, blank=True, null=True)
+    
+    def save(self, *args, **kwargs):
+        address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
+        self.full_address = address
+        pto = geocode(address)
+        self.lat = pto['latitude']
+        self.lng = pto['longitude']
+        super(Estabelecimento, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u'%s' % self.user.first_name
@@ -73,13 +84,15 @@ class Ponto(BaseAddress, TimeStamped):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     lat = models.CharField(max_length=100, blank=True, null=True)
     lng = models.CharField(max_length=100, blank=True, null=True)
-    # lat_map = models.CharField(max_length=100)
-    # lng_map = models.CharField(max_length=100)
-
+    full_address = models.CharField(max_length=300, blank=True, null=True)
     # status = models.BooleanField(default=False)
+    
     def save(self, *args, **kwargs):
         address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
-        geocode(address)
+        pto = geocode(address)
+        self.lat = pto['latitude']
+        self.lng = pto['longitude']
+        self.full_address = address
         super(Ponto, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -89,20 +102,14 @@ class Ponto(BaseAddress, TimeStamped):
         return self.endereco
 
 
-class Position(TimeStamped):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    lat = models.CharField(max_length=100, blank=True, null=True)
-    lng = models.CharField(max_length=100, blank=True, null=True)
-    lat_map = models.CharField(max_length=100)
-    lng_map = models.CharField(max_length=100)
-
-
 type_notification = (
     ('NOVO_PEDIDO', 'NOVO_PEDIDO'),
-    ('warning', 'warning'),
-    ('danger', 'danger')
+    ('DELETE_LOJA', 'DELETE_LOJA'),
+    ('ACCEPT_ORDER', 'ACCEPT_ORDER'),
+    ('CANCEL_ORDER', 'CANCEL_ORDER'),
+    ('ENABLE_ROTA', 'ENABLE_ROTA'),
+    ('ORDER_DELIVERED', 'ORDER_DELIVERED')
 )
-
 
 class Notification(TimeStamped):
     message = models.TextField()

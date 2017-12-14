@@ -137,21 +137,6 @@
                         </a>
                     </li>
                 {% endif %}
-                {#                <li id="novo_pedido">#}
-                {#                    <a href="#">#}
-                {#                        <i class="fa fa-cubes"></i> <span>Novo Pedido</span>#}
-                {#                    </a>#}
-                {#                </li>#}
-                {#                <li id="acompanhar">#}
-                {#                    <a href="#">#}
-                {#                        <i class="fa fa-cubes"></i> <span>Acompanhar</span>#}
-                {#                    </a>#}
-                {#                </li>#}
-                {#                <li id="historico">#}
-                {#                    <a href="#">#}
-                {#                        <i class="fa fa-cubes"></i> <span>Histórico</span>#}
-                {#                    </a>#}
-                {#                </li>#}
                 <li id="notificacoes">
                     <a href="{% url "notificacoes" %}">
                         <i class="fa fa-dashboard"></i> <span>Notificações</span>
@@ -304,9 +289,10 @@
 
 
         {% if user.motorista %}
+
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_novo_pedido_motorista' %}",
+                    url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
                     beforeSend: function () {
                         $('#loading').show();
@@ -321,7 +307,7 @@
                         console.log(err);
                     }
                 });
-            }, 8000);
+            }, 10000);
 
             window.setInterval(function () {
                 $.ajax({
@@ -344,7 +330,31 @@
 
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_enable_rota_motorista' %}",
+                    url: "{% url 'notify_novo_pedido_motorista' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 8000);
+
+
+
+
+
+        {% else %}
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_cancel_order_loja' %}",
                     type: "GET", // http method
                     beforeSend: function () {
                         $('#loading').show();
@@ -360,8 +370,6 @@
                     }
                 });
             }, 10000);
-
-        {% else %}
 
             window.setInterval(function () {
                 $.ajax({
@@ -382,24 +390,7 @@
                 });
             }, 10000);
 
-            window.setInterval(function () {
-                $.ajax({
-                    url: "{% url 'notify_cancel_order_loja' %}",
-                    type: "GET", // http method
-                    beforeSend: function () {
-                        $('#loading').show();
-                    },
-                    success: function (data) {
-                        $('#notify').html(data);
-                    },
-                    complete: function () {
-                        $('#loading').hide();
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
-            }, 10000);
+
         {% endif %}
 
     });

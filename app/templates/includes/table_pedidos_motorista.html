@@ -37,8 +37,8 @@
             <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
             <td>
                 {% if pedido.status and user.motorista.ocupado == False %}
-                    <a href="#" class="btn btn-primary aceitar_corrida_{{ pedido.pk }}">
-                        Aceitar Corrida
+                    <a href="{% url 'order_pedido_view' pedido.pk %}" class="btn btn-primary">
+                        Ver Corrida
                     </a>
                 {% elif pedido.motorista.user.id ==  user.id %}
                     <a href="#" class="btn btn-danger cancelar_corrida_{{ pedido.pk }}">
@@ -46,37 +46,6 @@
                     </a>
                 {% endif %}
 
-                <script>
-                    $(document).ready(function () {
-                        $('.aceitar_corrida_{{ pedido.pk }}').click(function () {
-                            swal({
-                                    title: "Deseja fazer a corrida ?",
-                                    text: "Buscar o pedido na Loja {{ pedido.estabelecimento.user.first_name }},  localizado na {{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}. Valor da Entrega: {{ pedido.valor_total }}.",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonClass: "btn-danger",
-                                    confirmButtonText: "Confirmar Corrida",
-                                    cancelButtonText: "Cancelar",
-                                    closeOnConfirm: false
-                                },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        swal({
-                                                title: "Confirmado!",
-                                                text: "Se tiver problemas ligue para a loja: {{ pedido.estabelecimento.phone }}",
-                                                type: "success",
-                                                confirmButtonClass: "btn-success",
-                                                confirmButtonText: "OK"
-                                            },
-                                            function () {
-                                                window.location.href = '/accept-corrida/{{ pedido.pk }}';
-                                            });
-                                    }
-                                });
-                        });
-
-                    });
-                </script>
             </td>
         </tr>
         <script>

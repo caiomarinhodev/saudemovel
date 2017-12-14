@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
+from django.contrib.auth.models import AnonymousUser
 
 from app.forms import FormLogin
 
@@ -15,9 +17,14 @@ class LoginView(FormView):
     """
     Displays the login form.
     """
-    template_name = 'login.html'
+    template_name = 'page/login.html'
     form_class = FormLogin
-    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        if not isinstance(self.request.user, AnonymousUser):
+            return redirect(self.get_success_url())
+        else:
+            return super(LoginView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -46,7 +53,12 @@ class LoginView(FormView):
         try:
             motorista = user.motorista
         except:
+            pass
+        
+        try:
             loja = user.estabelecimento
+        except:
+            pass
 
         if user:
             if loja:
