@@ -49,8 +49,8 @@
                                             </td>
                                             <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
-                                                <a class="remover" href="{% url 'delete_pedido' pedido.pk %}">
-                                                    <i class="fa fa-trash-o"></i>
+                                                <a class="btn btn-danger" href="{% url 'delete_pedido' pedido.pk %}">
+                                                    Cancelar Pedido
                                                 </a>
                                             </td>
                                         </tr>

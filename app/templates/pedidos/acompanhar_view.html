@@ -193,8 +193,21 @@
                 <div class="row">
                     <div class="qa-message-list" id="wallmessages">
                         <div class="message-item" id="m16">
-                            <div class="message-inner">
-                                <div class="message-head clearfix">
+                            <div class="message-inner">^
+                             <div class="message-head clearfix">
+                                {% if pedido.coletado %}
+                                <div class="pull-right">
+									<label class="label label-success"><i
+                                              class=""></i> COLETADO</label>
+								</div>
+                                {% else %}
+                                <div class="pull-right">
+									<label class="label label-warning"><i
+                                              class=""></i>NÃO COLETADO</label>
+								</div>
+                                
+                                {% endif %}
+                               
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
                                         <div class="post-meta">
@@ -215,9 +228,18 @@
                             <div class="message-item" id="m16">
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
+                                        {% if ponto.status %}
                                         <div class="pull-right">
-    										<a href="#" class='btn btn-danger btn-block'>Finalizar Pedido</a>
-    									</div>
+        									<label class="label label-success"><i
+                                                      class=""></i> ENTREGUE</label>
+        								</div>
+                                        {% else %}
+                                        <div class="pull-right">
+        									<label class="label label-warning"><i
+                                                      class=""></i>EM ANDAMENTO</label>
+        								</div>
+                                        
+                                        {% endif %}
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">
@@ -254,7 +276,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#entregas').addClass('active');
+            $('#acompanhar').addClass('active');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });

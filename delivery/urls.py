@@ -3,12 +3,12 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-from app.views.LoginView import LoginView, LogoutView
-from app.views.pedidos.AcompanharView import AcompanharListView
+from app.views.LoginView import LoginView, LogoutView, RegisterView
+from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_cancel_order_loja, notificar_enable_rota_motorista, NotificacoesListView
+    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
-    PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, cancel_corrida_motorista, \
+    PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView
 
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^admin/login/$', auth_views.login),
     url(r'^$', LoginView.as_view(), name='home'),
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^registro/$', RegisterView.as_view(), name='registro'),
     url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout'),
 
     url(r'^app/pedidos/motorista/$', PedidosMotoristaListView.as_view(), name='pedidos_motorista'),
@@ -46,6 +47,7 @@ urlpatterns = [
     url(r'^app/pedido/route/(?P<pk>[0-9]+)/$', RouteMotoristaDetailView.as_view(), name="route_pedido_view"),
     url(r'^app/pedido/map/route/(?P<pk>[0-9]+)/$', MapRouteMotoristaView.as_view(), name="map_route_pedido_view"),
 
+    url(r'^app/acompanhar/(?P<pk>[0-9]+)/$', AcompanharDetailView.as_view(), name="acompanhar_pedido_view"),
     url(r'^app/acompanhar/$', AcompanharListView.as_view(), name='acompanhar_list'),
 
     url(r'^get-pedidos/$', get_pedidos_motorista, name="get_pedidos_motorista"),
@@ -58,13 +60,13 @@ urlpatterns = [
 
     url(r'liberar-corrida/(?P<pk_pedido>[0-9]+)/$', liberar_corrida, name="liberar_corrida"),
 
-    url(r'^cancel-corrida-motorista/(?P<pk_pedido>[0-9]+)/$', cancel_corrida_motorista,
-        name="cancel_corrida_motorista"),
+    # url(r'^cancel-corrida-motorista/(?P<pk_pedido>[0-9]+)/$', cancel_corrida_motorista,
+    #     name="cancel_corrida_motorista"),
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
     url(r'^notificacao/delete-loja/motorista/$', notificar_delete_loja_motorista, name="notify_delete_loja_motorista"),
     url(r'^notificacao/accept-order/loja/$', notificar_accept_order_loja, name="notify_accept_order_loja"),
-    url(r'^notificacao/cancel-order/loja/$', notificar_cancel_order_loja, name="notify_cancel_order_loja"),
+    # url(r'^notificacao/cancel-order/loja/$', notificar_cancel_order_loja, name="notify_cancel_order_loja"),
     url(r'^notificacao/enable-rota/motorista/$', notificar_enable_rota_motorista, name="notify_enable_rota_motorista"),
 ]

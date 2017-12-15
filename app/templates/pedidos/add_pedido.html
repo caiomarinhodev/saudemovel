@@ -15,12 +15,6 @@
         <form action="" method="post">{% csrf_token %}
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="id_valor_total">Valor Total:</label>
-                            {{ form.valor_total }}
-                        </div>
-                    </div>
                     <div class="col-md-12">
 
                         {{ form.estabelecimento }}
@@ -82,12 +76,15 @@
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });
+            $("input").attr("required", "true");
+            $('td[2]').attr('style', 'width: 30px');
         });
     </script>
 
     <script src="{% static 'js/jquery.formset.js' %}"></script>
     <script>
         $('.add-row').addClass('btn btn-primary');
+        $('td[2]').attr('style', 'width: 30px');
         {#        $('.delete-row').addClass('btn btn-danger');#}
     </script>
 

@@ -352,24 +352,6 @@
 
 
         {% else %}
-            window.setInterval(function () {
-                $.ajax({
-                    url: "{% url 'notify_cancel_order_loja' %}",
-                    type: "GET", // http method
-                    beforeSend: function () {
-                        $('#loading').show();
-                    },
-                    success: function (data) {
-                        $('#notify').html(data);
-                    },
-                    complete: function () {
-                        $('#loading').hide();
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
-            }, 10000);
 
             window.setInterval(function () {
                 $.ajax({

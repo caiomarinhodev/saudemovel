@@ -24,6 +24,8 @@ class BaseAddress(models.Model):
     endereco = models.CharField(max_length=100, blank=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
     complemento = models.CharField(max_length=200, blank=True, verbose_name='Ponto de Referência')
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    lng = models.CharField(max_length=100, blank=True, null=True)
 
 
 class Motorista(TimeStamped):
@@ -46,8 +48,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)
     full_address = models.CharField(max_length=300, blank=True, null=True)
-    lat = models.CharField(max_length=100, blank=True, null=True)
-    lng = models.CharField(max_length=100, blank=True, null=True)
+    
     
     def save(self, *args, **kwargs):
         address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
@@ -77,15 +78,19 @@ class Pedido(TimeStamped):
 
     def __str__(self):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
+        
+    def save(self, *args, **kwargs):
+        valor = str(len(self.ponto_set.all()) * 6)
+        self.valor_total = valor
+        super(Pedido, self).save(*args, **kwargs)
 
 
 class Ponto(BaseAddress, TimeStamped):
+    cliente = models.CharField(max_length=100, blank=True, null=True)
     descricao = models.TextField()
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    lat = models.CharField(max_length=100, blank=True, null=True)
-    lng = models.CharField(max_length=100, blank=True, null=True)
     full_address = models.CharField(max_length=300, blank=True, null=True)
-    # status = models.BooleanField(default=False)
+    status = models.BooleanField(default=False)
     
     def save(self, *args, **kwargs):
         address = self.endereco + "," + self.bairro + ",Campina Grande,PB"

@@ -6,8 +6,10 @@ from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.contrib.auth.models import AnonymousUser
+from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView
 
-from app.forms import FormLogin
+from app.forms import FormLogin, FormRegister
+from app.models import *
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
@@ -63,9 +65,13 @@ class LoginView(FormView):
         if user:
             if loja:
                 url = '/app/pedidos/loja'
+                loja.is_online = True
+                loja.save()
                 self.success_url = url
             elif motorista:
                 url = '/app/pedidos/motorista'
+                motorista.is_online = True
+                motorista.save()
                 self.success_url = url
             else:
                 url = '/admin'
@@ -79,4 +85,71 @@ class LogoutView(RedirectView):
 
     def get(self, request, *args, **kwargs):
         logout(self.request)
+        user = self.request.user
+        motorista = None
+        loja = None
+        try:
+            motorista = user.motorista
+        except:
+            pass
+        
+        try:
+            loja = user.estabelecimento
+        except:
+            pass
+        if motorista:
+            motorista.is_online = False
+            motorista.save()
+        elif loja:
+            loja.is_online = False
+            loja.save()
         return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+class RegisterView(FormView):
+    template_name = 'page/register.html'
+    form_class = FormRegister
+    success_url = '/login'
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        aux_obj = User.objects.filter(username=data['username'])
+        if len(aux_obj) > 0:
+            return self.form_invalid(form)
+        user_data = {}
+        common_data = {}
+        user_data['first_name'] = data['first_name']
+        user_data['username'] = data['username']
+        user_data['password'] = data['password']
+        common_data['endereco'] = data['endereco']
+        common_data['phone'] = data['phone']
+        common_data['numero'] = data['numero']
+        common_data['bairro'] = data['bairro']
+        if data['username'] and data['password']:
+            new_user = User.objects.create_user(**user_data)
+            new_common_user = Estabelecimento(user=new_user, **common_data)
+            new_common_user.save()
+            messages.success(self.request, 'Novo usuário cadastrado com sucesso.')
+        else:
+            return self.form_invalid(form)
+        return super(RegisterView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        messages.error(self.request, 'Não foi possível cadastrar.')
+        return super(RegisterView, self).form_invalid(form)
+
+    def str_to_bool(self, s):
+        if s == 'True':
+            return True
+        elif s == 'False':
+            return False
+        else:
+            raise ValueError

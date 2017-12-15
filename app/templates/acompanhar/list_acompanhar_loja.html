@@ -58,7 +58,7 @@
                                             </td>
                                             <td>
                                                 {% if pedido.coletado %}
-                                                    <a href="#" class="btn btn-info acompanhar_entrega_{{ pedido.pk }}">
+                                                    <a href="{% url 'acompanhar_pedido_view' pedido.pk %}" class="btn btn-info acompanhar_entrega_{{ pedido.pk }}">
                                                         Acompanhar
                                                     </a>
                                                 {% else %}

@@ -14,26 +14,28 @@ class BaseForm(forms.Form):
 
 
 class FormBaseAddress(BaseForm):
-    cep = forms.CharField(max_length=10, required=False, widget=forms.TextInput(attrs={
+    cep = forms.CharField(max_length=10, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'CEP'
     }))
-    address = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={
+    endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Endereço'
     }))
-    number = forms.CharField(max_length=5, required=False, widget=forms.TextInput(attrs={
+    numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Número'
     }))
-    state = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={
-    }))
-    city = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={
-    }))
-    district = forms.CharField(max_length=45, required=False, widget=forms.TextInput(attrs={
-    }))
-    complement = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={
+    bairro = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Bairro'
     }))
 
 
 class FormLogin(BaseForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200,
-                                                             'placeholder': 'Nome de Usuario'}))
+                                                             'placeholder': 'Login'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
                                                                  'placeholder': 'Senha'}))
 
@@ -47,7 +49,23 @@ class FormPedido(ModelForm, BaseForm):
 class FormPonto(ModelForm, BaseForm):
     class Meta:
         model = Ponto
-        fields = ['nome_cliente', 'endereco', 'numero', 'bairro', 'complemento']
+        fields = ['cliente', 'endereco', 'numero', 'bairro', 'complemento', 'descricao']
+        
+
+class FormRegister(FormBaseAddress):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Nome Estabelecimento'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Login'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
+                                                                 'placeholder': 'Senha'}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Telefone'}))
+    
+    
 
 
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
