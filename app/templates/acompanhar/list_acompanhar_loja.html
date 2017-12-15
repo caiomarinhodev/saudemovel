@@ -17,6 +17,7 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>DATA/HORA</th>
                                         <th>MOTORISTA</th>
                                         <th>N° ENTREGAS</th>
                                         <th>COLETADO?</th>
@@ -27,12 +28,13 @@
                                     <tbody>
                                     {% for pedido in pedidos %}
                                         <tr>
-                                            <td><a href=""> {{ pedido.id }}</a></td>
+                                            <td>{{ pedido.id }}</td>
+                                            <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
-                                                <a href="">{{ pedido.motorista }}</a>
+                                               {{ pedido.motorista }}
                                             </td>
                                             <td>
-                                                <a href="">{{ pedido.ponto_set.all|length }}</a>
+                                                {{ pedido.ponto_set.all|length }}
                                             </td>
                                             <td>
                                                 <a href="">
@@ -109,7 +111,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table').DataTable({
-                responsive: true
+                responsive: true,
+                order: [[ 1, "desc" ]],
+                language: {
+                                  "emptyTable": "Nenhum pedido para acompanhar até o momento"
+                                }
             });
             setInterval(function () {
                 location.reload();

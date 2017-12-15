@@ -195,6 +195,16 @@
                         <div class="message-item" id="m16">
                             <div class="message-inner">
                                 <div class="message-head clearfix">
+                                    <div class="pull-right">
+    										{% if pedido.coletado %}
+                                                <label class="label label-success"><i
+                                                        class=""></i>
+                                                    COLETADO</label>
+                                            {% else %}
+                                                <label class="label label-warning"><i
+                                                        class=""></i> NÃO COLETADO</label>
+                                            {% endif %}
+    							    </div>
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
                                         <div class="post-meta">
@@ -208,6 +218,7 @@
                                 </div>
                                 <div class="qa-message-content">
                                     Buscar o pedido no estabelecimento {{ pedido.estabelecimento.user.first_name }}
+                                    <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +227,13 @@
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
                                         <div class="pull-right">
-    										<a href="#" class='btn btn-danger btn-block'>Finalizar Pedido</a>
+                                            {% if ponto.status %}
+                                                <label class="label label-success"><i
+                                                        class=""></i>
+                                                    ENTREGUE</label>    
+                                            {% else %}
+                                                <a href="{% url 'finalizar_entrega' ponto.pk pedido.pk %}" class='btn btn-danger btn-block'>Finalizar</a>
+                                            {% endif %}
     									</div>
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
@@ -230,7 +247,8 @@
                                         </div>
                                     </div>
                                     <div class="qa-message-content">
-                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.descricao }}
+                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.descricao }} 
+                                        <p>Telefone Cliente: {{ ponto.telefone }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -245,7 +263,13 @@
 
                     <div class="row">
                         <div class='col-xs-8 col-xs-offset-2'>
-                            <a href="#" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
+                            
+                            {% if pedido.is_complete and not pedido.btn_finalizado %}
+                                <a href="{% url 'finalizar_pedido' pedido.pk %}" class="btn btn-danger btn-block">Finalizar Pedido</a>
+                            {% else %}
+                                <a href="{% url 'entregas_motorista' %}" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
+                            {% endif %}
+                            
                         </div>
                     </div>
             </div>
@@ -255,9 +279,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#entregas').addClass('active');
-            $('#btn_cancelar').click(function () {
-                return window.history.back();
-            });
+            setInterval(function () {
+                location.reload();
+            }, 60000);
         });
     </script>
 

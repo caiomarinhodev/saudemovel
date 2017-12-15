@@ -17,6 +17,9 @@ class NotificacoesListView(LoginRequiredMixin, ListView):
     template_name = 'notificacoes/list_notificacoes.html'
 
     def get_queryset(self):
+        for n in Notification.objects.filter(to=self.request.user):
+            n.is_read=True
+            n.save()
         return Notification.objects.filter(to=self.request.user).order_by('-created_at')
 
 
@@ -45,6 +48,17 @@ def notificar_delete_loja_motorista(request):
 @require_http_methods(["GET"])
 def notificar_accept_order_loja(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ACCEPT_ORDER', is_read=False).last()
+    context = Context({'notificacao': notificacao, 'user': request.user})
+    return_str = render_block_to_string('includes/notificacao.html', context)
+    if notificacao:
+        notificacao.is_read = True
+        notificacao.save()
+    return HttpResponse(return_str)
+    
+
+@require_http_methods(["GET"])
+def notificar_all_delivered_loja(request):
+    notificacao = Notification.objects.filter(to=request.user, type_message='ALL_DELIVERED', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
     return_str = render_block_to_string('includes/notificacao.html', context)
     if notificacao:

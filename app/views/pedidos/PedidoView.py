@@ -13,10 +13,11 @@ from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView
+from django.shortcuts import render_to_response
 
 
 from app.forms import PontoFormSet
-from app.models import Pedido, Estabelecimento, Motorista, Notification
+from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto
 from app.views.snippet_template import render_block_to_string
 
 
@@ -24,18 +25,42 @@ class OrderMotoristaDetailView(LoginRequiredMixin, DetailView):
     model = Pedido
     template_name = 'pedidos/order_view.html'
     context_object_name = 'pedido'
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            return super(OrderMotoristaDetailView, self).get(request, *args, **kwargs)
+        except:
+            messages.error(request, 'Este pedido foi cancelado pela loja')
+            return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
 class RouteMotoristaDetailView(LoginRequiredMixin, DetailView):
     model = Pedido
     template_name = 'pedidos/route_view.html'
     context_object_name = 'pedido'
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            return super(RouteMotoristaDetailView, self).get(request, *args, **kwargs)
+        except:
+            messages.error(request, 'Este pedido foi cancelado pela loja')
+            return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
 class MapRouteMotoristaView(LoginRequiredMixin, DetailView):
     model = Pedido
     template_name = 'pedidos/map_view.html'
     context_object_name = 'pedido'
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            return super(MapRouteMotoristaView, self).get(request, *args, **kwargs)
+        except:
+            messages.error(request, 'Este pedido foi cancelado pela loja')
+            return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
 class PedidosLojaListView(LoginRequiredMixin, ListView):
@@ -96,6 +121,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView):
                 pontoset.instance = self.object
                 pontoset.save()
         message = "Um novo pedido foi feito pela " + self.request.user.first_name
+        print('>>>>>>>> Novo Pedido criado pela loja '+ self.request.user.first_name)
         for m in Motorista.objects.all():
             if m.is_online and not m.ocupado:
                 n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
@@ -120,6 +146,7 @@ def delete_pedido(request, pk):
                 motorista.save()
                 loja = Estabelecimento.objects.get(user=request.user)
                 if motorista.is_online:
+                    print('>>>>>>>> Motorista '+motorista.user.first_name+' teve seu pedido cancelado pela loja '+pedido.estabelecimento.user.first_name)
                     message = "O Pedido que voce ia entregar foi cancelado pela loja " + request.user.first_name + ". Desculpe pelo transtorno! Qualquer coisa, ligue para a loja: " + loja.phone
                     n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
                     n.save()
@@ -146,23 +173,28 @@ def get_entregas_motorista(request):
 
 @require_http_methods(["GET"])
 def accept_corrida(request, pk_pedido):
-    pedido = Pedido.objects.get(id=pk_pedido)
-    if pedido.motorista:
-        messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
+    try:
+        pedido = Pedido.objects.get(id=pk_pedido)
+        if pedido.motorista:
+            messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
+            return HttpResponseRedirect('/app/pedidos/motorista/')
+        else:
+            pedido.status = False
+            pedido.motorista = request.user
+            pedido.save()
+            motorista = Motorista.objects.get(user=request.user)
+            motorista.ocupado = True
+            motorista.save()
+            if pedido.estabelecimento.is_online:
+                print('>>>>>>>> Motorista '+motorista.user.first_name+' aceitou fazer a corrida para a loja '+pedido.estabelecimento.user.first_name)
+                message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(
+                    pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
+                n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)
+                n.save()
+            return redirect('/app/pedido/route/'+str(pedido.pk))
+    except:
+        messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')
-    else:
-        pedido.status = False
-        pedido.motorista = request.user
-        pedido.save()
-        motorista = Motorista.objects.get(user=request.user)
-        motorista.ocupado = True
-        motorista.save()
-        if pedido.estabelecimento.is_online:
-            message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(
-                pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
-            n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)
-            n.save()
-        return redirect('/app/entregas/motorista')
 
 
 #@require_http_methods(["GET"])
@@ -189,10 +221,56 @@ def liberar_corrida(request, pk_pedido):
     pedido.coletado = True
     pedido.save()
     if Motorista.objects.get(user=pedido.motorista).is_online:
+        print('>>>>>>>> Motorista '+pedido.motorista.first_name+' foi liberado pela loja '+pedido.estabelecimento.user.first_name)
         message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual estara no menu ENTREGAS. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
         n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
         n.save()
     return redirect('/app/acompanhar')
+    
+
+@require_http_methods(["GET"])
+def finalizar_entrega(request, pk_ponto, pk_pedido):
+    try:
+        ponto = Ponto.objects.get(id=pk_ponto)
+        pedido = Pedido.objects.get(id=pk_pedido)
+        ponto.status = True
+        ponto.save()
+        pto_entregues = len(pedido.ponto_set.filter(status=True))
+        print(len(pedido.ponto_set.all()) == pto_entregues)
+        if len(pedido.ponto_set.all()) == pto_entregues:
+            pedido.is_complete = True
+            pedido.save()
+            messages.success(request, 'Tudo entregue! Finalize este pedido para poder pegar outros.')
+        if pedido.estabelecimento.is_online:
+            print('>>>>>>>> Motorista '+request.user.first_name+' entregou pedido ao cliente '+ponto.cliente)
+            message =  "Motorista "+request.user.first_name+" entregou pedido ao cliente "+ponto.cliente
+            n = Notification(type_message='ORDER_DELIVERED', to=pedido.estabelecimento.user, message=message)
+            n.save()
+        return HttpResponseRedirect('/app/pedido/route/'+ str(pedido.pk))
+    except:
+        print('******* error url ')
+        messages.error(request, 'Este pedido foi deletado pela Loja')
+        return HttpResponseRedirect('/app/pedidos/motorista/')
+    
+
+@require_http_methods(["GET"])
+def finalizar_pedido(request, pk_pedido):
+    try:
+        pedido = Pedido.objects.get(id=pk_pedido)
+        pedido.btn_finalizado = True
+        pedido.save()
+        motorista = Motorista.objects.get(user=request.user)
+        motorista.ocupado = False
+        motorista.save()
+        message = "O motorista " + request.user.first_name + " finalizou por completo a entrega do Pedido ID #" + str(
+            pedido.pk) + ". Se desejar confirmar, ligue para o motorista: " + motorista.phone
+        n = Notification(type_message='ALL_DELIVERED', to=pedido.estabelecimento.user, message=message)
+        n.save()
+        messages.success(request, 'Você concluiu a entrega do pedido, obrigado!')
+        return HttpResponseRedirect('/app/pedidos/motorista/')
+    except:
+        messages.error(request, 'Este pedido foi deletado pela Loja')
+        return HttpResponseRedirect('/app/pedidos/motorista/')
 
 # TODO: Motorista ao logar ou ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
 # TODO: Implementar botao em acompanhamentos da loja para acompanhar entrega, apos liberado.

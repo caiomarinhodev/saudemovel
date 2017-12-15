@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Delivery Channel | Dashboard</title>
+    <title>Focus Delivery | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -43,7 +43,7 @@
 
 
 </head>
-<body class="hold-transition skin-blue">
+<body id="body" class="hold-transition skin-black">
 <!-- jQuery 2.2.0 -->
 <script
         src="{% static 'plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
@@ -53,9 +53,9 @@
         <!-- Logo -->
         <a href="{% url "home" %}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>D</b>.<b>C</b></span>
+            <span class="logo-mini"><b>F</b>.<b>D</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Delivery </b>Channel</span>
+            <span class="logo-lg"><b>Focus </b>Delivery</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -345,10 +345,7 @@
                         console.log(err);
                     }
                 });
-            }, 8000);
-
-
-
+            }, 30000);
 
 
         {% else %}
@@ -358,7 +355,7 @@
                     url: "{% url 'notify_accept_order_loja' %}",
                     type: "GET", // http method
                     beforeSend: function () {
-                        $('#loading').show();
+                        //$('#loading').show();
                     },
                     success: function (data) {
                         $('#notify').html(data);
@@ -371,6 +368,25 @@
                     }
                 });
             }, 10000);
+            
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notificar_all_delivered_loja' %}",
+                    type: "GET", // http method
+                    beforeSend: function () {
+                        // $('#loading').show();
+                    },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 15000);
 
 
         {% endif %}

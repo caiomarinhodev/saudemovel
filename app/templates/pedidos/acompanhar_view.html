@@ -221,6 +221,7 @@
                                 </div>
                                 <div class="qa-message-content">
                                     Buscar o pedido no estabelecimento {{ pedido.estabelecimento.user.first_name }}
+                                    <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +253,8 @@
                                         </div>
                                     </div>
                                     <div class="qa-message-content">
-                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.descricao }}
+                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }}
+                                        <p>Telefone Cliente: {{ ponto.telefone }}</p>
                                     </div>
                                 </div>
                             </div>

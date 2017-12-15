@@ -71,6 +71,7 @@ class Pedido(TimeStamped):
     coletado = models.BooleanField(default=False)
     is_complete = models.BooleanField(default=False)
     valor_total = models.CharField(max_length=6)
+    btn_finalizado = models.BooleanField(default=False)
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
@@ -87,7 +88,8 @@ class Pedido(TimeStamped):
 
 class Ponto(BaseAddress, TimeStamped):
     cliente = models.CharField(max_length=100, blank=True, null=True)
-    descricao = models.TextField()
+    telefone = models.CharField(max_length=100, blank=True, null=True)
+    observacoes = models.TextField(blank=True, null=True)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     full_address = models.CharField(max_length=300, blank=True, null=True)
     status = models.BooleanField(default=False)
@@ -113,7 +115,8 @@ type_notification = (
     ('ACCEPT_ORDER', 'ACCEPT_ORDER'),
     ('CANCEL_ORDER', 'CANCEL_ORDER'),
     ('ENABLE_ROTA', 'ENABLE_ROTA'),
-    ('ORDER_DELIVERED', 'ORDER_DELIVERED')
+    ('ORDER_DELIVERED', 'ORDER_DELIVERED'),
+    ('ALL_DELIVERED', 'ALL_DELIVERED')
 )
 
 class Notification(TimeStamped):

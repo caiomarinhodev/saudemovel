@@ -37,6 +37,19 @@
                     window.location.href = '/app/acompanhar'
                 }, 2000);
             });
+            
+        {% elif notificacao.type_message == 'ALL_DELIVERED' %}
+            swal({
+                title: "Motorista finalizou a entrega!",
+                text: '{{ notificacao.message }}',
+                type: 'success',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '/app/acompanhar'
+                }, 2000);
+            });
 
         // {% elif notificacao.type_message == 'CANCEL_ORDER' %}
         //     swal({

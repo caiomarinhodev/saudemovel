@@ -17,6 +17,7 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>DATA</th>
                                         <th>TIPO</th>
                                         <th>MENSAGEM</th>
                                         <th>STATUS</th>
@@ -27,9 +28,10 @@
                                     {% for notificacao in notificacoes %}
                                         <tr>
                                             <td>{{ notificacao.id }}</td>
+                                            <td>{{ notificacao.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
                                                 {% if notificacao.type_message == 'NOVO_PEDIDO' %}
-                                                    <label class="label label-success"><i
+                                                    <label class="label label-info"><i
                                                             class=""></i>
                                                         NOVO PEDIDO</label>
                                                 {% elif notificacao.type_message == 'DELETE_LOJA' %}
@@ -41,9 +43,14 @@
                                                     <label class="label label-warning"><i
                                                             class=""></i>
                                                         CANCELAMENTO</label>
+                                                        
+                                                {% elif notificacao.type_message == 'ORDER_DELIVERED' %}
+                                                    <label class="label label-info"><i
+                                                            class=""></i>
+                                                        ENTREGA</label>
 
                                                 {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
-                                                    <label class="label label-info"><i
+                                                    <label class="label label-default"><i
                                                             class=""></i>
                                                         PEDIDO ACEITO</label>
 
@@ -51,6 +58,10 @@
                                                     <label class="label label-info"><i
                                                             class=""></i>
                                                         ROTA</label>
+                                                {% elif notificacao.type_message == 'ALL_DELIVERED' %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        PEDIDO ENTREGUE</label>
                                                 {% endif %}
                                             </td>
                                             <td>
@@ -87,7 +98,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table').DataTable({
-                responsive: true
+                responsive: true,
+                order: [[ 1, "desc" ]]
             });
             setInterval(function () {
                 location.reload();

@@ -71,13 +71,16 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#body').addClass('sidebar-collapse');
             $('#pedidos').addClass('active');
             $('[name=estabelecimento]').hide();
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });
-            $("input").attr("required", "true");
-            $('td[2]').attr('style', 'width: 30px');
+            $("[name=estabelecimento]").attr("required", "false");
+            $('.numero').inputmask('99999');
+            $('.telefone').inputmask('(99) 9999[9]-9999');
+            $("td[2]").attr('style', 'width: 30px');
         });
     </script>
 

@@ -6,11 +6,11 @@ from django.contrib.auth import views as auth_views
 from app.views.LoginView import LoginView, LogoutView, RegisterView
 from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView
+    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
-    RouteMotoristaDetailView, MapRouteMotoristaView
+    RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -59,14 +59,16 @@ urlpatterns = [
     url(r'^get-entregas/$', get_entregas_motorista, name="get_entregas_motorista"),
 
     url(r'liberar-corrida/(?P<pk_pedido>[0-9]+)/$', liberar_corrida, name="liberar_corrida"),
+    
+    url(r'finalizar-entrega/(?P<pk_ponto>[0-9]+)/(?P<pk_pedido>[0-9]+)/$', finalizar_entrega, name="finalizar_entrega"),
 
-    # url(r'^cancel-corrida-motorista/(?P<pk_pedido>[0-9]+)/$', cancel_corrida_motorista,
-    #     name="cancel_corrida_motorista"),
+    url(r'finalizar-pedido/(?P<pk_pedido>[0-9]+)/$', finalizar_pedido, name="finalizar_pedido"),
+
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
     url(r'^notificacao/delete-loja/motorista/$', notificar_delete_loja_motorista, name="notify_delete_loja_motorista"),
     url(r'^notificacao/accept-order/loja/$', notificar_accept_order_loja, name="notify_accept_order_loja"),
-    # url(r'^notificacao/cancel-order/loja/$', notificar_cancel_order_loja, name="notify_cancel_order_loja"),
+    url(r'^notificacao/all-delivered/loja/$', notificar_all_delivered_loja, name="notificar_all_delivered_loja"),
     url(r'^notificacao/enable-rota/motorista/$', notificar_enable_rota_motorista, name="notify_enable_rota_motorista"),
 ]
