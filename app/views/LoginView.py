@@ -46,9 +46,12 @@ class LoginView(FormView):
         Returns the supplied URL.
         """
         url = '/'
-        user = self.request.user
         motorista = None
         loja = None
+        try:
+            user = self.request.user
+        except:
+            user = None
         try:
             motorista = user.motorista
         except:
@@ -75,9 +78,9 @@ class LoginView(FormView):
             elif user.is_superuser:
                 url = '/admin'
                 self.success_url = url
-            else:
-                url = '/login'
-                self.success_url = url
+        else:
+            url = '/login'
+            self.success_url = url
         return url
 
 
