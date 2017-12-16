@@ -3,6 +3,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from app.views.MotoristasAtivosView import MotoristasAtivosView
 from app.views.LoginView import LoginView, LogoutView, RegisterView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^app/pedido/(?P<pk>[0-9]+)/$', OrderMotoristaDetailView.as_view(), name="order_pedido_view"),
     url(r'^app/pedido/route/(?P<pk>[0-9]+)/$', RouteMotoristaDetailView.as_view(), name="route_pedido_view"),
     url(r'^app/pedido/map/route/(?P<pk>[0-9]+)/$', MapRouteMotoristaView.as_view(), name="map_route_pedido_view"),
+    url(r'^app/pedidos/motoristas/loja/$', MotoristasAtivosView.as_view(), name='motoristas_ativos_view'),
 
     url(r'^app/acompanhar/(?P<pk>[0-9]+)/$', AcompanharDetailView.as_view(), name="acompanhar_pedido_view"),
     url(r'^app/acompanhar/$', AcompanharListView.as_view(), name='acompanhar_list'),

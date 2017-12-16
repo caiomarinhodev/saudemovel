@@ -196,14 +196,31 @@
                             <div class="message-inner">
                                 <div class="message-head clearfix">
                                     <div class="pull-right">
-    										{% if pedido.coletado %}
-                                                <label class="label label-success"><i
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                {% if pedido.coletado %}
+                                                    <label class="label label-success"><i
                                                         class=""></i>
                                                     COLETADO</label>
-                                            {% else %}
-                                                <label class="label label-warning"><i
-                                                        class=""></i> NÃO COLETADO</label>
-                                            {% endif %}
+                                                {% else %}
+                                                    <label class="label label-warning"><i
+                                                            class=""></i> NÃO COLETADO</label>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-primary btn-block">Rota Waze</a>
+                                            </div>
+                                        </div>
+                                        <!--<br/>-->
+                                        <!--<div class="row">-->
+                                        <!--    <div class="col-xs-12">-->
+                                        <!--        <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-danger btn-block">Rota Google</a>-->
+                                        <!--    </div>-->
+                                        <!--</div>-->
+    										
     							    </div>
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
@@ -227,33 +244,50 @@
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
                                         <div class="pull-right">
-                                            {% if ponto.status %}
-                                                <label class="label label-success"><i
-                                                        class=""></i>
-                                                    ENTREGUE</label>    
-                                            {% else %}
-                                                <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
-                                                <script>
-                                                    $(document).ready(function(){
-                                                        $('.fin_entrega_{{ ponto.id }}').click(function(){
-                                                            play('alert');  
-                                                            swal({
-                                                                title: "Deseja marcar como concluido esta entrega?",
-                                                                text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
-                                                                type: 'info',
-                                                                closeOnConfirm: false,
-                                                                showCancelButton: true,
-                                                                showLoaderOnConfirm: true
-                                                            }, function () {
-                                                                setTimeout(function () {
-                                                                    window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
-                                                                }, 2000);
-                                                                });
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    {% if ponto.status %}
+                                                        <label class="label label-success"><i
+                                                                class=""></i>
+                                                            ENTREGUE</label>    
+                                                    {% else %}
+                                                        <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
+                                                        <script>
+                                                            $(document).ready(function(){
+                                                                $('.fin_entrega_{{ ponto.id }}').click(function(){
+                                                                    play('alert');  
+                                                                    swal({
+                                                                        title: "Deseja marcar como concluido esta entrega?",
+                                                                        text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
+                                                                        type: 'info',
+                                                                        closeOnConfirm: false,
+                                                                        showCancelButton: true,
+                                                                        showLoaderOnConfirm: true
+                                                                    }, function () {
+                                                                        setTimeout(function () {
+                                                                            window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
+                                                                        }, 2000);
+                                                                        });
+                                                                    });
                                                             });
-                                                    });
-                                                </script>
-                                            {% endif %}
-    									</div>
+                                                        </script>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <a href="waze://?ll={{ ponto.lat }},{{ ponto.lng }}&navigate=yes" class="btn btn-primary btn-block">Rota Waze</a>
+                                                </div>
+                                            </div>
+                                            <!--<br/>-->
+                                            <!--<div class="row">-->
+                                            <!--    <div class="col-xs-12">-->
+                                            <!--        <a href="#" class="btn btn-danger btn-block">Rota Google</a>-->
+                                            <!--    </div>-->
+                                            <!--</div>-->
+        										
+        							    </div>
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">

@@ -127,6 +127,8 @@
             }); 
         }
         getPosition();
+        
+        $('#pedidos').addClass('active');
     
         window.setInterval(function () {
             getPosition();
@@ -135,6 +137,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#pedidos').addClass('active');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });
