@@ -8,9 +8,10 @@ from django.views.generic import ListView
 
 from app.models import Notification
 from app.views.snippet_template import render_block_to_string
+from app.mixins.CustomContextMixin import CustomContextMixin
 
 
-class NotificacoesListView(LoginRequiredMixin, ListView):
+class NotificacoesListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Notification
     context_object_name = 'notificacoes'

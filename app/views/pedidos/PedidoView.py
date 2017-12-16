@@ -12,7 +12,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView
+from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView, CustomContextMixin
 from django.shortcuts import render_to_response
 
 
@@ -21,7 +21,7 @@ from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto
 from app.views.snippet_template import render_block_to_string
 
 
-class OrderMotoristaDetailView(LoginRequiredMixin, DetailView):
+class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/order_view.html'
     context_object_name = 'pedido'
@@ -35,7 +35,7 @@ class OrderMotoristaDetailView(LoginRequiredMixin, DetailView):
             return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
-class RouteMotoristaDetailView(LoginRequiredMixin, DetailView):
+class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/route_view.html'
     context_object_name = 'pedido'
@@ -49,7 +49,7 @@ class RouteMotoristaDetailView(LoginRequiredMixin, DetailView):
             return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
-class MapRouteMotoristaView(LoginRequiredMixin, DetailView):
+class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/map_view.html'
     context_object_name = 'pedido'
@@ -63,7 +63,7 @@ class MapRouteMotoristaView(LoginRequiredMixin, DetailView):
             return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
-class PedidosLojaListView(LoginRequiredMixin, ListView):
+class PedidosLojaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
@@ -73,7 +73,7 @@ class PedidosLojaListView(LoginRequiredMixin, ListView):
         return Pedido.objects.filter(estabelecimento__user=self.request.user).order_by('-created_at')
 
 
-class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView):
+class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
@@ -83,7 +83,7 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
         return Pedido.objects.filter(is_complete=False, coletado=False, status=True).order_by('-created_at')
 
 
-class EntregasMotoristaListView(LoginRequiredMixin, ListView):
+class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
@@ -93,7 +93,7 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView):
         return Pedido.objects.filter(motorista=self.request.user).order_by('-published_at')
 
 
-class PedidoCreateView(LoginRequiredMixin, CreateView):
+class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento',]

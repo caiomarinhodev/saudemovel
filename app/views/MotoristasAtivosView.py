@@ -3,12 +3,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
+from app.mixins.CustomContextMixin import CustomContextMixin
 
 
 from app.models import Pedido
 
 
-class MotoristasAtivosView(LoginRequiredMixin, ListView):
+class MotoristasAtivosView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'

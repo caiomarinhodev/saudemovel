@@ -2,7 +2,7 @@
 from django.views.generic.base import ContextMixin
 from django.contrib import messages
 from django.views.generic import ListView
-from app.models import Motorista
+from app.models import Motorista, Notification, Pedido
 from django.shortcuts import redirect
 #
 
@@ -22,13 +22,17 @@ class RedirectMotoristaOcupadoView(ListView):
 
 class CustomContextMixin(ContextMixin):
      def get_context_data(self, **kwargs):
-        #  if 'audits_l' not in kwargs:
-        #      kwargs['audits_l'] = Audit.objects.filter(new_owner=self.request.user, is_complete=False,
-        #                                               is_deferred='EM ANÁLISE').order_by('-created_at')
-        #  if 'notifications_l' not in kwargs:
-        #      kwargs['notifications_l'] = Notification.objects.filter(user=self.request.user, is_read=False).order_by(
-        #          '-created_at')
-         return super(CustomContextMixin, self).get_context_data(**kwargs)
+        if 'notifications_n' not in kwargs:
+             kwargs['notifications_n'] = Notification.objects.filter(to=self.request.user, is_read=False).order_by('-created_at')
+        try:
+            if 'pedidos_n' not in kwargs:
+                 kwargs['pedidos_n'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento, status=False, is_complete=False).order_by(
+                     '-created_at')
+        except:
+             if 'pedidos_n' not in kwargs:
+                 kwargs['pedidos_n'] = Pedido.objects.filter(motorista=self.request.user, status=False, is_complete=False).order_by(
+                     '-created_at')
+        return super(CustomContextMixin, self).get_context_data(**kwargs)
 #
 #
 # class UserContextMixin(ContextMixin):

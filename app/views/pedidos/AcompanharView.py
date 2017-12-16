@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from app.mixins.CustomContextMixin import CustomContextMixin
 
 from app.models import Pedido
 
 
-class AcompanharListView(LoginRequiredMixin, ListView):
+class AcompanharListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
@@ -15,7 +16,7 @@ class AcompanharListView(LoginRequiredMixin, ListView):
         return Pedido.objects.filter(estabelecimento__user=self.request.user, status=False).order_by('-created_at')
 
 
-class AcompanharDetailView(LoginRequiredMixin, DetailView):
+class AcompanharDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/acompanhar_view.html'
     context_object_name = 'pedido'
