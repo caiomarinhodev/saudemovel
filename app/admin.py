@@ -33,6 +33,10 @@ class PedidoAdmin(admin.ModelAdmin):
 
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'message', 'type_message', 'to', 'is_read')
+    
+
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'lat', 'lng', 'created_at')
 
 
 admin.site.register(Motorista, MotoristaAdmin)
@@ -40,3 +44,4 @@ admin.site.register(Estabelecimento, EstabelecimentoAdmin)
 admin.site.register(Ponto, PontoAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Notification, NotificationAdmin)
+admin.site.register(Location, LocationAdmin)

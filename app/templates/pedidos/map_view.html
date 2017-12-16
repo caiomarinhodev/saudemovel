@@ -109,6 +109,28 @@
 
         L.Routing.errorControl(control).addTo(map);
         control.hide();
+        
+        function getPosition() {
+            var url = "/get-location/"+{{ pedido.motorista.id }};
+            $.ajax({
+                url: url,
+                type: "GET", // http method
+                success: function (data) {
+                    icon = L.divIcon({className: 'fa fa-motorcycle fa-2x'});
+                    L.marker([data.lat, data.lng],{icon: icon}).addTo(map);
+                },
+                complete: function () {
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            }); 
+        }
+        getPosition();
+    
+        window.setInterval(function () {
+            getPosition();
+        }, 5000);
     </script>
 
     <script type="text/javascript">

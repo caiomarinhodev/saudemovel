@@ -95,7 +95,6 @@ class FormRegister(FormBaseAddress):
                                                              'maxlength': 200,
                                                              'placeholder': 'Telefone'}))
     
-    
 
 
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)

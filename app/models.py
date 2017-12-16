@@ -128,3 +128,9 @@ class Notification(TimeStamped):
     to = models.ForeignKey(User, on_delete=models.CASCADE)
     type_message = models.CharField(choices=type_notification, max_length=100)
     is_read = models.BooleanField(default=False)
+
+
+class Location(TimeStamped):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    lng = models.CharField(max_length=100, blank=True, null=True)

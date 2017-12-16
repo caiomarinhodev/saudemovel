@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from app.views.LoginView import LoginView, LogoutView, RegisterView
+from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja
@@ -63,6 +64,10 @@ urlpatterns = [
     url(r'finalizar-entrega/(?P<pk_ponto>[0-9]+)/(?P<pk_pedido>[0-9]+)/$', finalizar_entrega, name="finalizar_entrega"),
 
     url(r'finalizar-pedido/(?P<pk_pedido>[0-9]+)/$', finalizar_pedido, name="finalizar_pedido"),
+    
+    url(r'send-location/(-?\d+\.\d+)/(-?\d+\.\d+)/$', send_position_motorista, name="send_position_motorista"),
+    
+    url(r'get-location/(?P<pk_user>[0-9]+)/$', get_position_motorista, name=" get_position_motorista"),
 
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),

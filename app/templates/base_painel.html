@@ -220,6 +220,66 @@
 <div id="notify"></div>
 
 <script>
+    var apiGeolocationSuccess = function(position) {
+    	showPosition(position);
+    };
+    
+    var tryAPIGeolocation = function() {
+    	jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU", function(success) {
+    		apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+      })
+      .fail(function(err) {
+        console.log("API Geolocation error! \n\n"+err);
+      });
+    };
+    
+    var browserGeolocationSuccess = function(position) {
+    	showPosition(position);
+    };
+    
+    var browserGeolocationFail = function(error) {
+      switch (error.code) {
+        case error.TIMEOUT:
+          console.log("Browser geolocation error !\n\nTimeout.");
+          break;
+        case error.PERMISSION_DENIED:
+          if(error.message.indexOf("Only secure origins are allowed") == 0) {
+            tryAPIGeolocation();
+          }
+          break;
+        case error.POSITION_UNAVAILABLE:
+          console.log("Browser geolocation error !\n\nPosition unavailable.");
+          break;
+      }
+    };
+    
+    var tryGeolocation = function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+        	browserGeolocationSuccess,
+          browserGeolocationFail,
+          {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+      }
+    };
+    
+    function showPosition(position) {
+        var url = "/send-location/"+position.coords.latitude+"/"+position.coords.longitude;
+        $.ajax({
+            url: url,
+            type: "GET", // http method
+            success: function (data) {
+            },
+            complete: function () {
+            }
+        }); 
+    }
+    
+    window.setInterval(function () {
+        tryGeolocation();
+    }, 5000);
+</script> 
+
+<script>
     function play(soundobj) {
         var thissound=document.getElementById(soundobj);
         thissound.play();
