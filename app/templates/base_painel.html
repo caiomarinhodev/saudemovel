@@ -173,6 +173,8 @@
         </div>
         {#        <strong id="data_atualizada"></strong>#}
     </footer>
+    
+    <audio id="alert" src="{% static 'alert.wav' %}" controls preload="auto" autobuffer></audio>
 
 </div>
 <!-- ./wrapper -->
@@ -215,6 +217,13 @@
 <script src="{% static "dist/js/chartReport.js" %}"></script>
 
 <div id="notify"></div>
+
+<script>
+    function play(soundobj) {
+        var thissound=document.getElementById(soundobj);
+        thissound.play();
+    }
+</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -401,12 +410,14 @@
         {% if message.tags == 'error' %}
             <script>
                 $(document).ready(function () {
+                    play('alert');  
                     swal("Erro", "{{ message }}", "error")
                 });
             </script>
         {% else %}
             <script>
                 $(document).ready(function () {
+                    play('alert');  
                     swal("Sucesso", "{{ message }}", "success")
                 });
             </script>
