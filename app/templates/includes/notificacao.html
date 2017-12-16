@@ -13,7 +13,6 @@
                     window.location.href = '{% url 'pedidos_motorista' %}'
                 }, 2000);
             });
-{#            swal("Um novo pedido foi cadastrado!", "{{ notificacao.message }}", "success");#}
         {% elif notificacao.type_message == 'DELETE_LOJA' %}
         play('alert');  
             swal({

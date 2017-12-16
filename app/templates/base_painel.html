@@ -53,9 +53,11 @@
         <!-- Logo -->
         <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>F</b>.<b>D</b></span>
+            <!--<span>Focus Delivery</span>-->
+           <span><img src='{% static 'logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+        
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Focus </b>Delivery</span>
+            <!--<span class="logo-lg"><b>Focus </b>Delivery</span>-->
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -151,6 +153,7 @@
         </section>
         <!-- /.sidebar -->
     </aside>
+    <audio id="alert" src="{% static 'alert.wav' %}" controls="false" preload="auto" autobuffer></audio>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -171,12 +174,10 @@
         <div class="pull-right hidden-xs">
             <b>&copy; Delivery</b>
         </div>
-        {#        <strong id="data_atualizada"></strong>#}
     </footer>
-    
-    <audio id="alert" src="{% static 'alert.wav' %}" controls="false" preload="auto" autobuffer></audio>
-
 </div>
+
+
 <!-- ./wrapper -->
 
 <!-- jQuery UI 1.11.4 -->
@@ -227,6 +228,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        
+        $('audio').hide();
 
         $('.datepicker').datepicker({
             clearBtn: true,
@@ -316,7 +319,7 @@
                         console.log(err);
                     }
                 });
-            }, 10000);
+            }, 5000);
 
             window.setInterval(function () {
                 $.ajax({
@@ -335,7 +338,7 @@
                         console.log(err);
                     }
                 });
-            }, 20000);
+            }, 5000);
 
             window.setInterval(function () {
                 $.ajax({
@@ -354,7 +357,7 @@
                         console.log(err);
                     }
                 });
-            }, 30000);
+            }, 6000);
 
 
         {% else %}
@@ -376,7 +379,7 @@
                         console.log(err);
                     }
                 });
-            }, 10000);
+            }, 5000);
             
             window.setInterval(function () {
                 $.ajax({
@@ -395,7 +398,7 @@
                         console.log(err);
                     }
                 });
-            }, 15000);
+            }, 5000);
 
 
         {% endif %}

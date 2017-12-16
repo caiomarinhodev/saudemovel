@@ -22,6 +22,7 @@
                                         <th>ID</th>
                                         <th>CRIADO EM</th>
                                         <th>N° ENTREGAS</th>
+                                        <th>MOTORISTA</th>
                                         <th>VALOR</th>
                                         <th>ENTREGUE?</th>
                                         <th></th>
@@ -34,6 +35,9 @@
                                             <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
                                                 {{ pedido.ponto_set.all|length }}
+                                            </td>
+                                            <td>
+                                                {{ pedido.motorista.first_name }}
                                             </td>
                                             <td>
                                                R$ {{ pedido.valor_total }}
@@ -51,9 +55,28 @@
                                             <td>
                                                 {% if pedido.is_complete %}
                                                 {% else %}
-                                                <a class="btn btn-danger" href="{% url 'delete_pedido' pedido.pk %}">
+                                                <a class="btn btn-danger cancel_{{ pedido.id }}" href="#">
                                                     Cancelar Pedido
                                                 </a>
+                                                <script>
+                                                    $(document).ready(function(){
+                                                        $('.cancel_{{ pedido.id }}').click(function(){
+                                                            play('alert');  
+                                                            swal({
+                                                                title: "ALERTA!",
+                                                                text: 'Você realmente vai cancelar este pedido?',
+                                                                type: 'warning',
+                                                                showCancelButton: true,
+                                                                closeOnConfirm: false,
+                                                                showLoaderOnConfirm: true
+                                                            }, function () {
+                                                                setTimeout(function () {
+                                                                    window.location.href = '{% url 'delete_pedido' pedido.pk %}'
+                                                                }, 2000);
+                                                                });
+                                                            });
+                                                    });
+                                                </script>
                                                 {% endif %}
                                             </td>
                                         </tr>

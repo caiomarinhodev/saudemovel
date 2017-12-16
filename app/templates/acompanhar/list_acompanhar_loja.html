@@ -19,6 +19,7 @@
                                         <th>ID</th>
                                         <th>DATA/HORA</th>
                                         <th>MOTORISTA</th>
+                                        <th>TELEFONE MOTORISTA</th>
                                         <th>N° ENTREGAS</th>
                                         <th>COLETADO?</th>
                                         <th>ENTREGUE?</th>
@@ -32,6 +33,9 @@
                                             <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
                                                {{ pedido.motorista }}
+                                            </td>
+                                            <td>
+                                               {{ pedido.motorista.motorista.phone }}
                                             </td>
                                             <td>
                                                 {{ pedido.ponto_set.all|length }}

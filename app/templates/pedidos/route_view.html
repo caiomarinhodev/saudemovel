@@ -232,7 +232,26 @@
                                                         class=""></i>
                                                     ENTREGUE</label>    
                                             {% else %}
-                                                <a href="{% url 'finalizar_entrega' ponto.pk pedido.pk %}" class='btn btn-danger btn-block'>Finalizar</a>
+                                                <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
+                                                <script>
+                                                    $(document).ready(function(){
+                                                        $('.fin_entrega_{{ ponto.id }}').click(function(){
+                                                            play('alert');  
+                                                            swal({
+                                                                title: "Deseja marcar como concluido esta entrega?",
+                                                                text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
+                                                                type: 'info',
+                                                                closeOnConfirm: false,
+                                                                showCancelButton: true,
+                                                                showLoaderOnConfirm: true
+                                                            }, function () {
+                                                                setTimeout(function () {
+                                                                    window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
+                                                                }, 2000);
+                                                                });
+                                                            });
+                                                    });
+                                                </script>
                                             {% endif %}
     									</div>
                                         <div class="user-detail">
@@ -265,7 +284,26 @@
                         <div class='col-xs-8 col-xs-offset-2'>
                             
                             {% if pedido.is_complete and not pedido.btn_finalizado %}
-                                <a href="{% url 'finalizar_pedido' pedido.pk %}" class="btn btn-danger btn-block">Finalizar Pedido</a>
+                                <a href="#" class="btn btn-danger btn-block finalizar_{{ pedido.id }}">Finalizar Pedido</a>
+                                <script>
+                                                    $(document).ready(function(){
+                                                        $('.finalizar_{{ pedido.id }}').click(function(){
+                                                            play('alert');  
+                                                            swal({
+                                                                title: "Concluir entrega deste pedido?",
+                                                                text: '',
+                                                                type: 'info',
+                                                                closeOnConfirm: false,
+                                                                showCancelButton: true,
+                                                                showLoaderOnConfirm: true
+                                                            }, function () {
+                                                                setTimeout(function () {
+                                                                    window.location.href = '{% url 'finalizar_pedido' pedido.pk %}'
+                                                                }, 2000);
+                                                                });
+                                                            });
+                                                    });
+                                                </script>
                             {% else %}
                                 <a href="{% url 'entregas_motorista' %}" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
                             {% endif %}
