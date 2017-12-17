@@ -479,7 +479,7 @@
                     url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
                     beforeSend: function () {
-                        $('#loading').show();
+                        // $('#loading').show();
                     },
                     success: function (data) {
                         $('#notify').html(data);
@@ -498,7 +498,7 @@
                     url: "{% url 'notify_delete_loja_motorista' %}",
                     type: "GET", // http method
                     beforeSend: function () {
-                        $('#loading').show();
+                        // $('#loading').show();
                     },
                     success: function (data) {
                         $('#notify').html(data);
@@ -517,7 +517,7 @@
                     url: "{% url 'notify_novo_pedido_motorista' %}",
                     type: "GET", // http method
                     beforeSend: function () {
-                        $('#loading').show();
+                        // $('#loading').show();
                     },
                     success: function (data) {
                         $('#notify').html(data);
