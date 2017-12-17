@@ -343,32 +343,34 @@
       });
     };
     
-    var browserGeolocationSuccess = function(position) {
-    	showPosition(position);
-    };
+    // var browserGeolocationSuccess = function(position) {
+    // 	showPosition(position);
+    // };
     
-    var browserGeolocationFail = function(error) {
-      switch (error.code) {
-        case error.TIMEOUT:
-          console.log("Browser geolocation error !\n\nTimeout.");
-          break;
-        case error.PERMISSION_DENIED:
-          if(error.message.indexOf("Only secure origins are allowed") == 0) {
-            tryAPIGeolocation();
-          }
-          break;
-        case error.POSITION_UNAVAILABLE:
-          console.log("Browser geolocation error !\n\nPosition unavailable.");
-          break;
-      }
-    };
+    // var browserGeolocationFail = function(error) {
+    //     tryAPIGeolocation();
+    //   switch (error.code) {
+    //     case error.TIMEOUT:
+    //       console.log("Browser geolocation error !\n\nTimeout.");
+    //       break;
+    //     case error.PERMISSION_DENIED:
+    //       if(error.message.indexOf("Only secure origins are allowed") == 0) {
+    //         tryAPIGeolocation();
+    //       }
+    //       break;
+    //     case error.POSITION_UNAVAILABLE:
+    //       console.log("Browser geolocation error !\n\nPosition unavailable.");
+    //       break;
+    //   }
+    // };
     
     var tryGeolocation = function() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-        	browserGeolocationSuccess,
-          browserGeolocationFail,
-          {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+        // navigator.geolocation.getCurrentPosition(
+        // 	browserGeolocationSuccess,
+        //   browserGeolocationFail,
+        //   {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+        tryAPIGeolocation();
       }
     };
     
@@ -386,7 +388,7 @@
     
     window.setInterval(function () {
         tryGeolocation();
-    }, 5000);
+    }, 50000);
 </script> 
 
 <script>
