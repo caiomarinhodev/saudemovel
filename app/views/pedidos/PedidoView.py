@@ -194,7 +194,7 @@ def accept_corrida(request, pk_pedido):
                 message = 'A Loja '+pedido.estabelecimento.user.first_name+', localizado na '+pedido.estabelecimento.full_address+', está aguardando a coleta.'
                 no = Notification(type_message='DELETE_LOJA', to=pedido.motorista, message=message) # está delete loja por enquanto.
                 no.save()
-            return redirect('/app/pedido/route/'+str(pedido.pk))
+            return HttpResponseRedirect('/app/pedido/route/'+str(pedido.pk))
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')

@@ -15,8 +15,8 @@ class RedirectMotoristaOcupadoView(ListView):
             pass
         if motorista:
             if motorista.ocupado:
-                print(motorista)
-                messages.error(request, "Você ainda não finalizou sua ultima rota!")
+                # print(motorista)
+                # messages.error(request, "Você ainda não finalizou sua ultima rota!")
                 return redirect('entregas_motorista')
         return super(RedirectMotoristaOcupadoView, self).get(request, *args, **kwargs)
 
