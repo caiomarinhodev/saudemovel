@@ -225,7 +225,7 @@ def liberar_corrida(request, pk_pedido):
     pedido.save()
     if Motorista.objects.get(user=pedido.motorista).is_online:
         print('>>>>>>>> Motorista '+pedido.motorista.first_name+' foi liberado pela loja '+pedido.estabelecimento.user.first_name)
-        message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual estara no menu ENTREGAS. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
+        message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual esta no menu ENTREGAS. Quando terminar uma entrega, marque finalizar. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
         n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
         n.save()
     return redirect('/app/acompanhar')
@@ -246,7 +246,7 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
             messages.success(request, 'Tudo entregue! Finalize este pedido para poder pegar outros.')
         if pedido.estabelecimento.is_online:
             print('>>>>>>>> Motorista '+request.user.first_name+' entregou pedido ao cliente '+ponto.cliente)
-            message =  "Motorista "+request.user.first_name+" entregou pedido ao cliente "+ponto.cliente
+            message =  "Motorista "+request.user.first_name+" entregou pedido ao cliente "+ponto.cliente+ " no endereco "+ponto.full_address
             n = Notification(type_message='ORDER_DELIVERED', to=pedido.estabelecimento.user, message=message)
             n.save()
         return HttpResponseRedirect('/app/pedido/route/'+ str(pedido.pk))
@@ -274,15 +274,3 @@ def finalizar_pedido(request, pk_pedido):
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')
-
-# TODO: Motorista ao logar ou ao sair da page qualquer e estiver OCUPADO(entregando), notificar o endereco da entrega e redirecionar para /entregas
-# TODO: Implementar botao em acompanhamentos da loja para acompanhar entrega, apos liberado.
-# TODO: Implementar notificacao p/ motorista de que o produto foi liberado para entrega, e mostrar rota(mapa).
-# TODO: Notificar Loja de que motorista X saiu para entrega e pode ser acompanhado em acompanhamentos id #.
-# TODO: Implementar botao de Finalizar Entrega em entregas do motorista, para finalizar uma entrega.
-# TODO: Implementar notificacao p/ loja de que o produto foi entregue.
-# TODO: Definir Times de acordo com prioridades e testes.
-# TODO: Refatorar codigo duplicado
-# TODO: Remover codigo comentado
-# TODO: Organizar as pastas de templates
-# TODO: Fechar Release e Deploy

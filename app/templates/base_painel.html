@@ -330,6 +330,18 @@
 <div id="notify"></div>
 
 <script>
+
+    function showPosition(position) {
+            var url = "/send-location/"+position.coords.latitude+"/"+position.coords.longitude;
+            $.ajax({
+                url: url,
+                type: "GET", // http method
+                success: function (data) {
+                },
+                complete: function () {
+                }
+            }); 
+        }
     var apiGeolocationSuccess = function(position) {
     	showPosition(position);
     };
@@ -364,31 +376,21 @@
     //   }
     // };
     
-    var tryGeolocation = function() {
-      if (navigator.geolocation) {
-        // navigator.geolocation.getCurrentPosition(
-        // 	browserGeolocationSuccess,
-        //   browserGeolocationFail,
-        //   {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
-        tryAPIGeolocation();
-      }
-    };
+    // var tryGeolocation = function() {
+    //   if (navigator.geolocation) {
+    //     // navigator.geolocation.getCurrentPosition(
+    //     // 	browserGeolocationSuccess,
+    //     //   browserGeolocationFail,
+    //     //   {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+    //     tryAPIGeolocation();
+    //   }
+    // };
     
-    function showPosition(position) {
-        var url = "/send-location/"+position.coords.latitude+"/"+position.coords.longitude;
-        $.ajax({
-            url: url,
-            type: "GET", // http method
-            success: function (data) {
-            },
-            complete: function () {
-            }
-        }); 
-    }
     
-    window.setInterval(function () {
-        tryGeolocation();
-    }, 50000);
+    tryAPIGeolocation();
+    // window.setInterval(function () {
+    //     tryGeolocation();
+    // }, 50000);
 </script> 
 
 <script>
@@ -462,7 +464,7 @@
         });
 
 
-        $('[name=date_of_birth]').change(function () {
+        $('[name=data_nascimento]').change(function () {
             var idade = 0;
             var now = moment();
             var dtNascimento = moment($(this).val(), "DD/MM/YYYY");
@@ -478,9 +480,9 @@
                 $.ajax({
                     url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
-                    beforeSend: function () {
+                    // beforeSend: function () {
                         // $('#loading').show();
-                    },
+                    // },
                     success: function (data) {
                         $('#notify').html(data);
                     },
@@ -497,9 +499,9 @@
                 $.ajax({
                     url: "{% url 'notify_delete_loja_motorista' %}",
                     type: "GET", // http method
-                    beforeSend: function () {
+                    // beforeSend: function () {
                         // $('#loading').show();
-                    },
+                    // },
                     success: function (data) {
                         $('#notify').html(data);
                     },
@@ -516,9 +518,9 @@
                 $.ajax({
                     url: "{% url 'notify_novo_pedido_motorista' %}",
                     type: "GET", // http method
-                    beforeSend: function () {
+                    // beforeSend: function () {
                         // $('#loading').show();
-                    },
+                    // },
                     success: function (data) {
                         $('#notify').html(data);
                     },
@@ -538,9 +540,9 @@
                 $.ajax({
                     url: "{% url 'notify_accept_order_loja' %}",
                     type: "GET", // http method
-                    beforeSend: function () {
+                    // beforeSend: function () {
                         //$('#loading').show();
-                    },
+                    // },
                     success: function (data) {
                         $('#notify').html(data);
                     },
@@ -557,9 +559,9 @@
                 $.ajax({
                     url: "{% url 'notificar_all_delivered_loja' %}",
                     type: "GET", // http method
-                    beforeSend: function () {
+                    // beforeSend: function () {
                         // $('#loading').show();
-                    },
+                    // },
                     success: function (data) {
                         $('#notify').html(data);
                     },

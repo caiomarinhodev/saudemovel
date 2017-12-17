@@ -251,26 +251,28 @@
                                                                 class=""></i>
                                                             ENTREGUE</label>    
                                                     {% else %}
-                                                        <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
-                                                        <script>
-                                                            $(document).ready(function(){
-                                                                $('.fin_entrega_{{ ponto.id }}').click(function(){
-                                                                    play('alert');  
-                                                                    swal({
-                                                                        title: "Deseja marcar como concluido esta entrega?",
-                                                                        text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
-                                                                        type: 'info',
-                                                                        closeOnConfirm: false,
-                                                                        showCancelButton: true,
-                                                                        showLoaderOnConfirm: true
-                                                                    }, function () {
-                                                                        setTimeout(function () {
-                                                                            window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
-                                                                        }, 2000);
+                                                        {% if pedido.coletado %}
+                                                            <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
+                                                            <script>
+                                                                $(document).ready(function(){
+                                                                    $('.fin_entrega_{{ ponto.id }}').click(function(){
+                                                                        play('alert');  
+                                                                        swal({
+                                                                            title: "Deseja marcar como concluido esta entrega?",
+                                                                            text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
+                                                                            type: 'info',
+                                                                            closeOnConfirm: false,
+                                                                            showCancelButton: true,
+                                                                            showLoaderOnConfirm: true
+                                                                        }, function () {
+                                                                            setTimeout(function () {
+                                                                                window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
+                                                                            }, 2000);
+                                                                            });
                                                                         });
-                                                                    });
-                                                            });
-                                                        </script>
+                                                                });
+                                                            </script>
+                                                        {% endif %}
                                                     {% endif %}
                                                 </div>
                                             </div>
