@@ -34,6 +34,7 @@ class Motorista(TimeStamped):
     phone = models.CharField(max_length=30)
     ocupado = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
+    placa = models.CharField(max_length=30)
 
     def __str__(self):
         return self.user.first_name

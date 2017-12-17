@@ -73,7 +73,7 @@ class FormPonto(ModelForm, BaseForm):
                                                              'maxlength': 100,
                                                              'placeholder': 'Ponto de Referencia'
     })) 
-    observacoes = forms.CharField(required=False, max_length=50, widget=forms.Textarea(attrs={'required': True,
+    observacoes = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': True,
                                                              'maxlength': 300,
                                                              'placeholder': 'Observações'
     })) 
