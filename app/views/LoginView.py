@@ -154,7 +154,7 @@ class RegisterView(FormView):
             new_user = User.objects.create_user(**user_data)
             new_common_user = Estabelecimento(user=new_user, **common_data)
             new_common_user.save()
-            messages.success(self.request, 'Novo usuário cadastrado com sucesso.')
+            messages.success(self.request, 'Sua conta será analisada pelos nossos administradores. Aguarde o contato!')
         else:
             return self.form_invalid(form)
         return super(RegisterView, self).form_valid(form)
