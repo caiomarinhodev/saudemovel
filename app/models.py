@@ -45,6 +45,7 @@ class Motorista(TimeStamped):
 
 class Estabelecimento(TimeStamped, BaseAddress):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    is_approved = models.BooleanField(default=False)
     photo = models.URLField(blank=True)
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)

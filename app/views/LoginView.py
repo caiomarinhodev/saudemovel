@@ -34,6 +34,12 @@ class LoginView(FormView):
         print(data)
         user = authenticate(**data)
         print(user)
+        try:
+            loja = user.estabelecimento
+            if not loja.is_approved:
+                return self.form_invalid(form)
+        except:
+            pass
         if user is not None:
             login(self.request, user)
         else:
