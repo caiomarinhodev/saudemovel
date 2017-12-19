@@ -269,7 +269,8 @@ def finalizar_pedido(request, pk_pedido):
             pedido.pk) + ". Se desejar confirmar, ligue para o motorista: " + motorista.phone
         n = Notification(type_message='ALL_DELIVERED', to=pedido.estabelecimento.user, message=message)
         n.save()
-        messages.success(request, 'Você concluiu a entrega do pedido, obrigado!')
+        message = 'Você concluiu a entrega do pedido, se você estiver com algum material (maquineta ou bag) da Loja '+pedido.estabelecimento.user.first_name+',  favor devolver. Obrigado!'
+        messages.success(request, message)
         return HttpResponseRedirect('/app/pedidos/motorista/')
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
