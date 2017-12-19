@@ -15,11 +15,20 @@ class TimeStamped(models.Model):
     published_at = models.DateTimeField(auto_now=True)
 
 
+class Bairro(TimeStamped):
+    nome = models.CharField(max_length=100, blank=True)
+    valor = models.CharField(max_length=3, blank=True, null=True)
+    
+    def __unicode__(self):
+        return u'%s' % self.nome
+
+    def __str__(self):
+        return u'%s' % self.nome
+
 class BaseAddress(models.Model):
     class Meta:
         abstract = True
-
-    bairro = models.CharField(max_length=100, blank=True, verbose_name='Bairro')
+    bairro = models.ForeignKey(Bairro, blank=True, verbose_name='Bairro')
     endereco = models.CharField(max_length=100, blank=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
     complemento = models.CharField(max_length=200, blank=True, verbose_name='Ponto de Referência')
@@ -54,7 +63,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.phone = self.phone.replace("_", "")
-        address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
+        address = self.endereco + "," + self.bairro.nome + ",Campina Grande,PB"
         self.full_address = address
         pto = geocode(address)
         self.lat = pto['latitude']
@@ -84,7 +93,9 @@ class Pedido(TimeStamped):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
         
     def save(self, *args, **kwargs):
-        valor = str(len(self.ponto_set.all()) * 6)
+        valor = 0
+        for pto in self.ponto_set.all():
+            valor = valor + int(pto.bairro.valor)
         self.valor_total = valor
         super(Pedido, self).save(*args, **kwargs)
 
@@ -100,7 +111,7 @@ class Ponto(BaseAddress, TimeStamped):
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.telefone = self.telefone.replace("_", "")
-        address = self.endereco + "," + self.bairro + ",Campina Grande,PB"
+        address = self.endereco + "," + self.bairro.nome + ",Campina Grande,PB"
         pto = geocode(address)
         self.lat = pto['latitude']
         self.lng = pto['longitude']

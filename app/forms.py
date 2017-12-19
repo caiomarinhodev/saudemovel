@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory, formset_factory
 
-from app.models import Pedido, Ponto
+from app.models import Pedido, Ponto, Estabelecimento
 
 
 class BaseForm(forms.Form):
@@ -65,10 +65,10 @@ class FormPonto(ModelForm, BaseForm):
                                                              'maxlength': 200, 'class': 'numero',
                                                              'placeholder': 'Número'
     }))
-    bairro = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
-                                                             'maxlength': 200,
-                                                             'placeholder': 'Bairro'
-    }))
+    # bairro = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+    #                                                          'maxlength': 200,
+    #                                                          'placeholder': 'Bairro'
+    # }))
     complemento = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 100,
                                                              'placeholder': 'Ponto de Referencia'
@@ -82,7 +82,7 @@ class FormPonto(ModelForm, BaseForm):
         fields = ['cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes']
         
 
-class FormRegister(FormBaseAddress):
+class FormRegister(ModelForm, BaseForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200,
                                                              'placeholder': 'Nome Estabelecimento'}))
@@ -94,6 +94,22 @@ class FormRegister(FormBaseAddress):
     phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200,
                                                              'placeholder': 'Telefone'}))
+    cep = forms.CharField(max_length=10, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'CEP'
+    }))
+    endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Endereço'
+    }))
+    numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Número'
+    }))
+    
+    class Meta:
+        model = Estabelecimento
+        fields = ['bairro',]
     
 
 

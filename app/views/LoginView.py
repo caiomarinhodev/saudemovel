@@ -131,6 +131,8 @@ class RegisterView(FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
+        print(form.errors)
+        print(form.is_valid())
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -161,6 +163,9 @@ class RegisterView(FormView):
 
     def form_invalid(self, form):
         print(form.errors)
+        print(form)
+        print(form.errors)
+        print('00000')
         messages.error(self.request, 'Não foi possível cadastrar.')
         return super(RegisterView, self).form_invalid(form)
 
