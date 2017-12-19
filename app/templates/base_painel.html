@@ -224,12 +224,17 @@
                 {% if user.motorista %}
                     <li id="pedidos">
                         <a href="{% url 'pedidos_motorista' %}">
-                            <i class="fa fa-dashboard"></i> <span>Pedidos</span>
+                            <i class="fa fa-list-alt"></i> <span>Pedidos</span>
                         </a>
                     </li>
                     <li id="entregas">
                         <a href="{% url 'entregas_motorista' %}">
-                            <i class="fa fa-dashboard"></i> <span>Entregas</span>
+                            <i class="fa fa-motorcycle"></i> <span>Entregas</span>
+                        </a>
+                    </li>
+                    <li id="lojas_credenciadas">
+                        <a href="{% url 'lojas_credenciadas' %}">
+                            <i class="fa fa-suitcase"></i> <span>Lojas Credenciadas</span>
                         </a>
                     </li>
                 {% else %}
@@ -240,7 +245,7 @@
                     </li>
                     <li id="acompanhar">
                         <a href="{% url 'acompanhar_list' %}">
-                            <i class="fa fa-dashboard"></i> <span>Acompanhar</span>
+                            <i class="fa fa-location-arrow"></i> <span>Acompanhar</span>
                         </a>
                     </li>
                     <!--<li id="motoristas_ativos">-->
@@ -251,7 +256,7 @@
                 {% endif %}
                 <li id="notificacoes">
                     <a href="{% url "notificacoes" %}">
-                        <i class="fa fa-dashboard"></i> <span>Notificações</span>
+                        <i class="fa fa-warning"></i> <span>Notificações</span>
                     </a>
                 </li>
                 <li id="logout">

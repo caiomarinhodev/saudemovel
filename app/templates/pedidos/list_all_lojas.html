@@ -1,0 +1,64 @@
+{% extends 'base_painel.html' %}
+{% load staticfiles %}
+{% load filters %}
+
+{% block content %}
+    {% include 'loading.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table" class="table table-bordered table-striped" class="display"
+       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>LOJA</th>
+                                        <th>ENDEREÇO LOJA</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for loja in lojas %}
+                                        <tr>
+                                            <td>{{ loja.id }}</td>
+                                            <td>{{ loja.user.first_name }}</td>
+                                            <td>
+                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            $('#table').DataTable({
+                responsive: true,
+                order: [[ 1, "desc" ]],
+                language: {
+                              "emptyTable": "Nenhuma loja cadastrada"
+                            }
+            });
+            
+            $('#lojas_credenciadas').addClass('active');
+
+        });
+
+    </script>
+
+    <!-- /.row -->
+
+{% endblock %}

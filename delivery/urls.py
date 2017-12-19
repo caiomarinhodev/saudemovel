@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from app.views.MotoristasAtivosView import MotoristasAtivosView
 from app.views.LoginView import LoginView, LogoutView, RegisterView
 from app.views.LocationView import get_position_motorista, send_position_motorista
-from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView
+from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
@@ -52,6 +52,7 @@ urlpatterns = [
 
     url(r'^app/acompanhar/(?P<pk>[0-9]+)/$', AcompanharDetailView.as_view(), name="acompanhar_pedido_view"),
     url(r'^app/acompanhar/$', AcompanharListView.as_view(), name='acompanhar_list'),
+    url(r'^app/lojas/$', LojasMotoristaListView.as_view(), name='lojas_credenciadas'),
 
     url(r'^get-pedidos/$', get_pedidos_motorista, name="get_pedidos_motorista"),
 
