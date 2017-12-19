@@ -19,7 +19,6 @@ class BaseAddress(models.Model):
     class Meta:
         abstract = True
 
-    nome_cliente = models.CharField(max_length=100, blank=True, null=True, verbose_name='Cliente')
     bairro = models.CharField(max_length=100, blank=True, verbose_name='Bairro')
     endereco = models.CharField(max_length=100, blank=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
