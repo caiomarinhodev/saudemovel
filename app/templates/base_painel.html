@@ -118,7 +118,7 @@
                                         <li><!-- Task item -->
                                             <a href="#">
                                                 <h3>
-                                                    {{ n.message }}
+                                                    {{ n.message|truncatechars:'37' }}
                                                     <small class="pull-right">
                                                         {% if n.type_message == 'NOVO_PEDIDO' %}
                                                             <label class="label label-info"><i
