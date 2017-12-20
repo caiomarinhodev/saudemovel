@@ -262,7 +262,8 @@
                                                             confirmButtonText: "OK"
                                                         },
                                                         function () {
-                                                            window.location.href = '/accept-corrida/{{ pedido.pk }}';
+                                                            var url = "{% url 'accept_corrida' pedido.pk %}";
+                                                            window.location.href = url;
                                                         });
                                                 }
                                             });

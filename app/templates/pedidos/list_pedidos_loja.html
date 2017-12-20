@@ -1,6 +1,6 @@
 {% extends 'base_painel.html' %}
-{% load staticfiles %}
 {% load filters %}
+{% load staticfiles %}
 
 {% block content %}
 
@@ -55,7 +55,7 @@
                                                                      <img src="{{ pedido.motorista.motorista.photo }}"
                                                                              name="aboutme" width="140" height="140" border="0" class="img-circle">
                                                                      {% else %}
-                                                                         <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R"
+                                                                         <img src="{% static 'img/300.png' %}"
                                                                              name="aboutme" width="140" height="140" border="0" class="img-circle">
                                                                      {% endif %}
                                                                         <h3 class="media-heading">{{ pedido.motorista.first_name }}

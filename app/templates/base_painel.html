@@ -54,7 +54,7 @@
         <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <!--<span>Focus Delivery</span>-->
-           <span><img src='{% static 'logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+           <span><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
         
             <!-- logo for regular state and mobile devices -->
             <!--<span class="logo-lg"><b>Focus </b>Delivery</span>-->
@@ -180,13 +180,13 @@
                                     {% if user.motorista.photo %}
                                         <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
                                     {% else %}
-                                        <img src="{% static '300x300.png' %}" class="user-image" alt="User Image">
+                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% elif user.estabelecimento %}
                                     {% if user.estabelecimento.photo %}
                                         <img src="{{ user.estabelecimento.photo }}" class="user-image" alt="User Image">
                                     {% else %}
-                                        <img src="{% static '300x300.png' %}" class="user-image" alt="User Image">
+                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% endif %}
                             <span class="hidden-xs">{{ user.first_name }}</span>
@@ -198,13 +198,13 @@
                                     {% if user.motorista.photo %}
                                         <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
                                     {% else %}
-                                        <img src="{% static '300x300.png' %}" class="user-image" alt="User Image">
+                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% elif user.estabelecimento %}
                                     {% if user.estabelecimento.photo %}
                                         <img src="{{ user.estabelecimento.photo }}" class="user-image" alt="User Image">
                                     {% else %}
-                                        <img src="{% static '300x300.png' %}" class="user-image" alt="User Image">
+                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% endif %}
                                 
@@ -240,13 +240,13 @@
                         {% if user.motorista.photo %}
                             <img src="{{ user.motorista.photo }}" class="img-circle" alt="User Image">
                         {% else %}
-                            <img src="{% static '300x300.png' %}" class="img-circle" alt="User Image">
+                            <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
                     {% elif user.estabelecimento %}
                         {% if user.estabelecimento.photo %}
                             <img src="{{ user.estabelecimento.photo }}" class="img-circle" alt="User Image">
                         {% else %}
-                            <img src="{% static '300x300.png' %}" class="img-circle" alt="User Image">
+                            <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
                     {% endif %}
                 </div>
@@ -374,7 +374,7 @@
 <script>
 
     function showPosition(position) {
-            var url = "/send-location/"+position.coords.latitude+"/"+position.coords.longitude;
+            var url = "{% url 'send_position_motorista' 99.9 88.8 %}".replace(99.9, position.coords.latitude).replace(88.8, position.coords.longitude);
             $.ajax({
                 url: url,
                 type: "GET", // http method

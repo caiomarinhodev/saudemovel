@@ -9,7 +9,7 @@
     <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="/static/plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+    <link rel="stylesheet" href="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css' %}"/>
     <style>
         .leaflet-control-container .leaflet-routing-container-hide {
             display: none;
@@ -43,10 +43,8 @@
     </div>
     
     <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-    <script src="/static/plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-    <script src="/static/plugins/leaflet-routing-machine/examples/Control.Geocoder.js"></script>
-    {#    <script src="/static/plugins/leaflet-routing-machine/examples/config.js"></script>#}
-    {#    <script src="/static/plugins/leaflet-routing-machine/examples/index.js"></script>#}
+    <script src="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js' %}"></script>
+    <script src="{% static 'plugins/leaflet-routing-machine/examples/Control.Geocoder.js' %}"></script>
     <script>
         var map = L.map('map');
         //
