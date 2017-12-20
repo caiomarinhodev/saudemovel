@@ -27,7 +27,7 @@
             function getList(data) {
                 data = data || {};
                 $.ajax({
-                    url: "/get-entregas",
+                    url: "{% url 'get_entregas_motorista' %}",
                     type: "GET", // http method
                     data: data,
                     beforeSend: function () {

@@ -36,7 +36,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '/app/acompanhar'
+                    window.location.href = '{% url 'acompanhar_list' %}'
                 }, 2000);
             });
             
@@ -50,7 +50,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '/app/acompanhar'
+                    window.location.href = '{% url 'acompanhar_list' %}'
                 }, 2000);
             });
 

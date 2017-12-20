@@ -130,7 +130,7 @@
                                                                 function (isConfirm) {
                                                                     if (isConfirm) {
                                                                         setTimeout(function () {
-                                                                            window.location.href = '/liberar-corrida/{{ pedido.pk }}';
+                                                                            window.location.href = '{% url 'liberar_corrida' pedido.pk %}';
                                                                         }, 3000)
                                                                     }
                                                                 });
