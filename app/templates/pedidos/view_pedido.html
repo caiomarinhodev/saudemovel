@@ -66,7 +66,12 @@
             <!-- /.box-body -->
             <div class=" box-footer ">
                 <a href="{% url 'pedidos_estabelecimento' %}" id="btn_cancelar" class="btn btn-default pull-left">Voltar</a>
-                <a href="{% url 'edit_pedido_view' object.id %}" class="btn btn-primary pull-right">Editar Pedido</a>
+                {% if pedido.coletado %}
+                    
+                {% else %}
+                    <a href="{% url 'edit_pedido_view' object.id %}" class="btn btn-primary pull-right">Editar Pedido</a>
+                {% endif %}
+                
             </div>
         </form>
     </div>

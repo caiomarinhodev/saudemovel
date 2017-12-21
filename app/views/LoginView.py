@@ -56,6 +56,13 @@ class LoginView(FormView):
                 return self.form_invalid(form)
         except:
             pass
+        
+        try:
+            motorista = user.motorista
+            if not motorista.is_approved:
+                return self.form_invalid(form)
+        except:
+            pass
         if user is not None:
             login(self.request, user)
         else:

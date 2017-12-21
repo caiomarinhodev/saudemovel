@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.views.generic import ListView
 from app.models import Motorista, Notification, Pedido
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 #
 
 class RedirectMotoristaOcupadoView(ListView):
@@ -20,6 +21,14 @@ class RedirectMotoristaOcupadoView(ListView):
 
 class CustomContextMixin(ContextMixin):
      def get_context_data(self, **kwargs):
+        try:
+            motorista = Motorista.objects.get(user=self.request.user)
+            if not motorista.is_approved:
+                motorista.is_online = False
+                motorista.save()
+                logout(self.request)
+        except:
+            pass
         if 'notifications_n' not in kwargs:
              kwargs['notifications_n'] = Notification.objects.filter(to=self.request.user, is_read=False).order_by('-created_at')
         try:

@@ -31,7 +31,9 @@
                                     <tbody>
                                     {% for pedido in pedidos %}
                                         <tr>
-                                            <td><a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.id }}</a></td>
+                                            <td>
+                                               <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.id }}</a>
+                                            </td>
                                             <td><a href="{% url 'view_pedido_view' pedido.id %}">{{ pedido.created_at|date:"d/m/Y G:i" }}</a></td>
                                             <td>
                                                <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.ponto_set.all|length }} </a>
@@ -167,7 +169,7 @@
         $(document).ready(function () {
              $('#table').DataTable({
                 responsive: true,
-                order: [[ 1, "desc" ]]
+                order: [[ 0, "desc" ]]
             });
             setInterval(function () {
                 location.reload();
