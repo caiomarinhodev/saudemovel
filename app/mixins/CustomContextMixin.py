@@ -33,8 +33,15 @@ class CustomContextMixin(ContextMixin):
              kwargs['notifications_n'] = Notification.objects.filter(to=self.request.user, is_read=False).order_by('-created_at')
         try:
             if 'pedidos_n' not in kwargs:
-                 kwargs['pedidos_n'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento, status=False, is_complete=False).order_by(
+                kwargs['pedidos_n'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento, status=False, is_complete=False).order_by(
                      '-created_at')
+                kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True, ocupado=False).order_by(
+                     '-created_at')
+                kwargs['pedidos_andamento'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento, status=False, is_complete=False, coletado=True).order_by(
+                     '-created_at')
+                kwargs['pedidos_pendentes'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento, status=True, is_complete=False, coletado=False).order_by(
+                     '-created_at')
+                
         except:
              if 'pedidos_n' not in kwargs:
                  kwargs['pedidos_n'] = Pedido.objects.filter(motorista=self.request.user, status=False, is_complete=False).order_by(
