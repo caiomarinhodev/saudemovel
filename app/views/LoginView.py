@@ -125,7 +125,6 @@ class LogoutView(RedirectView):
     permanent = False
 
     def get(self, request, *args, **kwargs):
-        logout(self.request)
         user = self.request.user
         motorista = None
         loja = None
@@ -144,6 +143,7 @@ class LogoutView(RedirectView):
         elif loja:
             loja.is_online = False
             loja.save()
+        logout(self.request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
