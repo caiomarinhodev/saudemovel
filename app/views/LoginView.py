@@ -109,7 +109,7 @@ class LoginView(FormView):
                     url = '/app/entregas/motorista'
                 self.success_url = url
             elif user.is_superuser:
-                url = '/admin'
+                url = '/dashboard'
                 self.success_url = url
             else:
                 url = '/'
