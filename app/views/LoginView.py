@@ -23,7 +23,11 @@ class LoginView(FormView):
     form_class = FormLogin
 
     def get(self, request, *args, **kwargs):
-        return redirect(self.get_success_url())
+        try:
+            if user and not isinstance(self.request.user, AnonymousUser):
+                return redirect(self.get_success_url())
+        except:
+            return super(LoginView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -51,7 +55,7 @@ class LoginView(FormView):
         """
         Returns the supplied URL.
         """
-        url = '/login'
+        url = '/'
         motorista = None
         loja = None
         try:
@@ -85,10 +89,10 @@ class LoginView(FormView):
                 url = '/admin'
                 self.success_url = url
             else:
-                url = '/login'
+                url = '/'
                 self.success_url = url
         else:
-            url = '/login'
+            url = '/'
             self.success_url = url
         return url
 
