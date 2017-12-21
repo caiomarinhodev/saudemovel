@@ -290,7 +290,49 @@
                                             <td>
                                                <a href=""> {{ motorista.id }}</a>
                                             </td>
-                                            <td><a href="">{{ motorista.user.first_name }}</a></td>
+                                            <td>
+                                                <a data-toggle="modal" href="#modal_{{ motorista.id }}"> {{ motorista.user.first_name }}</a>
+                                               
+                                               <div class="modal fade" role="dialog" id="modal_{{ motorista.id }}">
+                                                    <div class="modal-dialog">
+                                                    
+                                                      <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <center>  <h3>Sobre {{ motorista.user.first_name }}</h3></center>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="tab-content">
+                                                                 <center> <div class="tab-pane active" id="about">
+                                                                     {% if motorista.photo %}
+                                                                     <img src="{{ motorista.photo }}"
+                                                                             name="aboutme" width="140" height="140" border="0" class="img-circle">
+                                                                     {% else %}
+                                                                         <img src="{% static 'img/300.png' %}"
+                                                                             name="aboutme" width="140" height="140" border="0" class="img-circle">
+                                                                     {% endif %}
+                                                                        <h3 class="media-heading">{{ motorista.user.first_name }}
+                                                                            <small> {{ motorista.placa }}</small>
+                                                                        </h3>
+                                                                        <span><strong>Pedidos Entregues: {{ motorista.user.pedido_set.all|length }}</strong></span>
+                                                                        <!--</center>-->
+                                                                        <hr>
+                                                                        <center>
+                                                                            <p class="text-center"><strong>Telefone: </strong><br>
+                                                                                {{ motorista.phone }}</p>
+                                                                            <br>
+                                                                        </center>
+                                                                    </div></center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            </td>
                                             <td>{{ motorista.placa }}</td>
                                             <td>
                                                {% if motorista.is_online %}
@@ -370,6 +412,60 @@
         </div>
         <!-- /.col -->
       </div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                    <div class="box-header">
+                        <h3>Pedidos Pendentes</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                  <table id="table_3" class="table table-bordered table-striped" class="display"
+                                           cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>CRIADO EM</th>
+                                            <th>LOJA</th>
+                                            <th>TELEFONE LOJA</th>
+                                            <th>N° ENTREGAS</th>
+                                            <th>VALOR ENTREGA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for ped in pedidos_pendentes %}
+                                            <tr>
+                                                <td>
+                                                   {{ pedido.id }}
+                                                </td>
+                                                <td>
+                                                    {{ pedido.created_at|date:"d/m/Y G:i" }}
+                                                </td>
+                                                <td>
+                                                    {{ pedido.estabelecimento }}
+                                                </td>
+                                                <td>
+                                                    {{ pedido.estabelecimento.phone }}
+                                                </td>
+                                                <td>
+                                                   {{ pedido.ponto_set.all|length }} 
+                                                </td>
+                                                <td>
+                                                   R$ {{ pedido.valor_total }} 
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+              </div>
+          </div>
+                        </div>
+                    </div>
+                </div>
+          </div>
+      </div>
       <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js' %}"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/examples/Control.Geocoder.js' %}"></script>
@@ -405,6 +501,9 @@
                 responsive: true,
             });
             $('#table_2').DataTable({
+                responsive: true,
+            });
+            $('#table_3').DataTable({
                 responsive: true,
             });
             setInterval(function () {
