@@ -24,7 +24,7 @@ class LoginView(FormView):
 
     def get(self, request, *args, **kwargs):
         try:
-            if user and not isinstance(self.request.user, AnonymousUser):
+            if self.request.user and not isinstance(self.request.user, AnonymousUser):
                 return redirect(self.get_success_url())
         except:
             return super(LoginView, self).get(request, *args, **kwargs)

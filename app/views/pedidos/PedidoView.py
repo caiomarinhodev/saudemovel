@@ -78,6 +78,26 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
     model = Pedido
     context_object_name = 'pedidos'
     template_name = 'pedidos/list_pedidos_motorista.html'
+    
+    # def get(self, request, *args, **kwargs):
+        
+        # try:
+        #     motorista = user.motorista
+        # except:
+        #     pass
+        # try:
+        #     loja = user.estabelecimento
+        # except:
+        #     pass
+        # if motorista:
+        #     return HttpResponseRedirect('/app/pedidos/motorista/')
+        # elif 
+        # try:
+        #     self.object = self.get_object()
+        #     return super(OrderMotoristaDetailView, self).get(request, *args, **kwargs)
+        # except:
+        #     messages.error(request, 'Este pedido foi cancelado pela loja')
+        #     return HttpResponseRedirect('/app/pedidos/motorista/')
 
     def get_queryset(self):
         return Pedido.objects.filter(is_complete=False, coletado=False, status=True).order_by('-created_at')
