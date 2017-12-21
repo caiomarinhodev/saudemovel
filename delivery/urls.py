@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from app.views.MotoristasAtivosView import MotoristasAtivosView
-from app.views.LoginView import LoginView, LogoutView, RegisterView
+from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
@@ -12,7 +12,8 @@ from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, 
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
-    RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido
+    RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, cancel_pedido, \
+    PedidoDetailView
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -36,7 +37,7 @@ Including another URLconf
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/login/$', auth_views.login),
-    url(r'^$', LoginView.as_view(), name='home'),
+    url(r'^$', AppView.as_view(), name='home'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^registro/$', RegisterView.as_view(), name='registro'),
     url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout'),
@@ -45,6 +46,9 @@ urlpatterns = [
     url(r'^app/pedidos/loja/$', PedidosLojaListView.as_view(), name='pedidos_estabelecimento'),
     url(r'^app/pedidos/add/$', PedidoCreateView.as_view(), name='add_pedido'),
     url(r'^app/pedidos/(?P<pk>[0-9]+)/delete/$', delete_pedido, name='delete_pedido'),
+    url(r'^app/pedidos/(?P<pk>[0-9]+)/cancel/$', cancel_pedido, name='cancel_pedido'),
+    url(r'^app/pedido/(?P<pk>[0-9]+)/edit/$', PedidoUpdateView.as_view(), name="edit_pedido_view"),
+    url(r'^app/pedido/(?P<pk>[0-9]+)/view/$', PedidoDetailView.as_view(), name="view_pedido_view"),
     url(r'^app/pedido/(?P<pk>[0-9]+)/$', OrderMotoristaDetailView.as_view(), name="order_pedido_view"),
     url(r'^app/pedido/route/(?P<pk>[0-9]+)/$', RouteMotoristaDetailView.as_view(), name="route_pedido_view"),
     url(r'^app/pedido/map/route/(?P<pk>[0-9]+)/$', MapRouteMotoristaView.as_view(), name="map_route_pedido_view"),

@@ -57,7 +57,7 @@ class FormPonto(ModelForm, BaseForm):
     telefone = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'telefone',
                                                              'maxlength': 200,
                                                              'placeholder': 'Telefone do Cliente'}))
-    endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+    endereco = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200, 
                                                              'placeholder': 'Endereço'
     }))
@@ -65,11 +65,7 @@ class FormPonto(ModelForm, BaseForm):
                                                              'maxlength': 200, 'class': 'numero',
                                                              'placeholder': 'Número'
     }))
-    # bairro = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
-    #                                                          'maxlength': 200,
-    #                                                          'placeholder': 'Bairro'
-    # }))
-    complemento = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+    complemento = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 100,
                                                              'placeholder': 'Ponto de Referencia'
     })) 
@@ -80,6 +76,34 @@ class FormPonto(ModelForm, BaseForm):
     class Meta:
         model = Ponto
         fields = ['cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes']
+        
+
+class FormEditPonto(ModelForm, BaseForm):
+    cliente = forms.CharField(widget=forms.TextInput(attrs={'required': False,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Nome do Cliente'}))
+    telefone = forms.CharField(widget=forms.TextInput(attrs={'required': False, 'class': 'telefone',
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Telefone do Cliente'}))
+    endereco = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'required': False,
+                                                             'maxlength': 200, 
+                                                             'placeholder': 'Endereço'
+    }))
+    numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': False,
+                                                             'maxlength': 200, 'class': 'numero',
+                                                             'placeholder': 'Número'
+    }))
+    complemento = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': False,
+                                                             'maxlength': 100,
+                                                             'placeholder': 'Ponto de Referencia'
+    })) 
+    observacoes = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': False,
+                                                             'maxlength': 300,
+                                                             'placeholder': 'Observações'
+    })) 
+    class Meta:
+        model = Ponto
+        fields = ['id', 'cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes']
         
 
 class FormRegister(ModelForm, BaseForm):
@@ -114,3 +138,5 @@ class FormRegister(ModelForm, BaseForm):
 
 
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
+
+PontoFormUpdateSet = inlineformset_factory(Pedido, Ponto, form=FormEditPonto, extra=0)

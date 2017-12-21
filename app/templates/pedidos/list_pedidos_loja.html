@@ -23,7 +23,7 @@
                                         <th>CRIADO EM</th>
                                         <th>N° ENTREGAS</th>
                                         <th>MOTORISTA</th>
-                                        <th>VALOR</th>
+                                        <th>VALOR ENTREGA</th>
                                         <th>ENTREGUE?</th>
                                         <th></th>
                                     </tr>
@@ -31,10 +31,10 @@
                                     <tbody>
                                     {% for pedido in pedidos %}
                                         <tr>
-                                            <td> {{ pedido.id }}</td>
-                                            <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
+                                            <td><a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.id }}</a></td>
+                                            <td><a href="{% url 'view_pedido_view' pedido.id %}">{{ pedido.created_at|date:"d/m/Y G:i" }}</a></td>
                                             <td>
-                                                {{ pedido.ponto_set.all|length }}
+                                               <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.ponto_set.all|length }} </a>
                                             </td>
                                             <td>
                                                <a data-toggle="modal" href="#modal_{{ pedido.id }}"> {{ pedido.motorista.first_name }}</a>
@@ -81,7 +81,7 @@
                                                
                                             </td>
                                             <td>
-                                               R$ {{ pedido.valor_total }}
+                                               <a href="{% url 'view_pedido_view' pedido.id %}">R$ {{ pedido.valor_total }} </a>
                                             </td>
                                             <td>
                                                 {% if pedido.is_complete %}
@@ -94,14 +94,44 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                {% if pedido.is_complete %}
+                                                {% if pedido.motorista %}
+                                                    {% if not pedido.is_complete and not pedido.coletado %}
+                                                        <a class="btn btn-info pull-left" href="{% url 'view_pedido_view' pedido.id %}">
+                                                            Ver Pedido
+                                                        </a>
+                                                        <a class="btn btn-danger pull-right cancel_{{ pedido.id }}" href="#">
+                                                            Cancelar Entrega
+                                                        </a>
+                                                        <script>
+                                                            $(document).ready(function(){
+                                                                $('.cancel_{{ pedido.id }}').click(function(){
+                                                                    play('alert');  
+                                                                    swal({
+                                                                        title: "ALERTA!",
+                                                                        text: 'Você realmente vai cancelar este pedido?',
+                                                                        type: 'warning',
+                                                                        showCancelButton: true,
+                                                                        closeOnConfirm: false,
+                                                                        showLoaderOnConfirm: true
+                                                                    }, function () {
+                                                                        setTimeout(function () {
+                                                                            window.location.href = '{% url 'cancel_pedido' pedido.pk %}'
+                                                                        }, 2000);
+                                                                        });
+                                                                    });
+                                                            });
+                                                        </script>
+                                                    {% endif %}
                                                 {% else %}
-                                                <a class="btn btn-danger cancel_{{ pedido.id }}" href="#">
-                                                    Cancelar Pedido
+                                                <a class="btn btn-info pull-left" href="{% url 'view_pedido_view' pedido.id %}">
+                                                            Ver Pedido
+                                                </a>
+                                                <a class="btn btn-danger pull-right delete_{{ pedido.id }}" href="#">
+                                                    Deletar Pedido
                                                 </a>
                                                 <script>
                                                     $(document).ready(function(){
-                                                        $('.cancel_{{ pedido.id }}').click(function(){
+                                                        $('.delete_{{ pedido.id }}').click(function(){
                                                             play('alert');  
                                                             swal({
                                                                 title: "ALERTA!",

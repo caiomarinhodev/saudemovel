@@ -15,19 +15,35 @@ __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
 
 
+class AppView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        if self.request.user:
+            try:
+                motorista = Motorista.objects.get(user=self.request.user)
+                if motorista:
+                    print ('--------- motorista is logged')
+                    return '/app/pedidos/motorista'
+            except:
+                try:
+                    loja = Estabelecimento.objects.get(user=self.request.user)
+                    if loja:
+                        print ('--------- estabelecimento is logged')
+                        return '/app/pedidos/loja'
+                except:
+                    return '/login'
+        else:
+            return '/login'
+        
+        
+
+
 class LoginView(FormView):
     """
     Displays the login form.
     """
     template_name = 'page/login.html'
     form_class = FormLogin
-
-    def get(self, request, *args, **kwargs):
-        try:
-            if user and not isinstance(self.request.user, AnonymousUser):
-                return redirect(self.get_success_url())
-        except:
-            return super(LoginView, self).get(request, *args, **kwargs)
+    success_url = '/'
 
     def form_valid(self, form):
         data = form.cleaned_data

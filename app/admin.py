@@ -9,16 +9,15 @@ __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
 
 
+class PontoInline(admin.TabularInline):
+    model = Ponto
+
 class MotoristaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'phone')
+    list_display = ('id', 'user', 'phone', 'is_online')
 
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'phone')
-
-
-class PercursoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_at')
+    list_display = ('user', 'phone', 'id',  'phone')
 
 
 class PontoAdmin(admin.ModelAdmin):
@@ -26,9 +25,13 @@ class PontoAdmin(admin.ModelAdmin):
 
 
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = (
-    'id', 'estabelecimento', 'motorista', 'valor_total', 'status', 'is_complete', 'coletado',
+    inlines = [
+        PontoInline,
+    ]
+    list_display = ('estabelecimento',
+    'id',  'motorista', 'valor_total', 'status', 'is_complete', 'coletado',
     'created_at')
+    
 
 
 class NotificationAdmin(admin.ModelAdmin):
@@ -36,7 +39,11 @@ class NotificationAdmin(admin.ModelAdmin):
     
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'lat', 'lng', 'created_at')
+    list_display = ('user', 'id', 'lat', 'lng', 'created_at')
+    
+
+class BairroAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'valor', 'id')
 
 
 admin.site.register(Motorista, MotoristaAdmin)
@@ -45,4 +52,4 @@ admin.site.register(Ponto, PontoAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.register(Bairro)
+admin.site.register(Bairro, BairroAdmin)

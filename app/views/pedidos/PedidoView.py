@@ -12,11 +12,12 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import UpdateView
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView, CustomContextMixin
 from django.shortcuts import render_to_response
 
 
-from app.forms import PontoFormSet
+from app.forms import PontoFormSet, PontoFormUpdateSet
 from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto
 from app.views.snippet_template import render_block_to_string
 
@@ -92,12 +93,15 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin
     def get_queryset(self):
         return Pedido.objects.filter(motorista=self.request.user).order_by('-published_at')
 
-
+from django.core.urlresolvers import reverse
 class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento',]
     template_name = 'pedidos/add_pedido.html'
+    
+    def get_success_url(self):
+        return reverse('view_pedido_view', kwargs={'pk' : self.object.pk})
 
     def get_initial(self):
         return {
@@ -127,6 +131,51 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
                 n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
                 n.save()
         return super(PedidoCreateView, self).form_valid(form)
+        
+
+class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
+    model = Pedido
+    template_name = 'pedidos/view_pedido.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(PedidoDetailView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['pontoset'] = PontoFormUpdateSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['pontoset'] = PontoFormUpdateSet(instance=self.object)
+        return data
+
+
+class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
+    model = Pedido
+    success_url = '/app/pedidos/loja/'
+    fields = ['estabelecimento',]
+    template_name = 'pedidos/edit_pedido.html'
+
+    def get_initial(self):
+        return {
+            'estabelecimento': Estabelecimento.objects.get(user=self.request.user)
+        }
+
+    def get_context_data(self, **kwargs):
+        data = super(PedidoUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['pontoset'] = PontoFormUpdateSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['pontoset'] = PontoFormUpdateSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        pontoset = context['pontoset']
+        with transaction.atomic():
+            self.object = form.save()
+            print(pontoset.errors)
+            if pontoset.is_valid():
+                pontoset.instance = self.object
+                pontoset.save()
+        print('>>>>>>>> Pedido editado pela loja '+ self.request.user.first_name)
+        return super(PedidoUpdateView, self).form_valid(form)
 
 
 def delete_pedido(request, pk):
@@ -151,6 +200,34 @@ def delete_pedido(request, pk):
                     n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
                     n.save()
         pedido.delete()
+        messages.success(request, "Pedido deletado com sucesso")
+        return HttpResponseRedirect('/app/pedidos/loja/')
+        
+
+def cancel_pedido(request, pk):
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário precisa estar logado para esta operação")
+        raise PermissionDenied("Usuário precisa estar logado para esta operação")
+    else:
+        pedido = Pedido.objects.get(id=pk)
+        try:
+            user_motorista = pedido.motorista
+            motorista = Motorista.objects.get(user=user_motorista)
+        except:
+            user_motorista = None
+        if user_motorista:
+            if user_motorista.pedido_set.last() == pedido:
+                motorista.ocupado = False
+                motorista.save()
+                loja = Estabelecimento.objects.get(user=request.user)
+                if motorista.is_online:
+                    print('>>>>>>>> Motorista '+motorista.user.first_name+' teve seu pedido cancelado pela loja '+pedido.estabelecimento.user.first_name)
+                    message = "O Pedido que voce ia entregar foi cancelado pela loja " + request.user.first_name + ". Desculpe pelo transtorno! Qualquer coisa, ligue para a loja: " + loja.phone
+                    n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
+                    n.save()
+        pedido.status = True
+        pedido.motorista = None
+        pedido.save()
         messages.success(request, "Pedido deletado com sucesso")
         return HttpResponseRedirect('/app/pedidos/loja/')
 
