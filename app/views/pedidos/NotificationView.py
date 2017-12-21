@@ -78,3 +78,14 @@ def notificar_enable_rota_motorista(request):
         notificacao.is_read = True
         notificacao.save()
     return HttpResponse(return_str)
+
+
+@require_http_methods(["GET"])
+def notificar_admin_message(request):
+    notificacao = Notification.objects.filter(to=request.user, type_message='ADMIN_MESSAGE', is_read=False).last()
+    context = Context({'notificacao': notificacao, 'user': request.user})
+    return_str = render_block_to_string('includes/notificacao.html', context)
+    if notificacao:
+        notificacao.is_read = True
+        notificacao.save()
+    return HttpResponse(return_str)

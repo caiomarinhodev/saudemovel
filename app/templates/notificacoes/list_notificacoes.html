@@ -48,6 +48,10 @@
                                                     <label class="label label-info"><i
                                                             class=""></i>
                                                         ENTREGA</label>
+                                                {% elif notificacao.type_message == 'ADMIN_MESSAGE' %}
+                                                    <label class="label label-warning"><i
+                                                            class=""></i>
+                                                        ADMIN</label>
 
                                                 {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
                                                     <label class="label label-default"><i

@@ -15,6 +15,7 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView, CustomContextMixin
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
 
 
 from app.forms import PontoFormSet, PontoFormUpdateSet
@@ -93,7 +94,7 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin
     def get_queryset(self):
         return Pedido.objects.filter(motorista=self.request.user).order_by('-published_at')
 
-from django.core.urlresolvers import reverse
+
 class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'

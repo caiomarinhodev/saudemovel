@@ -8,7 +8,8 @@ from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja
+    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
+    notificar_admin_message
 from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
@@ -82,5 +83,6 @@ urlpatterns = [
     url(r'^notificacao/delete-loja/motorista/$', notificar_delete_loja_motorista, name="notify_delete_loja_motorista"),
     url(r'^notificacao/accept-order/loja/$', notificar_accept_order_loja, name="notify_accept_order_loja"),
     url(r'^notificacao/all-delivered/loja/$', notificar_all_delivered_loja, name="notificar_all_delivered_loja"),
+    url(r'^notificacao/adminmessage$', notificar_admin_message, name="notify_admin_message"),
     url(r'^notificacao/enable-rota/motorista/$', notificar_enable_rota_motorista, name="notify_enable_rota_motorista"),
 ]

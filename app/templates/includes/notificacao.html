@@ -54,18 +54,18 @@
                 }, 2000);
             });
 
-        // {% elif notificacao.type_message == 'CANCEL_ORDER' %}
-        //     swal({
-        //         title: "Motorista desistiu!",
-        //         text: '{{ notificacao.message }}',
-        //         type: 'warning',
-        //         closeOnConfirm: false,
-        //         showLoaderOnConfirm: true
-        //     }, function () {
-        //         setTimeout(function () {
-        //             window.location.href = '{% url 'pedidos_estabelecimento' %}'
-        //         }, 2000);
-        //     });
+        {% elif notificacao.type_message == 'ADMIN_MESSAGE' %}
+            swal({
+                title: "ALERTA!",
+                text: '{{ notificacao.message }}',
+                type: 'warning',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = ''
+                }, 2000);
+            });
         {% elif notificacao.type_message == 'ENABLE_ROTA' %}
         play('alert');  
             swal({
