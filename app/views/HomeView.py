@@ -6,6 +6,8 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.generic import ListView
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from app.mixins.CustomContextMixin import DashboardMixin
 
 from app.models import Pedido
 
@@ -26,3 +28,6 @@ class CollectView(TemplateView):
 class ContributeView(TemplateView):
     template_name = 'page/contribute.html'
 
+
+class DashboardView(LoginRequiredMixin, TemplateView, DashboardMixin):
+    template_name = 'dashboard.html'

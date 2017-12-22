@@ -17,9 +17,11 @@
     {% for pedido in pedidos %}
         <tr>
             <td>
+                {% if not pedido.is_complete %}
                 <a href="{% url 'route_pedido_view' pedido.pk %}" class="btn btn-info">
                     Ver Rota
                 </a>
+                {% endif %}
             </td>
             <td>{{ pedido.id }}</td>
             <td>

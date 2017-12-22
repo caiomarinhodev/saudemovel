@@ -3,6 +3,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from app.views.HomeView import DashboardView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
 from app.views.LocationView import get_position_motorista, send_position_motorista
@@ -39,6 +40,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/login/$', auth_views.login),
     url(r'^$', AppView.as_view(), name='home'),
+    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^registro/$', RegisterView.as_view(), name='registro'),
     url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout'),

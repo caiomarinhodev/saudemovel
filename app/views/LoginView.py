@@ -8,6 +8,9 @@ from django.views.generic import RedirectView
 from django.contrib.auth.models import AnonymousUser
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView
 
+from base64 import b64encode
+import json
+import pyimgur
 from app.forms import FormLogin, FormRegister
 from app.models import *
 
@@ -109,7 +112,7 @@ class LoginView(FormView):
                     url = '/app/entregas/motorista'
                 self.success_url = url
             elif user.is_superuser:
-                url = '/admin'
+                url = '/dashboard'
                 self.success_url = url
             else:
                 url = '/'
@@ -125,7 +128,6 @@ class LogoutView(RedirectView):
     permanent = False
 
     def get(self, request, *args, **kwargs):
-        logout(self.request)
         user = self.request.user
         motorista = None
         loja = None
@@ -144,6 +146,7 @@ class LogoutView(RedirectView):
         elif loja:
             loja.is_online = False
             loja.save()
+        logout(self.request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
@@ -168,6 +171,12 @@ class RegisterView(FormView):
             return self.form_invalid(form)
         user_data = {}
         common_data = {}
+        CLIENT_ID = "cdadf801dc167ab"
+        bencode = b64encode(self.request.FILES['file'].read())
+        client = pyimgur.Imgur(CLIENT_ID)
+        r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+        file = r['link']
+        print(file)
         user_data['first_name'] = data['first_name']
         user_data['username'] = data['username']
         user_data['password'] = data['password']
@@ -175,6 +184,7 @@ class RegisterView(FormView):
         common_data['phone'] = data['phone']
         common_data['numero'] = data['numero']
         common_data['bairro'] = data['bairro']
+        common_data['photo'] = file
         if data['username'] and data['password']:
             new_user = User.objects.create_user(**user_data)
             new_common_user = Estabelecimento(user=new_user, **common_data)
@@ -185,8 +195,6 @@ class RegisterView(FormView):
         return super(RegisterView, self).form_valid(form)
 
     def form_invalid(self, form):
-        print(form.errors)
-        print(form)
         print(form.errors)
         print('00000')
         messages.error(self.request, 'Não foi possível cadastrar.')

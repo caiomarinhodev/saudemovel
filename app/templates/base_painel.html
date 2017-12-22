@@ -39,6 +39,17 @@
         #ajuda {
             cursor: pointer;
         }
+        /* Smartphones ----------- */
+        @media only screen and (max-width: 760px) {
+          #logo_1 { display: none; }
+          #logo_2 { display: block; }
+          #back_logo { background-color: #000; }
+          
+        }
+        @media only screen and (min-width: 761px) {
+          #logo_1 { display: block; }
+          #logo_2 { display: none; }
+        }
     </style>
 
 
@@ -51,10 +62,12 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="#" class="logo">
+        <a href="#" id="back_logo" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <!--<span>Focus Delivery</span>-->
-           <span><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+           <span id="logo_1"><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+            
+            <span id="logo_2"><img src='{% static 'img/log_black.png' %}'class="" style="max-height: 60px;" alt="logo"/> <b>Focus </b>Delivery</span>
         
             <!-- logo for regular state and mobile devices -->
             <!--<span class="logo-lg"><b>Focus </b>Delivery</span>-->
@@ -373,33 +386,7 @@
 
 <script>
 
-    function showPosition(position) {
-            var url = "{% url 'send_position_motorista' 99.9 88.8 %}".replace(99.9, position.coords.latitude).replace(88.8, position.coords.longitude);
-            $.ajax({
-                url: url,
-                type: "GET", // http method
-                success: function (data) {
-                },
-                complete: function () {
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            }); 
-        }
-    var apiGeolocationSuccess = function(position) {
-    	showPosition(position);
-    };
     
-    var tryAPIGeolocation = function() {
-    	jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAnP_DnLEcdAnAhfCCHJyj2vGkj5Pbyg4U ", function(success) {
-    		apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
-      })
-      .fail(function(err) {
-          console.log(err);
-        console.log("API Geolocation error! \n\n"+err);
-      });
-    };
     
     // var browserGeolocationSuccess = function(position) {
     // 	showPosition(position);
@@ -433,7 +420,6 @@
     // };
     
     
-    tryAPIGeolocation();
     // window.setInterval(function () {
     //     tryGeolocation();
     // }, 50000);

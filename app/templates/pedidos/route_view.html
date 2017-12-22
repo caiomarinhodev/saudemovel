@@ -278,9 +278,11 @@
                                             </div>
                                             <br/>
                                             <div class="row">
+                                                {% if pedido.coletado %}
                                                 <div class="col-xs-12">
                                                     <a href="waze://?ll={{ ponto.lat }},{{ ponto.lng }}&navigate=yes" class="btn btn-primary btn-block">Rota Waze</a>
                                                 </div>
+                                                {% endif %}
                                             </div>
                                             <!--<br/>-->
                                             <!--<div class="row">-->
@@ -290,6 +292,8 @@
                                             <!--</div>-->
         										
         							    </div>
+        							    <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
+								
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">
@@ -351,6 +355,34 @@
     </div>
 
     <script type="text/javascript">
+        function showPosition(position) {
+            var url = "{% url 'send_position_motorista' 99.9 88.8 %}".replace(99.9, position.coords.latitude).replace(88.8, position.coords.longitude);
+            $.ajax({
+                url: url,
+                type: "GET", // http method
+                success: function (data) {
+                },
+                complete: function () {
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            }); 
+        }
+        var apiGeolocationSuccess = function(position) {
+        	showPosition(position);
+        };
+        
+        var tryAPIGeolocation = function() {
+        	jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAnP_DnLEcdAnAhfCCHJyj2vGkj5Pbyg4U ", function(success) {
+        		apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+          })
+          .fail(function(err) {
+              console.log(err);
+            console.log("API Geolocation error! \n\n"+err);
+          });
+        };
+        tryAPIGeolocation();
         $(document).ready(function () {
             $('#entregas').addClass('active');
             setInterval(function () {
