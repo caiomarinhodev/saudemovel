@@ -182,10 +182,14 @@
                                                                     });
                                                             });
                                                         </script>
+                                                    {% elif not pedido.is_complete and pedido.coletado %}
+                                                        <a class="btn btn-info pull-left" href="{% url 'acompanhar_pedido_view' pedido.pk %}">
+                                                            Acompanhar
+                                                        </a>
                                                     {% endif %}
                                                 {% else %}
-                                                <a class="btn btn-info pull-left" href="{% url 'view_pedido_view' pedido.id %}">
-                                                            Ver Pedido
+                                                <a class="btn btn-warning pull-left" href="{% url 'view_pedido_view' pedido.id %}">
+                                                    Ver Pedido
                                                 </a>
                                                 <a class="btn btn-danger pull-right delete_{{ pedido.id }}" href="#">
                                                     Deletar Pedido

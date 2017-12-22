@@ -172,12 +172,6 @@
                         {#                            <label for="id_percurso">Percurso: </label>#}
                         {#                            {{ pedido.percurso }}#}
                         {#                        </div>#}
-                        <div class="col-xs-12">
-                            <center><label for="id_percurso">Distância</label></center>
-                        </div>
-                        <div class="col-xs-12">
-                            <center><h3 style="margin-top: 0px;">6.0 KM</h3></center>
-                        </div>
 
                     </div>
                 </div>
@@ -207,6 +201,7 @@
 								</div>
                                 
                                 {% endif %}
+                                    
                                
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
@@ -241,6 +236,8 @@
         								</div>
                                         
                                         {% endif %}
+                                        <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
+								
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">

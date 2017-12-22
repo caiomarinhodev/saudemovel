@@ -11,6 +11,7 @@ pep8-naming==0.3.3
 pyflakes==1.0.0
 pylint==1.5.5
 pylint-django==0.7.1
+pyimgur
 unittest-xml-reporting
 jsmin
 tblib

@@ -64,7 +64,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.phone = self.phone.replace("_", "")
-        address = self.endereco + "," + self.bairro.nome + ",Campina Grande,PB"
+        address = self.endereco + ", "+self.numero+", "+ self.bairro.nome + ",Campina Grande,PB"
         self.full_address = address
         pto = geocode(address)
         self.lat = pto['latitude']
@@ -112,7 +112,7 @@ class Ponto(BaseAddress, TimeStamped):
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.telefone = self.telefone.replace("_", "")
-        address = self.endereco + "," + self.bairro.nome + ",Campina Grande,PB"
+        address = self.endereco + ", "+self.numero+", "+ self.bairro.nome + ",Campina Grande,PB"
         pto = geocode(address)
         self.lat = pto['latitude']
         self.lng = pto['longitude']

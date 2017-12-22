@@ -62,7 +62,7 @@ class FormPonto(ModelForm, BaseForm):
                                                              'placeholder': 'Endereço'
     }))
     numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
-                                                             'maxlength': 200, 'class': 'numero',
+                                                             'maxlength': 6, 'class': 'numero',
                                                              'placeholder': 'Número'
     }))
     complemento = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
@@ -129,6 +129,8 @@ class FormRegister(ModelForm, BaseForm):
     numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200,
                                                              'placeholder': 'Número'
+    }))
+    file = forms.FileField(required=False, widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Logotipo do Estabelecimento'
     }))
     
     class Meta:
