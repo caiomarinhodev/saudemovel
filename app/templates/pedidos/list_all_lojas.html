@@ -16,6 +16,7 @@
        cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
+                                        <th></th>
                                         <th>ID</th>
                                         <th>LOJA</th>
                                         <th>ENDEREÇO LOJA</th>
@@ -24,6 +25,15 @@
                                     <tbody>
                                     {% for loja in lojas %}
                                         <tr>
+                                            <td>
+                                                {% if loja.photo %}
+                                                 <img src="{{ loja.photo }}"
+                                                         name="aboutme" width="60" height="60" border="0" class="img-circle">
+                                                 {% else %}
+                                                     <img src="{% static 'img/300.png' %}"
+                                                         name="aboutme" width="60" height="60" border="0" class="img-circle">
+                                                 {% endif %}
+                                            </td>
                                             <td>{{ loja.id }}</td>
                                             <td>{{ loja.user.first_name }}</td>
                                             <td>

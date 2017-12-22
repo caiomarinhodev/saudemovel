@@ -36,8 +36,19 @@
     {#        <link rel="stylesheet" type="text/css"#}
     {#              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/css/bootstrap-tour.min.css"/>#}
     <style>
-        #ajuda {
+         #ajuda {
             cursor: pointer;
+        }
+        /* Smartphones ----------- */
+        @media only screen and (max-width: 760px) {
+          #logo_1 { display: none; }
+          #logo_2 { display: block; }
+          #back_logo { background-color: #000; }
+          
+        }
+        @media only screen and (min-width: 761px) {
+          #logo_1 { display: block; }
+          #logo_2 { display: none; }
         }
     </style>
 
@@ -54,7 +65,9 @@
         <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <!--<span>Focus Delivery</span>-->
-           <span><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+          <span id="logo_1"><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
+            
+            <span id="logo_2"><img src='{% static 'img/log_black.png' %}'class="" style="max-height: 60px;" alt="logo"/> <b>Focus </b>Delivery</span>
         
             <!-- logo for regular state and mobile devices -->
             <!--<span class="logo-lg"><b>Focus </b>Delivery</span>-->
