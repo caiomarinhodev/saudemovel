@@ -640,7 +640,7 @@
                                                 {% if motorista.ocupado %}
                                                     <label class="label label-danger"><i
                                                             class=""></i> OCUPADO</label>
-                                                {% else %}
+                                                {% elif motorista.is_online and not motorista.ocupado %}
                                                     <label class="label label-success"><i
                                                             class=""></i>
                                                         LIVRE</label>
@@ -723,6 +723,7 @@
                                         <th>LOJA</th>
                                         <th>TELEFONE LOJA</th>
                                         <th>N° ENTREGAS</th>
+                                        <th>MOTORISTA</th>
                                         <th>VALOR ENTREGA</th>
                                     </tr>
                                     </thead>
@@ -886,6 +887,9 @@
                                                 {{ ped.ponto_set.all|length }}
                                             </td>
                                             <td>
+                                                {{ ped.motorista.first_name }}
+                                            </td>
+                                            <td>
                                                 R$ {{ ped.valor_total }}
                                             </td>
                                         </tr>
@@ -919,6 +923,7 @@
                                         <th>TELEFONE LOJA</th>
                                         <th>N° ENTREGAS</th>
                                         <th>VALOR ENTREGA</th>
+                                        <th>MOTORISTA</th>
                                         <th>AVALIACAO</th>
                                     </tr>
                                     </thead>
@@ -1084,6 +1089,7 @@
                                             <td>
                                                 R$ {{ pedi.valor_total }}
                                             </td>
+                                            <td>{{ pedi.motorista.first_name }}</td>
                                             <td>{{ pedi.classification_set.last.nota }}</td>
                                         </tr>
                                     {% endfor %}
