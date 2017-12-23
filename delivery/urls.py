@@ -18,7 +18,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
-    PedidoDetailView, avaliar_motorista
+    PedidoDetailView, avaliar_motorista, get_pedidos
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -90,6 +90,9 @@ urlpatterns = [
     url(r'avaliar-motorista/(\d+)/(\d+)/$', avaliar_motorista, name="avaliar_motorista"),
 
     url(r'get-chat/(?P<pk_pedido>[0-9]+)/$', get_chat, name="get_chat"),
+
+    url(r'get-pedidos-pendentes/$', get_pedidos, name="get_pedidos"),
+
     url(r'submit-message/(?P<pk_pedido>[0-9]+)/$', submit_message, name="submit_message"),
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),

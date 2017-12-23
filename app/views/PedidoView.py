@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.template import Context
 from django.views.decorators.http import require_http_methods
@@ -352,3 +353,11 @@ def finalizar_pedido(request, pk_pedido):
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')
+
+
+@require_http_methods(["GET"])
+def get_pedidos(request):
+    pedidos = Pedido.objects.filter(status=False)
+    if len(pedidos) > 0:
+        return JsonResponse({'result': '1'})
+    return JsonResponse({'result': '0'})
