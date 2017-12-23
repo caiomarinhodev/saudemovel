@@ -30,22 +30,22 @@
                 {{ pedido.ponto_set.all|length }}
             </td>
             <td>
-               R$ {{ pedido.valor_total }}
+                R$ {{ pedido.valor_total }}
             </td>
         </tr>
-        
+
     {% endfor %}
     </tbody>
-    
+
     <script>
-            $(document).ready(function () {
-                $('#table').DataTable({
-                    responsive: true,
-                    order: [[ 1, "desc" ]],
-                    language: {
-                                  "emptyTable": "Nenhum pedido realizado até o momento"
-                                }
-                });
+        $(document).ready(function () {
+            $('#table').DataTable({
+                responsive: true,
+                order: [[1, "desc"]],
+                language: {
+                    "emptyTable": "Nenhum pedido realizado até o momento"
+                }
             });
-        </script>
+        });
+    </script>
 </table>

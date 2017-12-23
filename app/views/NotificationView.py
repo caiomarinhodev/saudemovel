@@ -6,9 +6,9 @@ from django.template import Context
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 
+from app.mixins.CustomContextMixin import CustomContextMixin
 from app.models import Notification
 from app.views.snippet_template import render_block_to_string
-from app.mixins.CustomContextMixin import CustomContextMixin
 
 
 class NotificacoesListView(LoginRequiredMixin, ListView, CustomContextMixin):
@@ -19,7 +19,7 @@ class NotificacoesListView(LoginRequiredMixin, ListView, CustomContextMixin):
 
     def get_queryset(self):
         for n in Notification.objects.filter(to=self.request.user):
-            n.is_read=True
+            n.is_read = True
             n.save()
         return Notification.objects.filter(to=self.request.user).order_by('-created_at')
 
@@ -55,7 +55,7 @@ def notificar_accept_order_loja(request):
         notificacao.is_read = True
         notificacao.save()
     return HttpResponse(return_str)
-    
+
 
 @require_http_methods(["GET"])
 def notificar_all_delivered_loja(request):
@@ -66,7 +66,6 @@ def notificar_all_delivered_loja(request):
         notificacao.is_read = True
         notificacao.save()
     return HttpResponse(return_str)
-
 
 
 @require_http_methods(["GET"])

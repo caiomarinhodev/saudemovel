@@ -39,16 +39,31 @@
         #ajuda {
             cursor: pointer;
         }
+
         /* Smartphones ----------- */
         @media only screen and (max-width: 760px) {
-          #logo_1 { display: none; }
-          #logo_2 { display: block; }
-          #back_logo { background-color: #000; }
-          
+            #logo_1 {
+                display: none;
+            }
+
+            #logo_2 {
+                display: block;
+            }
+
+            #back_logo {
+                background-color: #000;
+            }
+
         }
+
         @media only screen and (min-width: 761px) {
-          #logo_1 { display: block; }
-          #logo_2 { display: none; }
+            #logo_1 {
+                display: block;
+            }
+
+            #logo_2 {
+                display: none;
+            }
         }
     </style>
 
@@ -65,10 +80,12 @@
         <a href="#" id="back_logo" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <!--<span>Focus Delivery</span>-->
-           <span id="logo_1"><img src='{% static 'img/logo_png.png' %}'class="" style="max-height: 25px; " alt="logo"/> <b>Focus </b>Delivery</span>
-            
-            <span id="logo_2"><img src='{% static 'img/log_black.png' %}'class="" style="max-height: 60px;" alt="logo"/> <b>Focus </b>Delivery</span>
-        
+            <span id="logo_1"><img src='{% static 'img/logo_png.png' %}' class="" style="max-height: 25px; "
+                                   alt="logo"/> <b>Focus </b>Delivery</span>
+
+            <span id="logo_2"><img src='{% static 'img/log_black.png' %}' class="" style="max-height: 60px;"
+                                   alt="logo"/> <b>Focus </b>Delivery</span>
+
             <!-- logo for regular state and mobile devices -->
             <!--<span class="logo-lg"><b>Focus </b>Delivery</span>-->
         </a>
@@ -82,7 +99,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     {% if user.estabelecimento %}
-                    <li class="dropdown notifications-menu">
+                        <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
                                 {% if pedidos_n %}
@@ -141,22 +158,22 @@
                                                             <label class="label label-warning"><i
                                                                     class=""></i>
                                                                 CANCELAMENTO</label>
-        
+
                                                         {% elif n.type_message == 'CANCEL_ORDER' %}
                                                             <label class="label label-warning"><i
                                                                     class=""></i>
                                                                 CANCELAMENTO</label>
-                                                                
+
                                                         {% elif n.type_message == 'ORDER_DELIVERED' %}
                                                             <label class="label label-info"><i
                                                                     class=""></i>
                                                                 ENTREGA</label>
-        
+
                                                         {% elif n.type_message == 'ACCEPT_ORDER' %}
                                                             <label class="label label-default"><i
                                                                     class=""></i>
                                                                 PEDIDO ACEITO</label>
-        
+
                                                         {% elif n.type_message == 'ENABLE_ROTA' %}
                                                             <label class="label label-info"><i
                                                                     class=""></i>
@@ -189,19 +206,19 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                {% if user.motorista %}
-                                    {% if user.motorista.photo %}
-                                        <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
-                                    {% else %}
-                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
-                                    {% endif %}
-                                {% elif user.estabelecimento %}
-                                    {% if user.estabelecimento.photo %}
-                                        <img src="{{ user.estabelecimento.photo }}" class="user-image" alt="User Image">
-                                    {% else %}
-                                        <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
-                                    {% endif %}
+                            {% if user.motorista %}
+                                {% if user.motorista.photo %}
+                                    <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
+                                {% else %}
+                                    <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                 {% endif %}
+                            {% elif user.estabelecimento %}
+                                {% if user.estabelecimento.photo %}
+                                    <img src="{{ user.estabelecimento.photo }}" class="user-image" alt="User Image">
+                                {% else %}
+                                    <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
+                                {% endif %}
+                            {% endif %}
                             <span class="hidden-xs">{{ user.first_name }}</span>
                         </a>
                         <ul class="dropdown-menu">
@@ -220,7 +237,7 @@
                                         <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% endif %}
-                                
+
 
                                 <p>
                                     <small>Username: {{ user.username }}</small>
@@ -318,7 +335,8 @@
         </section>
         <!-- /.sidebar -->
     </aside>
-    <audio id="alert" src="{% static 'alert.wav' %}" controls="false" preload="auto" autobuffer style="display: none;"></audio>
+    <audio id="alert" src="{% static 'alert.wav' %}" controls="false" preload="auto" autobuffer
+           style="display: none;"></audio>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -386,12 +404,11 @@
 
 <script>
 
-    
-    
+
     // var browserGeolocationSuccess = function(position) {
     // 	showPosition(position);
     // };
-    
+
     // var browserGeolocationFail = function(error) {
     //     tryAPIGeolocation();
     //   switch (error.code) {
@@ -408,7 +425,7 @@
     //       break;
     //   }
     // };
-    
+
     // var tryGeolocation = function() {
     //   if (navigator.geolocation) {
     //     // navigator.geolocation.getCurrentPosition(
@@ -418,23 +435,23 @@
     //     tryAPIGeolocation();
     //   }
     // };
-    
-    
+
+
     // window.setInterval(function () {
     //     tryGeolocation();
     // }, 50000);
-</script> 
+</script>
 
 <script>
     function play(soundobj) {
-        var thissound=document.getElementById(soundobj);
+        var thissound = document.getElementById(soundobj);
         thissound.play();
     }
 </script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
         $('audio').hide();
 
         $('.datepicker').datepicker({
@@ -513,7 +530,7 @@
                     url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
-                        // $('#loading').show();
+                    // $('#loading').show();
                     // },
                     success: function (data) {
                         $('#notify').html(data);
@@ -532,7 +549,7 @@
                     url: "{% url 'notify_delete_loja_motorista' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
-                        // $('#loading').show();
+                    // $('#loading').show();
                     // },
                     success: function (data) {
                         $('#notify').html(data);
@@ -551,7 +568,7 @@
                     url: "{% url 'notify_novo_pedido_motorista' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
-                        // $('#loading').show();
+                    // $('#loading').show();
                     // },
                     success: function (data) {
                         $('#notify').html(data);
@@ -573,7 +590,7 @@
                     url: "{% url 'notify_accept_order_loja' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
-                        //$('#loading').show();
+                    //$('#loading').show();
                     // },
                     success: function (data) {
                         $('#notify').html(data);
@@ -586,15 +603,15 @@
                     }
                 });
             }, 8000);
-            
-            
-            
+
+
+
             window.setInterval(function () {
                 $.ajax({
                     url: "{% url 'notificar_all_delivered_loja' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
-                        // $('#loading').show();
+                    // $('#loading').show();
                     // },
                     success: function (data) {
                         $('#notify').html(data);
@@ -607,29 +624,29 @@
                     }
                 });
             }, 8000);
-            
+
 
         {% endif %}
-        
-         window.setInterval(function () {
-                $.ajax({
-                    url: "{% url 'notify_admin_message' %}",
-                    type: "GET", // http method
-                    // beforeSend: function () {
-                        //$('#loading').show();
-                    // },
-                    success: function (data) {
-                        $('#notify').html(data);
-                    },
-                    complete: function () {
-                        $('#loading').hide();
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
-            }, 8000);
-        
+
+        window.setInterval(function () {
+            $.ajax({
+                url: "{% url 'notify_admin_message' %}",
+                type: "GET", // http method
+                // beforeSend: function () {
+                //$('#loading').show();
+                // },
+                success: function (data) {
+                    $('#notify').html(data);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }, 8000);
+
 
     });
 
@@ -641,14 +658,14 @@
         {% if message.tags == 'error' %}
             <script>
                 $(document).ready(function () {
-                    play('alert');  
+                    play('alert');
                     swal("Erro", "{{ message }}", "error")
                 });
             </script>
         {% else %}
             <script>
                 $(document).ready(function () {
-                    play('alert');  
+                    play('alert');
                     swal("Sucesso", "{{ message }}", "success")
                 });
             </script>

@@ -18,9 +18,9 @@
         <tr>
             <td>
                 {% if not pedido.is_complete %}
-                <a href="{% url 'route_pedido_view' pedido.pk %}" class="btn btn-info">
-                    Ver Rota
-                </a>
+                    <a href="{% url 'route_pedido_view' pedido.pk %}" class="btn btn-info">
+                        Ver Rota
+                    </a>
                 {% endif %}
             </td>
             <td>{{ pedido.id }}</td>
@@ -41,19 +41,19 @@
                 {{ pedido.estabelecimento.full_address }}
             </td>
             <td>
-               R$ {{ pedido.valor_total }}
+                R$ {{ pedido.valor_total }}
             </td>
             <td>{{ pedido.created_at|date:"G:i" }}</td>
-            
+
         </tr>
         <script>
             $(document).ready(function () {
                 $('#table').DataTable({
                     responsive: true,
-                    order: [[ 1, "desc" ]],
+                    order: [[1, "desc"]],
                     language: {
-                                  "emptyTable": "Nenhuma entrega realizada até o momento"
-                                }
+                        "emptyTable": "Nenhuma entrega realizada até o momento"
+                    }
                 });
 
             });

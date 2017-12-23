@@ -29,82 +29,83 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition register-page">
-  {% include 'loading.html' %}
+{% include 'loading.html' %}
 <div class="register-box">
-  <div class="register-logo">
-    <center><img src='{% static 'img/logo_png.png' %}' class="logo-mini user-image" style="max-height: 50px;" alt="logo"/></center>
-    <div class="login-logo">
-        <a href="/"><b>Focus </b>Delivery</a>
-    </div>
-  </div>
-
-  <div class="register-box-body">
-    <p class="login-box-msg">Registro de novo Estabelecimento</p>
-
-    <form action="" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <div class="form-group has-feedback">
-        <label>Nome do Estabelecimento:</label>
-        {{ form.first_name }}
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Telefone:</label>
-        {{ form.phone }}
-        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>CEP:</label>
-        {{ form.cep }}
-        <span class="glyphicon glyphicon-globe form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Endereço:</label>
-        {{ form.endereco }}
-        <span class="glyphicon glyphicon-sort form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Número:</label>
-        {{ form.numero }}
-        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Bairro:</label>
-        {{ form.bairro }}
-        <span class="form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Logotipo do Estabelecimento:</label>
-        {{ form.file }}
-        <span class="glyphicon glyphicon-picture form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Login:</label>
-        {{ form.username }}
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Senha:</label>
-        {{ form.password }}
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <label>Verificação de Senha:</label>
-        <input type="password" class="form-control" placeholder="Retype password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-xs-offset-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+    <div class="register-logo">
+        <center><img src='{% static 'img/logo_png.png' %}' class="logo-mini user-image" style="max-height: 50px;"
+                     alt="logo"/></center>
+        <div class="login-logo">
+            <a href="/"><b>Focus </b>Delivery</a>
         </div>
-        <!-- /.col -->
-      </div>
-    </form>
+    </div>
 
-    <hr/>
-    <center><a href="{% url 'login' %}" class="text-center">EU JÁ POSSUO UMA CONTA</a></center>
-  </div>
-  <!-- /.form-box -->
+    <div class="register-box-body">
+        <p class="login-box-msg">Registro de novo Estabelecimento</p>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group has-feedback">
+                <label>Nome do Estabelecimento:</label>
+                {{ form.first_name }}
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Telefone:</label>
+                {{ form.phone }}
+                <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>CEP:</label>
+                {{ form.cep }}
+                <span class="glyphicon glyphicon-globe form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Endereço:</label>
+                {{ form.endereco }}
+                <span class="glyphicon glyphicon-sort form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Número:</label>
+                {{ form.numero }}
+                <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Bairro:</label>
+                {{ form.bairro }}
+                <span class="form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Logotipo do Estabelecimento:</label>
+                {{ form.file }}
+                <span class="glyphicon glyphicon-picture form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Login:</label>
+                {{ form.username }}
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Senha:</label>
+                {{ form.password }}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Verificação de Senha:</label>
+                <input type="password" class="form-control" placeholder="Retype password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <hr/>
+        <center><a href="{% url 'login' %}" class="text-center">EU JÁ POSSUO UMA CONTA</a></center>
+    </div>
+    <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
 <!-- jQuery 3 -->

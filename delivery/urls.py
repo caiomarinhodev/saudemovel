@@ -1,21 +1,22 @@
 """urls.py: Urls definidas."""
+from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
+from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
+    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
+    notificar_admin_message
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from app.views.HomeView import DashboardView
-from app.views.MotoristasAtivosView import MotoristasAtivosView
-from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
 from app.views.LocationView import get_position_motorista, send_position_motorista
-from app.views.pedidos.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
-from app.views.pedidos.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
-    notificar_admin_message
-from app.views.pedidos.PedidoView import PedidosMotoristaListView, \
+from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
+from app.views.MotoristasAtivosView import MotoristasAtivosView
+from app.views.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
-    RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, cancel_pedido, \
-    PedidoDetailView
+    RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
+    cancel_pedido, \
+    PedidoDetailView, avaliar_motorista
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -70,14 +71,17 @@ urlpatterns = [
     url(r'^get-entregas/$', get_entregas_motorista, name="get_entregas_motorista"),
 
     url(r'liberar-corrida/(?P<pk_pedido>[0-9]+)/$', liberar_corrida, name="liberar_corrida"),
-    
+
     url(r'finalizar-entrega/(?P<pk_ponto>[0-9]+)/(?P<pk_pedido>[0-9]+)/$', finalizar_entrega, name="finalizar_entrega"),
 
     url(r'finalizar-pedido/(?P<pk_pedido>[0-9]+)/$', finalizar_pedido, name="finalizar_pedido"),
-    
+
     url(r'send-location/(-?\d+\.\d+)/(-?\d+\.\d+)/$', send_position_motorista, name="send_position_motorista"),
-    
+
     url(r'get-location/(?P<pk_user>[0-9]+)/$', get_position_motorista, name=" get_position_motorista"),
+
+    url(r'avaliar-motorista/(\d+)/(\d+)/$', avaliar_motorista, name="avaliar_motorista"),
+
 
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),

@@ -1,4 +1,4 @@
-{% extends 'base_painel.html' %}
+{% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
 
 {% block content %}
@@ -139,20 +139,31 @@
               style="margin-top: 20px; margin-left: 15%;margin-right: 10% ">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <center><label>Valor Total </label></center>
+                    <div class="col-xs-6">
+                        <div class="col-xs-12">
+                            <center><label>Data </label></center>
+                        </div>
+                        <div class="col-xs-12">
+                            <center><h3 style="margin-top: 0px;">{{ pedido.created_at|date:"d/m/Y" }}</h3></center>
+                        </div>
                     </div>
-                    <div class="col-xs-12">
-                        <center><h3 style="margin-top: 0px;">R$ {{ pedido.valor_total }}</h3></center>
+                    <div class="col-xs-6">
+                        <div class="col-xs-12">
+                            <center><label>Valor Total </label></center>
+                        </div>
+                        <div class="col-xs-12">
+                            <center><h3 style="margin-top: 0px;">R$ {{ pedido.valor_total }}</h3></center>
+                        </div>
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="col-xs-12">
-                            <center><label for="id_estabelecimento">Estabelecimento </label></center>
+                            <center><label for="id_estabelecimento">Início </label></center>
                         </div>
                         <div class="col-xs-12">
-                            <center><h3 style="margin-top: 0px;">{{ pedido.estabelecimento.user.first_name }}</h3>
+                            <center><h3 style="margin-top: 0px;">{{ pedido.published_at|date:"G:i" }}</h3>
                             </center>
                         </div>
                     </div>
@@ -161,29 +172,37 @@
                         {#                            <label for="id_percurso">Percurso: </label>#}
                         {#                            {{ pedido.percurso }}#}
                         {#                        </div>#}
-                        <div class="col-xs-12">
-                            <center><label for="id_percurso">N° Entregas</label></center>
-                        </div>
-                        <div class="col-xs-12">
-                            <center><h3 style="margin-top: 0px;">{{ pedido.ponto_set.all|length }}</h3></center>
-                        </div>
 
                     </div>
                 </div>
                 <hr/>
-                {#                <div class="row">#}
-                {#                    <center>#}
-                {#                        <div class="col-xs-12">#}
-                {#                            <a href="#" class="btn btn-primary">Ver Mapa</a>#}
-                {#                        </div>#}
-                {#                    </center>#}
-                {#                </div>#}
+                <div class="row">
+                    <center>
+                        <div class="col-xs-12">
+                            <a href="{% url 'map_route_pedido_view' pedido.pk %}" class="btn btn-primary btn-block">Ver Mapa</a>
+                        </div>
+                    </center>
+                </div>
                 <br/>
                 <div class="row">
                     <div class="qa-message-list" id="wallmessages">
                         <div class="message-item" id="m16">
                             <div class="message-inner">
-                                <div class="message-head clearfix">
+                             <div class="message-head clearfix">
+                                {% if pedido.coletado %}
+                                <div class="pull-right">
+									<label class="label label-success"><i
+                                              class=""></i> COLETADO</label>
+								</div>
+                                {% else %}
+                                <div class="pull-right">
+									<label class="label label-warning"><i
+                                              class=""></i>NÃO COLETADO</label>
+								</div>
+                                
+                                {% endif %}
+                                    
+                               
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
                                         <div class="post-meta">
@@ -197,6 +216,7 @@
                                 </div>
                                 <div class="qa-message-content">
                                     Buscar o pedido no estabelecimento {{ pedido.estabelecimento.user.first_name }}
+                                    <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
                                 </div>
                             </div>
                         </div>
@@ -204,6 +224,20 @@
                             <div class="message-item" id="m16">
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
+                                        {% if ponto.status %}
+                                        <div class="pull-right">
+        									<label class="label label-success"><i
+                                                      class=""></i> ENTREGUE</label>
+        								</div>
+                                        {% else %}
+                                        <div class="pull-right">
+        									<label class="label label-warning"><i
+                                                      class=""></i>EM ANDAMENTO</label>
+        								</div>
+                                        
+                                        {% endif %}
+                                        <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
+								
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">
@@ -217,6 +251,7 @@
                                     </div>
                                     <div class="qa-message-content">
                                         Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }}
+                                        <p>Telefone Cliente: {{ ponto.telefone }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -229,58 +264,18 @@
 
             <div class=" box-footer form-group" style="margin-top: 35px;">
 
-                <div class="col-md-8 col-md-offset-3">
                     <div class="row">
-
-                        <div class="col-sm-4">
-                            <a href="#" id="btn_cancelar" class="btn btn-default
-                                 pull-left">Cancelar</a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="#" id="btn_alterar"
-                               class="btn btn-primary pull-right aceitar_corrida_{{ pedido.pk }}">Fazer Corrida</a>
-                            <script>
-                                $(document).ready(function () {
-                                    $('.aceitar_corrida_{{ pedido.pk }}').click(function () {
-                                        swal({
-                                                title: "Deseja fazer a corrida ?",
-                                                text: "Buscar o pedido na Loja {{ pedido.estabelecimento.user.first_name }},  localizado na {{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}. Valor da Entrega: {{ pedido.valor_total }}.",
-                                                type: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonClass: "btn-danger",
-                                                confirmButtonText: "Confirmar Corrida",
-                                                cancelButtonText: "Cancelar",
-                                                closeOnConfirm: false
-                                            },
-                                            function (isConfirm) {
-                                                if (isConfirm) {
-                                                    swal({
-                                                            title: "Confirmado!",
-                                                            text: "Se tiver problemas ligue para a loja: {{ pedido.estabelecimento.phone }}",
-                                                            type: "success",
-                                                            confirmButtonClass: "btn-success",
-                                                            confirmButtonText: "OK"
-                                                        },
-                                                        function () {
-                                                            var url = "{% url 'accept_corrida' pedido.pk %}";
-                                                            window.location.href = url;
-                                                        });
-                                                }
-                                            });
-                                    });
-
-                                });
-                            </script>
+                        <div class='col-xs-8 col-xs-offset-2'>
+                            <a href="#" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
                         </div>
                     </div>
-                </div>
             </div>
         </form>
     </div>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#pedidos').addClass('active');
+            $('#acompanhar').addClass('active');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });
