@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from base64 import b64encode
+
+import pyimgur
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
-from django.contrib.auth.models import AnonymousUser
-from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView
 
-from base64 import b64encode
-import json
-import pyimgur
 from app.forms import FormLogin, FormRegister
 from app.models import *
 
@@ -36,8 +33,6 @@ class AppView(RedirectView):
                     return '/login'
         else:
             return '/login'
-        
-        
 
 
 class LoginView(FormView):
@@ -59,7 +54,7 @@ class LoginView(FormView):
                 return self.form_invalid(form)
         except:
             pass
-        
+
         try:
             motorista = user.motorista
             if not motorista.is_approved:
@@ -92,7 +87,7 @@ class LoginView(FormView):
             motorista = user.motorista
         except:
             pass
-        
+
         try:
             loja = user.estabelecimento
         except:
@@ -135,7 +130,7 @@ class LogoutView(RedirectView):
             motorista = user.motorista
         except:
             pass
-        
+
         try:
             loja = user.estabelecimento
         except:

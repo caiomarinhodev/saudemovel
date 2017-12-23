@@ -1,7 +1,7 @@
 <script>
     $(document).ready(function () {
         {% if notificacao.type_message == 'NOVO_PEDIDO' %}
-            play('alert');  
+            play('alert');
             swal({
                 title: "Um novo pedido foi cadastrado!",
                 text: '{{ notificacao.message }}',
@@ -14,7 +14,7 @@
                 }, 2000);
             });
         {% elif notificacao.type_message == 'DELETE_LOJA' %}
-        play('alert');  
+            play('alert');
             swal({
                 title: "ALERTA!",
                 text: '{{ notificacao.message }}',
@@ -27,7 +27,7 @@
                 }, 2000);
             });
         {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
-        play('alert');  
+            play('alert');
             swal({
                 title: "Motorista a caminho!",
                 text: '{{ notificacao.message }}',
@@ -39,9 +39,9 @@
                     window.location.href = '{% url 'acompanhar_list' %}'
                 }, 2000);
             });
-            
+
         {% elif notificacao.type_message == 'ALL_DELIVERED' %}
-        play('alert');  
+            play('alert');
             swal({
                 title: "Motorista finalizou a entrega!",
                 text: '{{ notificacao.message }}',
@@ -50,7 +50,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '{% url 'acompanhar_list' %}'
+                    window.location.href = '{% url 'pedidos_estabelecimento' %}';
                 }, 2000);
             });
 
@@ -67,7 +67,7 @@
                 }, 2000);
             });
         {% elif notificacao.type_message == 'ENABLE_ROTA' %}
-        play('alert');  
+            play('alert');
             swal({
                 title: "Rota gerada!",
                 text: '{{ notificacao.message }}',
@@ -76,7 +76,6 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    // TODO: Setar a page para ROTAS.
                     window.location.href = ''
                 }, 2000);
             });

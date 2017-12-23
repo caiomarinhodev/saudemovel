@@ -18,16 +18,18 @@ class TimeStamped(models.Model):
 class Bairro(TimeStamped):
     nome = models.CharField(max_length=100, blank=True)
     valor = models.CharField(max_length=3, blank=True, null=True)
-    
+
     def __unicode__(self):
         return u'%s' % self.nome
 
     def __str__(self):
         return u'%s' % self.nome
 
+
 class BaseAddress(models.Model):
     class Meta:
         abstract = True
+
     bairro = models.ForeignKey(Bairro, blank=True, verbose_name='Bairro')
     endereco = models.CharField(max_length=100, blank=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
@@ -59,12 +61,11 @@ class Estabelecimento(TimeStamped, BaseAddress):
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)
     full_address = models.CharField(max_length=300, blank=True, null=True)
-    
-    
+
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.phone = self.phone.replace("_", "")
-        address = self.endereco + ", "+self.numero+", "+ self.bairro.nome + ",Campina Grande,PB"
+        address = self.endereco + ", " + self.numero + ", " + self.bairro.nome + ",Campina Grande,PB"
         self.full_address = address
         pto = geocode(address)
         self.lat = pto['latitude']
@@ -92,7 +93,7 @@ class Pedido(TimeStamped):
 
     def __str__(self):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
-        
+
     def save(self, *args, **kwargs):
         valor = 0
         for pto in self.ponto_set.all():
@@ -108,11 +109,11 @@ class Ponto(BaseAddress, TimeStamped):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     full_address = models.CharField(max_length=300, blank=True, null=True)
     status = models.BooleanField(default=False)
-    
+
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
         self.telefone = self.telefone.replace("_", "")
-        address = self.endereco + ", "+self.numero+", "+ self.bairro.nome + ",Campina Grande,PB"
+        address = self.endereco + ", " + self.numero + ", " + self.bairro.nome + ",Campina Grande,PB"
         pto = geocode(address)
         self.lat = pto['latitude']
         self.lng = pto['longitude']
@@ -137,6 +138,7 @@ type_notification = (
     ('ALL_DELIVERED', 'ALL_DELIVERED')
 )
 
+
 class Notification(TimeStamped):
     message = models.TextField()
     to = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -148,3 +150,9 @@ class Location(TimeStamped):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lat = models.CharField(max_length=100, blank=True, null=True)
     lng = models.CharField(max_length=100, blank=True, null=True)
+
+
+class Classification(TimeStamped):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    nota = models.CharField(max_length=2)

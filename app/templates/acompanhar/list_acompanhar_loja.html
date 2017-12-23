@@ -1,4 +1,4 @@
-{% extends 'base_painel.html' %}
+{% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
 {% load filters %}
 
@@ -103,11 +103,59 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                {% if pedido.coletado %}
-                                                    <a href="{% url 'acompanhar_pedido_view' pedido.pk %}" class="btn btn-info acompanhar_entrega_{{ pedido.pk }}">
+                                                {% if pedido.coletado and not pedido.is_complete %}
+                                                    <a href="{% url 'acompanhar_pedido_view' pedido.pk %}" class="btn btn-info pull-left acompanhar_entrega_{{ pedido.pk }}">
                                                         Acompanhar
                                                     </a>
-                                                {% else %}
+                                                {% elif pedido.is_complete and pedido.classification_set.all|length == 0%}
+                                                    <a class="btn btn-warning pull-right aval_{{ pedido.id }}" href="#">
+                                                        Avaliar Motorista
+                                                    </a>
+                                                    <script>
+
+                                                        function negative(number) {
+                                                            return !!number.match(/^-\d+$/);
+                                                        }
+                                                        $(document).ready(function () {
+                                                            $('.aval_{{ pedido.id }}').click(function () {
+                                                                swal({
+                                                                    title: "O Motorista espera uma avaliação sua!",
+                                                                    text: "Em uma escala de 1 a 10, qual sua nota pelos serviços prestados pelo motorista?",
+                                                                    type: 'input',
+                                                                    showCancelButton: true,
+                                                                    closeOnConfirm: false,
+                                                                    inputPlaceholder: "Nota de 1 a 10"
+                                                                }, function (inputValue) {
+                                                                    if (inputValue === false) return false;
+                                                                    if (inputValue === "") {
+                                                                        swal.showInputError("Você precisa dar uma nota!");
+                                                                        return false;
+                                                                    }
+                                                                    if (isNaN(inputValue)) {
+                                                                        swal.showInputError("A nota deve ser um numero!");
+                                                                        return false;
+                                                                    }
+                                                                    if (parseInt(inputValue) > 10 || parseInt(inputValue) < 0) {
+                                                                        swal.showInputError("Insira um numero na faixa de 0 a 10!");
+                                                                        return false;
+                                                                    }
+                                                                    swal({
+                                                                        title: "Obrigado!",
+                                                                        showCancelButton: true,
+                                                                        closeOnConfirm: false,
+                                                                        showLoaderOnConfirm: true
+                                                                    }, function () {
+                                                                        setTimeout(function () {
+                                                                            var url = "{% url 'avaliar_motorista' pedido.id 88 %}".replace(88, parseInt(inputValue));
+                                                                            window.location.href = url;
+                                                                        }, 2000);
+                                                                    });
+
+                                                                });
+                                                            });
+                                                        })
+                                                    </script>
+                                                {% elif not pedido.coletado %}
                                                     <a href="#" class="btn btn-warning liberar_entrega_{{ pedido.pk }}">
                                                         Liberar p/ entrega
                                                     </a>
@@ -156,7 +204,7 @@
         $(document).ready(function () {
             $('#table').DataTable({
                 responsive: true,
-                order: [[ 1, "desc" ]],
+                order: [[ 0, "desc" ]],
                 language: {
                                   "emptyTable": "Nenhum pedido para acompanhar até o momento"
                                 }

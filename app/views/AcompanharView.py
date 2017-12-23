@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
 from django.views.generic import DetailView
-from app.mixins.CustomContextMixin import CustomContextMixin
+from django.views.generic import ListView
 
+from app.mixins.CustomContextMixin import CustomContextMixin
 from app.models import Pedido, Estabelecimento
 
 
@@ -18,15 +18,15 @@ class AcompanharListView(LoginRequiredMixin, ListView, CustomContextMixin):
 
 class AcompanharDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'pedidos/acompanhar_view.html'
+    template_name = 'pedidos/../../templates/acompanhar/acompanhar_view.html'
     context_object_name = 'pedido'
-    
-    
+
+
 class LojasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Estabelecimento
     context_object_name = 'lojas'
-    template_name = 'pedidos/list_all_lojas.html'
+    template_name = 'pedidos/list_all_lojas_motorista.html'
 
     def get_queryset(self):
         return Estabelecimento.objects.all()

@@ -1,4 +1,4 @@
-{% extends 'base_painel.html' %}
+{% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
 
 {% block content %}
@@ -19,7 +19,7 @@
                         <div style="display: none;">
                             {{ form.estabelecimento }}
                         </div>
-                        
+
                         <table class="table">
                             {{ pontoset.management_form }}
 
@@ -62,7 +62,8 @@
             </div>
             <!-- /.box-body -->
             <div class=" box-footer ">
-                <a href="{% url 'pedidos_estabelecimento' %}" id="btn_cancelar" class="btn btn-default pull-left">Voltar</a>
+                <a href="{% url 'pedidos_estabelecimento' %}" id="btn_cancelar"
+                   class="btn btn-default pull-left">Voltar</a>
                 <button type="submit" id="btn_salvar" class="btn btn-primary pull-right">Finalizar Pedido
                 </button>
             </div>
