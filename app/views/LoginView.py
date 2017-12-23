@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 
-from app.forms import FormLogin, FormRegister
+from app.forms import FormLogin, FormRegister, FormEditPerfil
 from app.models import *
 
 __author__ = "Caio Marinho"
@@ -202,3 +202,58 @@ class RegisterView(FormView):
             return False
         else:
             raise ValueError
+
+
+class EditarPerfilView(FormView):
+    template_name = 'pedidos/editar_perfil_loja.html'
+    form_class = FormEditPerfil
+    success_url = '/app/perfil/edit'
+
+    def merge_two_dicts(self, x, y):
+        z = x.copy()  # start with x's keys and values
+        z.update(y)  # modifies z with y's keys and values & returns None
+        return z
+
+    def get_initial(self):
+        estabel = Estabelecimento.objects.get(user=self.request.user)
+        data = self.merge_two_dicts(estabel.__dict__, self.request.user.__dict__)
+        print(data)
+        data['first_name'] = self.request.user.first_name
+        data['file'] = estabel.photo
+        data['photo'] = estabel.photo
+        return data
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        print(form.errors)
+        print(form.is_valid())
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        user = self.request.user
+        estabel = Estabelecimento.objects.get(user=user)
+        CLIENT_ID = "cdadf801dc167ab"
+        bencode = b64encode(self.request.FILES['file'].read())
+        client = pyimgur.Imgur(CLIENT_ID)
+        r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+        file = r['link']
+        print(file)
+        user.first_name = data['first_name']
+        estabel.endereco = data['endereco']
+        estabel.phone = data['phone']
+        estabel.numero = data['numero']
+        estabel.bairro = data['bairro']
+        estabel.photo = file
+        user.save()
+        estabel.save()
+        messages.success(self.request, 'Conta Alterada com sucesso!')
+        return super(EditarPerfilView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        messages.error(self.request, 'Não foi possível alterar os dados.')
+        return super(EditarPerfilView, self).form_invalid(form)

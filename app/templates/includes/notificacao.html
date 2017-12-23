@@ -43,7 +43,7 @@
         {% elif notificacao.type_message == 'ALL_DELIVERED' %}
             play('alert');
             swal({
-                title: "Motorista finalizou a entrega!",
+                title: "Motorista finalizou a entrega do pedido!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
                 closeOnConfirm: false,
@@ -52,6 +52,20 @@
                 setTimeout(function () {
                     window.location.href = '{% url 'pedidos_estabelecimento' %}';
                 }, 2000);
+            });
+
+        {% elif notificacao.type_message == 'ORDER_DELIVERED' %}
+            play('alert');
+            swal({
+                title: "Motorista finalizou uma entrega!",
+                text: '{{ notificacao.message }}',
+                type: 'success',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '{% url 'acompanhar_list' %}';
+                }, 1000);
             });
 
         {% elif notificacao.type_message == 'ADMIN_MESSAGE' %}
@@ -66,6 +80,32 @@
                     window.location.href = ''
                 }, 2000);
             });
+        {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
+            play('alert');
+            {#            swal({#}
+            {#                title: "Mensagem!",#}
+            {#                text: 'A Loja lhe enviou uma mensagem, va para o CHAT.',#}
+            {#                type: 'warning',#}
+            {#                closeOnConfirm: false,#}
+            {#                showLoaderOnConfirm: true#}
+            {#            }, function () {#}
+            {#                setTimeout(function () {#}
+            {#                    window.location.href = '{% url 'chat_motorista_view' %}'#}
+            {#                }, 2000);#}
+            {#            });#}
+        {% elif notificacao.type_message == 'MOTORISTA_MESSAGE' %}
+            play('alert');
+            {#            swal({#}
+            {#                title: "Mensagem!",#}
+            {#                text: 'A Loja lhe enviou uma mensagem, va para o CHAT.',#}
+            {#                type: 'warning',#}
+            {#                closeOnConfirm: false,#}
+            {#                showLoaderOnConfirm: true#}
+            {#            }, function () {#}
+            {#                setTimeout(function () {#}
+            {#                    window.location.href = '{% url 'chat_motorista_view' %}'#}
+            {#                }, 2000);#}
+            {#            });#}
         {% elif notificacao.type_message == 'ENABLE_ROTA' %}
             play('alert');
             swal({

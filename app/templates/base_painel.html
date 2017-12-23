@@ -99,6 +99,45 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     {% if user.estabelecimento %}
+                        <li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="label label-success">{{ messages_e|length }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">Você tem {{ messages_e|length }} mensagens</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        {% for message in messages_e %}
+                                            <li><!-- start message -->
+                                                <a href="{% url 'chat_view' message.pedido.pk %}">
+                                                    <div class="pull-left">
+                                                        {% if message.u_from.motorista.photo %}
+                                                            <img src="{{ message.u_from.motorista.photo }}"
+                                                                 class="img-circle"
+                                                                 alt="User Image">
+                                                        {% else %}
+                                                            <img src="{% static 'img/300.png' %}" class="img-circle"
+                                                                 alt="User Image">
+                                                        {% endif %}
+                                                    </div>
+                                                    <h4>
+                                                        <small><i
+                                                                class="fa fa-clock-o"></i> {{ message.created_at|date:"G:i" }}
+                                                        </small>
+                                                    </h4>
+                                                    <p>{{ message.text }}</p>
+                                                </a>
+                                            </li>
+                                            <!-- end message -->
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="{% url 'list_all_chats' %}">Veja todas as
+                                    mensagens</a></li>
+                            </ul>
+                        </li>
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
@@ -107,7 +146,7 @@
                                 {% endif %}
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">Você tem {{ pedidos_n|length }} Pedidos para entregar</li>
+                                <li class="header">Voce tem {{ pedidos_n|length }} Pedidos para entregar</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -131,6 +170,48 @@
                                 <li class="footer"><a href="{% url 'acompanhar_list' %}">Acompanhar Pedidos</a></li>
                             </ul>
                         </li>
+                    {% elif user.motorista %}
+                        {% if user.motorista.ocupado %}
+                            <li class="dropdown messages-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">{{ messages_m|length }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">Voce tem {{ messages_m|length }} mensagens</li>
+                                    <li>
+                                        <!-- inner menu: contains the actual data -->
+                                        <ul class="menu">
+                                            {% for message in messages_m %}
+                                                <li><!-- start message -->
+                                                    <a href="{% url 'chat_motorista_view' %}">
+                                                        <div class="pull-left">
+                                                            {% if message.u_from.estabelecimento.photo %}
+                                                                <img src="{{ message.u_from.estabelecimento.photo }}"
+                                                                     class="img-circle"
+                                                                     alt="User Image">
+                                                            {% else %}
+                                                                <img src="{% static 'img/300.png' %}" class="img-circle"
+                                                                     alt="User Image">
+                                                            {% endif %}
+                                                        </div>
+                                                        <h4>
+                                                            <small><i
+                                                                    class="fa fa-clock-o"></i> {{ message.created_at|date:"G:i" }}
+                                                            </small>
+                                                        </h4>
+                                                        <p>{{ message.text }}</p>
+                                                    </a>
+                                                </li>
+                                                <!-- end message -->
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="footer"><a href="{% url 'chat_motorista_view' %}">Veja todas as
+                                        mensagens</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
                     {% endif %}
                     <li class="dropdown tasks-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -304,6 +385,13 @@
                             <i class="fa fa-suitcase"></i> <span>Lojas Credenciadas</span>
                         </a>
                     </li>
+                    {% if user.motorista.ocupado %}
+                        <li id="chat">
+                            <a href="{% url 'chat_motorista_view' %}">
+                                <i class="fa fa-comments-o"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    {% endif %}
                 {% else %}
                     <li id="pedidos">
                         <a href="{% url 'pedidos_estabelecimento' %}">
@@ -320,6 +408,16 @@
                     <!--        <i class="fa fa-dashboard"></i> <span>Motoristas em Entrega</span>-->
                     <!--    </a>-->
                     <!--</li>-->
+                    <li id="chat">
+                        <a href="{% url 'list_all_chats' %}">
+                            <i class="fa fa-comments-o"></i> <span>Chat</span>
+                        </a>
+                    </li>
+                    <li id="editar_perfil">
+                        <a href="{% url 'edit_perfil_view' %}">
+                            <i class="fa fa-user"></i> <span>Editar Perfil</span>
+                        </a>
+                    </li>
                 {% endif %}
                 <li id="notificacoes">
                     <a href="{% url "notificacoes" %}">
@@ -527,6 +625,22 @@
 
             window.setInterval(function () {
                 $.ajax({
+                    url: "{% url 'notify_new_message_for_motorista' %}",
+                    type: "GET", // http method
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 8000);
+
+            window.setInterval(function () {
+                $.ajax({
                     url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
@@ -587,7 +701,42 @@
 
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_accept_order_loja' %}",
+                    url: "{% url 'notify_new_message_for_loja' %}",
+                    type: "GET", // http method
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 8000);
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notify_novo_pedido_motorista' %}",
+                    type: "GET", // http method
+                    // beforeSend: function () {
+                    // $('#loading').show();
+                    // },
+                    success: function (data) {
+                        $('#notify').html(data);
+                    },
+                    complete: function () {
+                        $('#loading').hide();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }, 8000);
+
+            window.setInterval(function () {
+                $.ajax({
+                    url: "{% url 'notificar_order_delivered_loja' %}",
                     type: "GET", // http method
                     // beforeSend: function () {
                     //$('#loading').show();

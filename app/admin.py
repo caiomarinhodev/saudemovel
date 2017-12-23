@@ -50,6 +50,10 @@ class ClassificationAdmin(admin.ModelAdmin):
     list_display = ('user', 'id', 'nota', 'pedido')
 
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('u_from', 'u_to', 'pedido', 'id', 'created_at')
+
+
 admin.site.register(Motorista, MotoristaAdmin)
 admin.site.register(Estabelecimento, EstabelecimentoAdmin)
 admin.site.register(Ponto, PontoAdmin)
@@ -58,3 +62,4 @@ admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Bairro, BairroAdmin)
 admin.site.register(Classification, ClassificationAdmin)
+admin.site.register(Message, MessageAdmin)

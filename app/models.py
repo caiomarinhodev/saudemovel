@@ -78,6 +78,14 @@ class Estabelecimento(TimeStamped, BaseAddress):
     def __str__(self):
         return u'%s' % self.user.first_name
 
+    class Meta:
+        permissions = (
+            ("view_dashboard_1", "Loja pode ver o dashboard loja tipo 1"),
+            ("view_dashboard_2", "Loja pode ver o dashboard loja tipo 2"),
+            ("view_dashboard_3", "Loja pode ver o dashboard loja tipo 3"),
+            ("view_chat", "Loja pode interagir no Chat"),
+        )
+
 
 class Pedido(TimeStamped):
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
@@ -135,7 +143,9 @@ type_notification = (
     ('ENABLE_ROTA', 'ENABLE_ROTA'),
     ('ORDER_DELIVERED', 'ORDER_DELIVERED'),
     ('ADMIN_MESSAGE', 'ADMIN_MESSAGE'),
-    ('ALL_DELIVERED', 'ALL_DELIVERED')
+    ('ALL_DELIVERED', 'ALL_DELIVERED'),
+    ('LOJA_MESSAGE', 'LOJA_MESSAGE'),
+    ('MOTORISTA_MESSAGE', 'MOTORISTA_MESSAGE')
 )
 
 
@@ -144,6 +154,14 @@ class Notification(TimeStamped):
     to = models.ForeignKey(User, on_delete=models.CASCADE)
     type_message = models.CharField(choices=type_notification, max_length=100)
     is_read = models.BooleanField(default=False)
+
+
+class Message(TimeStamped):
+    u_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='u_from')
+    u_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='u_to')
+    text = models.TextField()
+    is_read = models.BooleanField(default=False)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
 
 
 class Location(TimeStamped):

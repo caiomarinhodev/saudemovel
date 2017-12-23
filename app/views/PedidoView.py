@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
@@ -67,6 +67,7 @@ class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
 class PedidosLojaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
+    # permission_required = ('app.view_dashboard_1', 'app.view_dashboard_2', 'app.view_dashboard_3', )
     context_object_name = 'pedidos'
     template_name = 'pedidos/list_pedidos_loja.html'
 
@@ -266,7 +267,7 @@ def accept_corrida(request, pk_pedido):
             motorista.save()
             if pedido.estabelecimento.is_online:
                 print(
-                '>>>>>>>> Motorista ' + motorista.user.first_name + ' aceitou fazer a corrida para a loja ' + pedido.estabelecimento.user.first_name)
+                    '>>>>>>>> Motorista ' + motorista.user.first_name + ' aceitou fazer a corrida para a loja ' + pedido.estabelecimento.user.first_name)
                 message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(
                     pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
                 n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)

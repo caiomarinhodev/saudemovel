@@ -141,6 +141,30 @@ class FormRegister(ModelForm, BaseForm):
         fields = ['bairro', ]
 
 
+class FormEditPerfil(ModelForm, BaseForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                               'maxlength': 200,
+                                                               'placeholder': 'Nome Estabelecimento'}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                          'maxlength': 200,
+                                                          'placeholder': 'Telefone'}))
+    endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+                                                                            'maxlength': 200,
+                                                                            'placeholder': 'Endereço'
+                                                                            }))
+    numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
+                                                                         'maxlength': 200,
+                                                                         'placeholder': 'Número'
+                                                                         }))
+    file = forms.FileField(required=False,
+                           widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Logotipo do Estabelecimento'
+                                                         }))
+
+    class Meta:
+        model = Estabelecimento
+        fields = ['bairro', ]
+
+
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
 
 PontoFormUpdateSet = inlineformset_factory(Pedido, Ponto, form=FormEditPonto, extra=0)

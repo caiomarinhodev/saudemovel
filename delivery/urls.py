@@ -1,16 +1,18 @@
 """urls.py: Urls definidas."""
-from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
-from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
-    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
-    notificar_admin_message
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
+from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.HomeView import DashboardView
 from app.views.LocationView import get_position_motorista, send_position_motorista
-from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView
+from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
+from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
+    notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
+    notificar_admin_message, notificar_order_delivered_loja, notify_new_message_for_motorista, \
+    notify_new_message_for_loja
 from app.views.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
@@ -57,6 +59,11 @@ urlpatterns = [
     url(r'^app/pedido/route/(?P<pk>[0-9]+)/$', RouteMotoristaDetailView.as_view(), name="route_pedido_view"),
     url(r'^app/pedido/map/route/(?P<pk>[0-9]+)/$', MapRouteMotoristaView.as_view(), name="map_route_pedido_view"),
     url(r'^app/pedidos/motoristas/loja/$', MotoristasAtivosView.as_view(), name='motoristas_ativos_view'),
+    url(r'^app/chats/all/$', ListChatView.as_view(), name='list_all_chats'),
+    url(r'^app/chat/(?P<pk>[0-9]+)/$', ChatPedidoView.as_view(), name='chat_view'),
+    url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
+
+    url(r'^app/perfil/edit/$', EditarPerfilView.as_view(), name="edit_perfil_view"),
 
     url(r'^app/acompanhar/(?P<pk>[0-9]+)/$', AcompanharDetailView.as_view(), name="acompanhar_pedido_view"),
     url(r'^app/acompanhar/$', AcompanharListView.as_view(), name='acompanhar_list'),
@@ -82,13 +89,19 @@ urlpatterns = [
 
     url(r'avaliar-motorista/(\d+)/(\d+)/$', avaliar_motorista, name="avaliar_motorista"),
 
-
+    url(r'get-chat/(?P<pk_pedido>[0-9]+)/$', get_chat, name="get_chat"),
+    url(r'submit-message/(?P<pk_pedido>[0-9]+)/$', submit_message, name="submit_message"),
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
     url(r'^notificacao/delete-loja/motorista/$', notificar_delete_loja_motorista, name="notify_delete_loja_motorista"),
     url(r'^notificacao/accept-order/loja/$', notificar_accept_order_loja, name="notify_accept_order_loja"),
     url(r'^notificacao/all-delivered/loja/$', notificar_all_delivered_loja, name="notificar_all_delivered_loja"),
+    url(r'^notificacao/order-delivered/loja/$', notificar_order_delivered_loja, name="notificar_order_delivered_loja"),
     url(r'^notificacao/adminmessage$', notificar_admin_message, name="notify_admin_message"),
     url(r'^notificacao/enable-rota/motorista/$', notificar_enable_rota_motorista, name="notify_enable_rota_motorista"),
+    url(r'^notificacao/nova-mensagem/motorista/$', notify_new_message_for_motorista,
+        name="notify_new_message_for_motorista"),
+    url(r'^notificacao/nova-mensagem/loja/$', notify_new_message_for_loja, name="notify_new_message_for_loja"),
+
 ]

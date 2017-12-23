@@ -1,0 +1,64 @@
+{% extends 'admin/../base_painel.html' %}
+{% load staticfiles %}
+{% load filters %}
+
+{% block content %}
+    {% include 'loading.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning direct-chat direct-chat-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Direct Chat Pedido #{{ pedido.id }}</h3>
+
+                    <div class="box-tools pull-right">
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" id="batepapo">
+                    <!-- Conversations are loaded here -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="input-group">
+                        <input name="texto" placeholder="Digite a mensagem ..." class="form-control" type="text">
+                        <span class="input-group-btn">
+                    <button id="enviar" type="button" class="btn btn-warning btn-flat">Enviar</button>
+                </span>
+                    </div>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#chat').addClass('active');
+        });
+
+        function getList(data) {
+            data = data || {};
+            $.ajax({
+                url: "{% url 'get_chat' pedido.pk %}",
+                type: "GET", // http method
+                data: data,
+                success: function (data) {
+                    $('#batepapo').html(data);
+                    $('.direct-chat-messages').animate({scrollTop: 10000}, 500);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                }
+            });
+        }
+
+        getList();
+
+        window.setInterval(function () {
+            getList();
+        }, 15000);
+
+    </script>
+
+    <!-- /.row -->
+
+{% endblock %}

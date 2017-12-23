@@ -1,0 +1,100 @@
+{% load staticfiles %}
+
+<div class="direct-chat-messages" style="height: 400px;">
+    <!-- Message. Default to the left -->
+    {% for message in messages %}
+        {% if message.u_from == user %}
+            <div class="direct-chat-msg right">
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name pull-right">{{ message.u_from.first_name }}</span>
+                    <span class="direct-chat-timestamp pull-left">{{ message.created_at }}</span>
+                </div>
+                <!-- /.direct-chat-info -->
+                {% if message.u_from.motorista %}
+                    {% if  message.u_from.motorista.photo %}
+                        <img class="direct-chat-img" src="{{ message.u_from.motorista.photo }}">
+                    {% else %}
+                        <img class="direct-chat-img" src="{% static 'img/300.png' %}">
+                    {% endif %}
+                {% else %}
+                    {% if message.u_from.estabelecimento.photo %}
+                        <img class="direct-chat-img" src="{{ message.u_from.estabelecimento.photo }}">
+                    {% else %}
+                        <img class="direct-chat-img" src="{% static 'img/300.png' %}">
+                    {% endif %}
+                {% endif %}
+                <!-- /.direct-chat-img -->
+                <div class="direct-chat-text">
+                    {{ message.text }}
+                </div>
+                <!-- /.direct-chat-text -->
+            </div>
+        {% else %}
+            <div class="direct-chat-msg">
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name pull-left">{{ message.u_from.first_name }}</span>
+                    <span class="direct-chat-timestamp pull-right">{{ message.created_at }}</span>
+                </div>
+                <!-- /.direct-chat-info -->
+                {% if message.u_from.motorista %}
+
+                    {% if message.u_from.motorista.photo %}
+                        <img class="direct-chat-img" src="{{ message.u_from.motorista.photo }}">
+                    {% else %}
+                        <img class="direct-chat-img" src="{% static 'img/300.png' %}">
+                    {% endif %}
+                {% else %}
+                    {% if message.u_from.estabelecimento.photo %}
+                        <img class="direct-chat-img" src="{{ message.u_from.estabelecimento.photo }}">
+                    {% else %}
+                        <img class="direct-chat-img" src="{% static 'img/300.png' %}">
+                    {% endif %}
+                {% endif %}
+
+                <!-- /.direct-chat-img -->
+                <div class="direct-chat-text">
+                    {{ message.text }}
+                </div>
+                <!-- /.direct-chat-text -->
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+<!--/.direct-chat-messages-->
+
+
+<script>
+    $(document).ready(function () {
+        function submit_mess(data) {
+            data = data || {};
+            console.log(data);
+            $.ajax({
+                url: "{% url 'submit_message' pedido.pk %}",
+                type: "GET", // http method
+                data: data,
+                success: function (data) {
+                    console.log(data);
+                    $('#batepapo').html(data);
+                    $('.direct-chat-messages').animate({scrollTop: 10000}, 500);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        $('#enviar').click(function () {
+            var message = $('[name=texto]').val();
+            console.log(message);
+            if (message.length > 0) {
+                submit_mess({"text": message});
+                $('[name=texto]').val("");
+            }
+        });
+
+    });
+</script>

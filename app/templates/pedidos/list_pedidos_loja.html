@@ -141,6 +141,9 @@
                                                                                     {{ pedido.motorista.motorista.phone }}
                                                                                 </p>
                                                                                 <br>
+                                                                                <p class="text-center">
+                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao }}</strong></span>
+                                                                                </p>
                                                                             </center>
                                                                         </div>
                                                                     </center>
@@ -172,14 +175,21 @@
                                             <td>
                                                 {% if pedido.motorista %}
                                                     {% if not pedido.is_complete and not pedido.coletado %}
-                                                        <a class="btn btn-info pull-left"
-                                                           href="{% url 'view_pedido_view' pedido.id %}">
-                                                            Ver Pedido
-                                                        </a>
-                                                        <a class="btn btn-danger pull-right cancel_{{ pedido.id }}"
-                                                           href="#">
-                                                            Cancelar Entrega
-                                                        </a>
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <a class="btn btn-info btn-block"
+                                                                   href="{% url 'view_pedido_view' pedido.id %}">
+                                                                    Ver Pedido
+                                                                </a>
+                                                            </div>
+                                                            <hr/>
+                                                            <div class="col-xs-12">
+                                                                <a class="btn btn-danger btn-block cancel_{{ pedido.id }}"
+                                                                   href="#">
+                                                                    Cancelar Entrega
+                                                                </a>
+                                                            </div>
+                                                        </div>
                                                         <script>
                                                             $(document).ready(function () {
                                                                 $('.cancel_{{ pedido.id }}').click(function () {
@@ -204,7 +214,7 @@
                                                            href="{% url 'acompanhar_pedido_view' pedido.pk %}">
                                                             Acompanhar
                                                         </a>
-                                                    {% elif pedido.is_complete and pedido.classification_set.all|length == 0%}
+                                                    {% elif pedido.is_complete and pedido.classification_set.all|length == 0 %}
                                                         <a class="btn btn-warning aval_{{ pedido.id }}" href="#">
                                                             Avaliar Motorista
                                                         </a>
@@ -254,14 +264,21 @@
                                                         </script>
                                                     {% endif %}
                                                 {% else %}
-                                                    <a class="btn btn-warning pull-left"
-                                                       href="{% url 'view_pedido_view' pedido.id %}">
-                                                        Ver Pedido
-                                                    </a>
-                                                    <a class="btn btn-danger pull-right delete_{{ pedido.id }}"
-                                                       href="#">
-                                                        Deletar Pedido
-                                                    </a>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <a class="btn btn-warning btn-block"
+                                                               href="{% url 'view_pedido_view' pedido.id %}">
+                                                                Ver Pedido
+                                                            </a>
+                                                        </div>
+                                                        <hr/>
+                                                        <div class="col-xs-12">
+                                                            <a class="btn btn-danger btn-block  delete_{{ pedido.id }}"
+                                                               href="#">
+                                                                Deletar Pedido
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                     <script>
                                                         $(document).ready(function () {
                                                             $('.delete_{{ pedido.id }}').click(function () {

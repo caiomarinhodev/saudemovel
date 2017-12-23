@@ -58,11 +58,15 @@
                                                                         </h3>
                                                                         <span><strong>Pedidos Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
                                                                         <!--</center>-->
+
                                                                         <hr>
                                                                         <center>
                                                                             <p class="text-center"><strong>Telefone: </strong><br>
                                                                                 {{ pedido.motorista.motorista.phone }}</p>
                                                                             <br>
+                                                                            <p class="text-center">
+                                                                                <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao }}</strong></span>
+                                                                            </p>
                                                                         </center>
                                                                     </div></center>
                                                                 </div>
