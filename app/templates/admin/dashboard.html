@@ -486,7 +486,6 @@
                                                                             </h3>
                                                                             <span><strong>Pedidos Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
                                                                             <!--</center>-->
-                                                                            <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao }}</strong></span>
                                                                             <hr>
                                                                             <center>
                                                                                 <p class="text-center">
@@ -495,7 +494,7 @@
                                                                                 </p>
                                                                                 <br>
                                                                                 <p class="text-center">
-                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao }}</strong></span>
+                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
                                                                                 </p>
                                                                             </center>
                                                                         </div>
@@ -616,7 +615,7 @@
                                                                                     {{ motorista.phone }}</p>
                                                                                 <br>
                                                                                 <p class="text-center">
-                                                                                    <span><strong>Media Avaliacao: {{ motorista.user.classification_set.all|soma_avaliacao }}</strong></span>
+                                                                                    <span><strong>Media Avaliacao: {{ motorista.user.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
                                                                                 </p>
                                                                             </center>
                                                                         </div>

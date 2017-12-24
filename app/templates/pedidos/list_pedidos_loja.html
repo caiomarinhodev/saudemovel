@@ -142,7 +142,7 @@
                                                                                 </p>
                                                                                 <br>
                                                                                 <p class="text-center">
-                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao }}</strong></span>
+                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
                                                                                 </p>
                                                                             </center>
                                                                         </div>
