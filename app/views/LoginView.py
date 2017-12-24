@@ -43,6 +43,10 @@ class LoginView(FormView):
     form_class = FormLogin
     success_url = '/'
 
+    def get(self, request, *args, **kwargs):
+        from app.views.fcm import func
+        return super(LoginView, self).get(request, *args, **kwargs)
+
     def form_valid(self, form):
         data = form.cleaned_data
         print(data)

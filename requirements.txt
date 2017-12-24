@@ -18,3 +18,4 @@ tblib
 iso8601
 selenium==2.53.6
 django-ckeditor==5.0.3
+pyfcm

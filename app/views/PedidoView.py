@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db import transaction
@@ -20,6 +19,7 @@ from django.views.generic import UpdateView
 from app.forms import PontoFormSet, PontoFormUpdateSet
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView, CustomContextMixin
 from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto, Classification
+from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 
 
@@ -128,6 +128,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
                 pontoset.save()
         message = "Um novo pedido foi feito pela " + self.request.user.first_name
         print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
+        a = func()
         for m in Motorista.objects.all():
             if m.is_online and not m.ocupado:
                 n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
