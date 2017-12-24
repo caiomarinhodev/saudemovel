@@ -1,8 +1,6 @@
 # Send to single device.
-from urllib2 import *
-import urllib
+import requests
 import json
-import sys
 
 
 def func():
@@ -12,12 +10,12 @@ def func():
     messageBody = "Tem um novo pedido no aplicativo"
 
     data = {"to": "/topics/news",
-            "notification": {"body": messageBody, "title": messageTitle, "icon": "ic_cloud_white_48dp", "sound": "default"}}
+            "notification": {"body": messageBody, "title": messageTitle, "icon": "ic_cloud_white_48dp",
+                             "sound": "default"}}
 
     dataAsJSON = json.dumps(data)
 
-    request = Request("https://gcm-http.googleapis.com/gcm/send", dataAsJSON,
-                      {"Authorization": "key=" + MY_API_KEY, "Content-type": "application/json"})
-    resp = urlopen(request).read()
-    print(resp)
-    return resp
+    resp = requests.post("https://gcm-http.googleapis.com/gcm/send", data=dataAsJSON,
+                               headers={"Authorization": "key=" + MY_API_KEY, "Content-type": "application/json"})
+    print(resp.status_code)
+    print(resp.content)

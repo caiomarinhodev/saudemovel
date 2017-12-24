@@ -10,6 +10,7 @@ from django.views.generic import RedirectView
 
 from app.forms import FormLogin, FormRegister, FormEditPerfil
 from app.models import *
+from app.views.fcm import func
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
