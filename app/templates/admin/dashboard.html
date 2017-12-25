@@ -17,6 +17,14 @@
         }
     </style>
     <style>
+
+        .green{
+            color: green;
+        }
+
+        .red{
+            color: red;
+        }
         .message-item {
             margin-bottom: 25px;
             margin-left: 40px;
@@ -151,7 +159,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>{{ pedidos_entregues|length }}</h3>
+                    <h3>{{ num_pedidos_entregues|length }}</h3>
 
                     <p>Pedidos Entregues</p>
                 </div>
@@ -214,62 +222,65 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div id="map" style="height: 450px;"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="small-box bg-green">
-                                    <div class="inner">
-                                        <h3>{{ users|length }}</h3>
-
-                                        <p>Usuários</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-person"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-box bg-aqua">
-                                    <div class="inner">
-                                        <h3>{{ motoristas|length }}</h3>
-
-                                        <p>Motoristas</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-android-contact"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-box bg-yellow">
-                                    <div class="inner">
-                                        <h3>{{ estabelecimentos|length }}</h3>
-
-                                        <p>Estabelecimentos</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-ios-heart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-box bg-red">
-                                    <div class="inner">
-                                        <h3>{{ bd_space|floatformat:2 }} <sup style="font-size: 20px">%</sup></h3>
-
-                                        <p>Database</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-ios-speedometer"></i>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
+                </div>
+
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>{{ users|length }}</h3>
+
+                                    <p>Usuários</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-person"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-aqua">
+                                <div class="inner">
+                                    <h3>{{ motoristas|length }}</h3>
+
+                                    <p>Motoristas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-android-contact"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>{{ estabelecimentos|length }}</h3>
+
+                                    <p>Estabelecimentos</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-ios-heart"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>{{ bd_space|floatformat:2 }} <sup style="font-size: 20px">%</sup></h3>
+
+                                    <p>Database</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-ios-speedometer"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -1125,13 +1136,24 @@
             accessToken: 'pk.eyJ1IjoiY2Fpb21hcmluaG84IiwiYSI6ImNpZ2RzdHR3cTJ2aHZ2OW04cnc5YTBiengifQ.oDcflEacffSkQxXd6RiQ2A'
         }).addTo(map);
 
-        icon = L.divIcon({className: 'fa fa-street-view fa-2x bg-green'});
-        icon_2 = L.divIcon({className: 'fa fa-street-view fa-2x bg-red'});
+        icon = L.divIcon({className: 'fa fa-street-view fa-2x green'});
+        icon_2 = L.divIcon({className: 'fa fa-street-view fa-2x red'});
+
+        icon_m = L.divIcon({className: 'fa fa-dot-circle-o fa-2x green'});
+        icon_m_2 = L.divIcon({className: 'fa fa-dot-circle-o fa-2x red'});
+
         {% for est in estabelecimentos %}
             {% if est.is_online %}
                 L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).addTo(map);
             {% else %}
                 L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).addTo(map);
+            {% endif %}
+        {% endfor %}
+        {% for moto in motoristas %}
+            {% if moto.is_online %}
+                L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).addTo(map);
+            {% else %}
+                L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).addTo(map);
             {% endif %}
         {% endfor %}
 
@@ -1141,19 +1163,19 @@
         $(document).ready(function () {
             $('#table_1').DataTable({
                 responsive: true,
+                order: [[1, "desc"]]
             });
             $('#table_2').DataTable({
                 responsive: true,
             });
             $('#table_3').DataTable({
                 responsive: true,
+                order: [[1, "desc"]]
             });
             $('#table_4').DataTable({
                 responsive: true,
+                order: [[1, "desc"]]
             });
-            setInterval(function () {
-                location.reload();
-            }, 60000);
             $('#dashboard').addClass('active');
         });
 

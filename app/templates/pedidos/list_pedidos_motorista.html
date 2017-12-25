@@ -5,6 +5,64 @@
 {% block content %}
     {% include 'loading.html' %}
     <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ corridas_mes|length }}</h3>
+
+                    <p>Corridas Entregues no mês</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ corridas_hoje|length }}</h3>
+
+                    <p>Corridas realizadas Hoje</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-paper-airplane"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>R$ {{ ganho_mes|floatformat:2 }}</h3>
+
+                    <p>Ganhos do Mes</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-dollar"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>R$ {{ ganho_hoje|floatformat:2 }}</h3>
+
+                    <p>Ganhos de Hoje</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-money"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <!-- form start -->
@@ -46,7 +104,7 @@
 
             window.setInterval(function () {
                 getList();
-            }, 20000);
+            }, 300000);
 
 
             $('#pedidos').addClass('active');

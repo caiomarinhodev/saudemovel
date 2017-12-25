@@ -80,15 +80,16 @@
             $("[name=estabelecimento]").attr("required", "false");
             $('.numero').inputmask('99999');
             $('.telefone').inputmask('(99) 9999[9]-9999');
-            $("td[2]").attr('style', 'width: 30px');
+            $('.add-row').click(function () {
+                $('.numero').inputmask('99999');
+                $('.telefone').inputmask('(99) 9999[9]-9999');
+            });
         });
     </script>
 
     <script src="{% static 'js/jquery.formset.js' %}"></script>
     <script>
         $('.add-row').addClass('btn btn-primary');
-        $('td[2]').attr('style', 'width: 30px');
-        {#        $('.delete-row').addClass('btn btn-danger');#}
     </script>
 
 {% endblock %}

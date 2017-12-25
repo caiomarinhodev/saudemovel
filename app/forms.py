@@ -71,7 +71,7 @@ class FormPonto(ModelForm, BaseForm):
                                                                                 }))
     observacoes = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': True,
                                                                                                'maxlength': 300,
-                                                                                               'placeholder': 'Observações'
+                                                                                               'placeholder': 'Insira aqui as instrucoes de pagamento e o valor do pedido para ser coletado pelo motoboy'
                                                                                                }))
 
     class Meta:
