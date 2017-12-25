@@ -1150,10 +1150,12 @@
             {% endif %}
         {% endfor %}
         {% for moto in motoristas %}
-            {% if moto.is_online %}
-                L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).addTo(map);
-            {% else %}
-                L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).addTo(map);
+            {% if moto.user.location_set.last.lat %}
+                {% if moto.is_online %}
+                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).addTo(map);
+                {% else %}
+                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).addTo(map);
+                {% endif %}
             {% endif %}
         {% endfor %}
 
