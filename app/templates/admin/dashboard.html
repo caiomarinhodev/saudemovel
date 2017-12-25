@@ -1144,17 +1144,17 @@
 
         {% for est in estabelecimentos %}
             {% if est.is_online %}
-                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).addTo(map);
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).bindPopup("{{ est.user.first_name }}").addTo(map);
             {% else %}
-                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).addTo(map);
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).bindPopup("{{ est.user.first_name }}").addTo(map);
             {% endif %}
         {% endfor %}
         {% for moto in motoristas %}
             {% if moto.user.location_set.last.lat %}
                 {% if moto.is_online %}
-                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).addTo(map);
+                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).bindPopup("{{ moto.user.first_name }}").addTo(map);
                 {% else %}
-                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).addTo(map);
+                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).bindPopup("{{ moto.user.first_name }}").addTo(map);
                 {% endif %}
             {% endif %}
         {% endfor %}
