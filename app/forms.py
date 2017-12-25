@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
 
-from app.models import Pedido, Ponto, Estabelecimento
+from app.models import Pedido, Ponto, Estabelecimento, Motorista
 
 
 class BaseForm(forms.Form):
@@ -163,6 +163,35 @@ class FormEditPerfil(ModelForm, BaseForm):
     class Meta:
         model = Estabelecimento
         fields = ['bairro', ]
+
+
+class FormMotoristaRegister(ModelForm, BaseForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                               'maxlength': 200,
+                                                               'placeholder': 'Nome Completo'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 200,
+                                                             'placeholder': 'Login'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
+                                                                 'placeholder': 'Senha'}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                          'maxlength': 200,
+                                                          'placeholder': 'Telefone'}))
+    cpf = forms.CharField(max_length=15, required=False, widget=forms.TextInput(attrs={'required': True,
+                                                                                       'maxlength': 200,
+                                                                                       'placeholder': 'CPF'
+                                                                                       }))
+    placa = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={'required': True,
+                                                                                         'maxlength': 200,
+                                                                                         'placeholder': 'Placa do Veiculo'
+                                                                                         }))
+    file = forms.FileField(required=False,
+                           widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Logotipo do Estabelecimento'
+                                                         }))
+
+    class Meta:
+        model = Motorista
+        fields = []
 
 
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)

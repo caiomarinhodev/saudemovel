@@ -7,7 +7,7 @@ from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, L
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.HomeView import DashboardView
 from app.views.LocationView import get_position_motorista, send_position_motorista
-from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView
+from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
 from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
@@ -46,6 +46,8 @@ urlpatterns = [
     url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^registro/$', RegisterView.as_view(), name='registro'),
+    url(r'^register-driver/$', RegisterMotoristaView.as_view(), name='register-driver'),
+
     url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout'),
 
     url(r'^app/pedidos/motorista/$', PedidosMotoristaListView.as_view(), name='pedidos_motorista'),

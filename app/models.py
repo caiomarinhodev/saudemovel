@@ -40,11 +40,12 @@ class BaseAddress(models.Model):
 
 class Motorista(TimeStamped):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    cpf = models.CharField(max_length=100, blank=True, null=True, default="")
     photo = models.URLField(blank=True)
-    phone = models.CharField(max_length=30)
+    phone = models.CharField(max_length=30, blank=True, null=True)
     ocupado = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
-    placa = models.CharField(max_length=30)
+    placa = models.CharField(max_length=30, blank=True, null=True)
     is_approved = models.BooleanField(default=True)
 
     def __str__(self):
