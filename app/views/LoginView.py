@@ -211,7 +211,6 @@ class RegisterMotoristaView(FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        print form
         print(form.errors)
         print(form.is_valid())
         if form.is_valid():
