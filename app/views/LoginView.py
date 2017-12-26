@@ -104,8 +104,8 @@ class LoginView(FormView):
                 url = '/app/pedidos/motorista'
                 motorista.is_online = True
                 motorista.save()
-                if motorista.ocupado:
-                    url = '/app/entregas/motorista'
+                # if motorista.ocupado:
+                #     url = '/app/entregas/motorista'
                 self.success_url = url
             elif user.is_superuser:
                 url = '/dashboard'

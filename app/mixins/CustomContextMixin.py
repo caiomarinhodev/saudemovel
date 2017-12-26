@@ -20,7 +20,7 @@ class RedirectMotoristaOcupadoView(ListView):
             pass
         if motorista:
             if motorista.ocupado:
-                return redirect('entregas_motorista')
+                return redirect('route_pedido_view', **{'pk': motorista.user.pedido_set.last().pk})
         return super(RedirectMotoristaOcupadoView, self).get(request, *args, **kwargs)
 
 

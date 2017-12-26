@@ -128,7 +128,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
                 pontoset.save()
         message = "Um novo pedido foi feito pela " + self.request.user.first_name
         print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
-        # a = func()
+        a = func()
         for m in Motorista.objects.all():
             if m.is_online and not m.ocupado:
                 n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)

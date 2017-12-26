@@ -78,6 +78,11 @@
             $('.numero').inputmask('99999');
             $('.telefone').inputmask('(99) 9999[9]-9999');
             $("[name=estabelecimento]").attr("required", "false");
+            $('.add-row').click(function () {
+                $(":input").inputmask();
+                $('.numero').inputmask('99999');
+                $('.telefone').inputmask('(99) 9999[9]-9999');
+            });
         });
     </script>
 

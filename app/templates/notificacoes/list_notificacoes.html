@@ -43,7 +43,7 @@
                                                     <label class="label label-warning"><i
                                                             class=""></i>
                                                         CANCELAMENTO</label>
-                                                        
+
                                                 {% elif notificacao.type_message == 'ORDER_DELIVERED' %}
                                                     <label class="label label-info"><i
                                                             class=""></i>
@@ -62,6 +62,15 @@
                                                     <label class="label label-info"><i
                                                             class=""></i>
                                                         ROTA</label>
+
+                                                {% elif notificacao.type_message == 'MOTORISTA_MESSAGE' %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        MENSAGEM</label>
+                                                {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        MENSAGEM</label>
                                                 {% elif notificacao.type_message == 'ALL_DELIVERED' %}
                                                     <label class="label label-success"><i
                                                             class=""></i>
@@ -103,7 +112,7 @@
         $(document).ready(function () {
             $('#table').DataTable({
                 responsive: true,
-                order: [[ 1, "desc" ]]
+                order: [[1, "desc"]]
             });
             setInterval(function () {
                 location.reload();
