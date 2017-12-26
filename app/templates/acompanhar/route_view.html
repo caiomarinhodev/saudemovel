@@ -1,5 +1,6 @@
 {% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 {% block content %}
     <style>
@@ -172,12 +173,18 @@
                         {#                            <label for="id_percurso">Percurso: </label>#}
                         {#                            {{ pedido.percurso }}#}
                         {#                        </div>#}
-                        <!--<div class="col-xs-12">-->
-                        <!--    <center><label for="id_percurso">Distância</label></center>-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-12">-->
-                        <!--    <center><h3 style="margin-top: 0px;">6.0 KM</h3></center>-->
-                        <!--</div>-->
+                        <div class="col-xs-12">
+                            <center><label for="id_percurso">Distância</label></center>
+                        </div>
+                        <div class="col-xs-12">
+                            <center><h3 style="margin-top: 0px;">
+                                {% if pedido.distance %}
+                                    {{ pedido.distance|divide:1000|floatformat:1 }} KM
+                                {% else %}
+                                    {{ pedido|calculate_distance|floatformat:1 }} KM
+                                {% endif %}
+                            </h3></center>
+                        </div>
 
                     </div>
                 </div>
@@ -185,7 +192,8 @@
                 <div class="row">
                     <center>
                         <div class="col-xs-12">
-                            <a href="{% url 'map_route_pedido_view' pedido.pk %}" class="btn btn-primary btn-block">Ver Mapa</a>
+                            <a href="{% url 'map_route_pedido_view' pedido.pk %}" class="btn btn-primary btn-block">Ver
+                                Mapa</a>
                         </div>
                     </center>
                 </div>
@@ -212,32 +220,33 @@
                                     <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
                                 </div>
                                 <div class="">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                {% if pedido.coletado %}
-                                                    <label class="label label-success"><i
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {% if pedido.coletado %}
+                                                <label class="label label-success"><i
                                                         class=""></i>
                                                     COLETADO</label>
-                                                {% else %}
-                                                    <label class="label label-warning"><i
-                                                            class=""></i> NÃO COLETADO</label>
-                                                {% endif %}
-                                            </div>
+                                            {% else %}
+                                                <label class="label label-warning"><i
+                                                        class=""></i> NÃO COLETADO</label>
+                                            {% endif %}
                                         </div>
-                                        <br/>
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-primary btn-block">Rota Waze</a>
-                                            </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes"
+                                               class="btn btn-primary btn-block">Rota Waze</a>
                                         </div>
-                                        <!--<br/>-->
-                                        <!--<div class="row">-->
-                                        <!--    <div class="col-xs-12">-->
-                                        <!--        <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-danger btn-block">Rota Google</a>-->
-                                        <!--    </div>-->
-                                        <!--</div>-->
+                                    </div>
+                                    <!--<br/>-->
+                                    <!--<div class="row">-->
+                                    <!--    <div class="col-xs-12">-->
+                                    <!--        <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-danger btn-block">Rota Google</a>-->
+                                    <!--    </div>-->
+                                    <!--</div>-->
 
-    							    </div>
+                                </div>
                             </div>
                         </div>
                         {% for ponto in pedido.ponto_set.all %}
@@ -245,8 +254,8 @@
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
 
-        							    <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
-								
+                                        <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
+
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">
@@ -259,58 +268,60 @@
                                         </div>
                                     </div>
                                     <div class="qa-message-content">
-                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }} 
+                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }}
                                         <p>Telefone Cliente: {{ ponto.telefone }}</p>
                                     </div>
                                     <div class="">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                                                    {% if ponto.status %}
-                                                        <label class="label label-success"><i
-                                                                class=""></i>
-                                                            ENTREGUE</label>
-                                                    {% else %}
-                                                        {% if pedido.coletado %}
-                                                            <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
-                                                            <script>
-                                                                $(document).ready(function(){
-                                                                    $('.fin_entrega_{{ ponto.id }}').click(function(){
-                                                                        play('alert');
-                                                                        swal({
-                                                                            title: "Deseja marcar como concluido esta entrega?",
-                                                                            text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
-                                                                            type: 'info',
-                                                                            closeOnConfirm: false,
-                                                                            showCancelButton: true,
-                                                                            showLoaderOnConfirm: true
-                                                                        }, function () {
-                                                                            setTimeout(function () {
-                                                                                window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
-                                                                            }, 2000);
-                                                                            });
-                                                                        });
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                {% if ponto.status %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        ENTREGUE</label>
+                                                {% else %}
+                                                    {% if pedido.coletado %}
+                                                        <a href="#"
+                                                           class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
+                                                        <script>
+                                                            $(document).ready(function () {
+                                                                $('.fin_entrega_{{ ponto.id }}').click(function () {
+                                                                    play('alert');
+                                                                    swal({
+                                                                        title: "Deseja marcar como concluido esta entrega?",
+                                                                        text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
+                                                                        type: 'info',
+                                                                        closeOnConfirm: false,
+                                                                        showCancelButton: true,
+                                                                        showLoaderOnConfirm: true
+                                                                    }, function () {
+                                                                        setTimeout(function () {
+                                                                            window.location.href = '{% url 'finalizar_entrega' ponto.pk pedido.pk %}'
+                                                                        }, 2000);
+                                                                    });
                                                                 });
-                                                            </script>
-                                                        {% endif %}
+                                                            });
+                                                        </script>
                                                     {% endif %}
-                                                </div>
-                                            </div>
-                                            <br/>
-                                            <div class="row">
-                                                {% if pedido.coletado %}
-                                                <div class="col-xs-12">
-                                                    <a href="waze://?ll={{ ponto.lat }},{{ ponto.lng }}&navigate=yes" class="btn btn-primary btn-block">Rota Waze</a>
-                                                </div>
                                                 {% endif %}
                                             </div>
-                                            <!--<br/>-->
-                                            <!--<div class="row">-->
-                                            <!--    <div class="col-xs-12">-->
-                                            <!--        <a href="#" class="btn btn-danger btn-block">Rota Google</a>-->
-                                            <!--    </div>-->
-                                            <!--</div>-->
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            {% if pedido.coletado %}
+                                                <div class="col-xs-12">
+                                                    <a href="waze://?ll={{ ponto.lat }},{{ ponto.lng }}&navigate=yes"
+                                                       class="btn btn-primary btn-block">Rota Waze</a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <!--<br/>-->
+                                        <!--<div class="row">-->
+                                        <!--    <div class="col-xs-12">-->
+                                        <!--        <a href="#" class="btn btn-danger btn-block">Rota Google</a>-->
+                                        <!--    </div>-->
+                                        <!--</div>-->
 
-        							    </div>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -322,36 +333,37 @@
 
             <div class=" box-footer form-group" style="margin-top: 35px;">
 
-                    <div class="row">
-                        <div class='col-xs-8 col-xs-offset-2'>
-                            
-                            {% if pedido.is_complete and not pedido.btn_finalizado %}
-                                <a href="#" class="btn btn-danger btn-block finalizar_{{ pedido.id }}">Finalizar Pedido</a>
-                                <script>
-                                                    $(document).ready(function(){
-                                                        $('.finalizar_{{ pedido.id }}').click(function(){
-                                                            play('alert');  
-                                                            swal({
-                                                                title: "Concluir entrega deste pedido?",
-                                                                text: '',
-                                                                type: 'info',
-                                                                closeOnConfirm: false,
-                                                                showCancelButton: true,
-                                                                showLoaderOnConfirm: true
-                                                            }, function () {
-                                                                setTimeout(function () {
-                                                                    window.location.href = '{% url 'finalizar_pedido' pedido.pk %}'
-                                                                }, 2000);
-                                                                });
-                                                            });
-                                                    });
-                                                </script>
-                            {% else %}
-                                <a href="{% url 'entregas_motorista' %}" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
-                            {% endif %}
-                            
-                        </div>
+                <div class="row">
+                    <div class='col-xs-8 col-xs-offset-2'>
+
+                        {% if pedido.is_complete and not pedido.btn_finalizado %}
+                            <a href="#" class="btn btn-danger btn-block finalizar_{{ pedido.id }}">Finalizar Pedido</a>
+                            <script>
+                                $(document).ready(function () {
+                                    $('.finalizar_{{ pedido.id }}').click(function () {
+                                        play('alert');
+                                        swal({
+                                            title: "Concluir entrega deste pedido?",
+                                            text: '',
+                                            type: 'info',
+                                            closeOnConfirm: false,
+                                            showCancelButton: true,
+                                            showLoaderOnConfirm: true
+                                        }, function () {
+                                            setTimeout(function () {
+                                                window.location.href = '{% url 'finalizar_pedido' pedido.pk %}'
+                                            }, 2000);
+                                        });
+                                    });
+                                });
+                            </script>
+                        {% else %}
+                            <a href="{% url 'entregas_motorista' %}" id="btn_cancelar"
+                               class="btn btn-default btn-block">Voltar</a>
+                        {% endif %}
+
                     </div>
+                </div>
             </div>
         </form>
     </div>
@@ -369,20 +381,20 @@
                 error: function (err) {
                     console.log(err);
                 }
-            }); 
+            });
         }
-        var apiGeolocationSuccess = function(position) {
-        	showPosition(position);
+        var apiGeolocationSuccess = function (position) {
+            showPosition(position);
         };
-        
-        var tryAPIGeolocation = function() {
-        	jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAnP_DnLEcdAnAhfCCHJyj2vGkj5Pbyg4U ", function(success) {
-        		apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
-          })
-          .fail(function(err) {
-              console.log(err);
-            console.log("API Geolocation error! \n\n"+err);
-          });
+
+        var tryAPIGeolocation = function () {
+            jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAnP_DnLEcdAnAhfCCHJyj2vGkj5Pbyg4U ", function (success) {
+                apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+            })
+                .fail(function (err) {
+                    console.log(err);
+                    console.log("API Geolocation error! \n\n" + err);
+                });
         };
         tryAPIGeolocation();
         $(document).ready(function () {

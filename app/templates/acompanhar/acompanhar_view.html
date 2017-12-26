@@ -1,6 +1,7 @@
 {% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
 
+{% load filters %}
 {% block content %}
     <style>
         .message-item {
@@ -168,10 +169,18 @@
                         </div>
                     </div>
                     <div class="col-xs-6">
-                        {#                        <div class="form-group">#}
-                        {#                            <label for="id_percurso">Percurso: </label>#}
-                        {#                            {{ pedido.percurso }}#}
-                        {#                        </div>#}
+                        <div class="col-xs-12">
+                            <center><label for="id_percurso">Distância</label></center>
+                        </div>
+                        <div class="col-xs-12">
+                            <center><h3 style="margin-top: 0px;">
+                                {% if pedido.distance %}
+                                    {{ pedido.distance|divide:1000|floatformat:1 }} KM
+                                {% else %}
+                                    {{ pedido|calculate_distance|floatformat:1 }} KM
+                                {% endif %}
+                            </h3></center>
+                        </div>
 
                     </div>
                 </div>
@@ -179,7 +188,8 @@
                 <div class="row">
                     <center>
                         <div class="col-xs-12">
-                            <a href="{% url 'map_route_pedido_view' pedido.pk %}" class="btn btn-primary btn-block">Ver Mapa</a>
+                            <a href="{% url 'map_route_pedido_view' pedido.pk %}" class="btn btn-primary btn-block">Ver
+                                Mapa</a>
                         </div>
                     </center>
                 </div>
@@ -188,21 +198,21 @@
                     <div class="qa-message-list" id="wallmessages">
                         <div class="message-item" id="m16">
                             <div class="message-inner">
-                             <div class="message-head clearfix">
-                                {% if pedido.coletado %}
-                                <div class="pull-right">
-									<label class="label label-success"><i
-                                              class=""></i> COLETADO</label>
-								</div>
-                                {% else %}
-                                <div class="pull-right">
-									<label class="label label-warning"><i
-                                              class=""></i>NÃO COLETADO</label>
-								</div>
-                                
-                                {% endif %}
-                                    
-                               
+                                <div class="message-head clearfix">
+                                    {% if pedido.coletado %}
+                                        <div class="pull-right">
+                                            <label class="label label-success"><i
+                                                    class=""></i> COLETADO</label>
+                                        </div>
+                                    {% else %}
+                                        <div class="pull-right">
+                                            <label class="label label-warning"><i
+                                                    class=""></i>NÃO COLETADO</label>
+                                        </div>
+
+                                    {% endif %}
+
+
                                     <div class="user-detail">
                                         <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
                                         <div class="post-meta">
@@ -225,19 +235,19 @@
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
                                         {% if ponto.status %}
-                                        <div class="pull-right">
-        									<label class="label label-success"><i
-                                                      class=""></i> ENTREGUE</label>
-        								</div>
+                                            <div class="pull-right">
+                                                <label class="label label-success"><i
+                                                        class=""></i> ENTREGUE</label>
+                                            </div>
                                         {% else %}
-                                        <div class="pull-right">
-        									<label class="label label-warning"><i
-                                                      class=""></i>EM ANDAMENTO</label>
-        								</div>
-                                        
+                                            <div class="pull-right">
+                                                <label class="label label-warning"><i
+                                                        class=""></i>EM ANDAMENTO</label>
+                                            </div>
+
                                         {% endif %}
                                         <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
-								
+
                                         <div class="user-detail">
                                             <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
                                             <div class="post-meta">
@@ -264,11 +274,11 @@
 
             <div class=" box-footer form-group" style="margin-top: 35px;">
 
-                    <div class="row">
-                        <div class='col-xs-8 col-xs-offset-2'>
-                            <a href="#" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
-                        </div>
+                <div class="row">
+                    <div class='col-xs-8 col-xs-offset-2'>
+                        <a href="#" id="btn_cancelar" class="btn btn-default btn-block">Voltar</a>
                     </div>
+                </div>
             </div>
         </form>
     </div>

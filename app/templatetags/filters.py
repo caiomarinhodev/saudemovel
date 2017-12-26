@@ -3,6 +3,7 @@ from datetime import datetime
 from django import template
 
 from app.models import Motorista
+from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
 
@@ -67,4 +68,28 @@ def ganhos_hoje(motorista):
             ganho_hoje = float(ganho_hoje) + float(pedido.valor_total)
         return ganho_hoje
     except (Motorista.DoesNotExist, Exception):
+        return 0.0
+
+
+@register.filter
+def calculate_distance(pedido):
+    try:
+        ptoi = pedido.ponto_set.first()
+        distance = 0
+        duration = 0
+        for pto in pedido.ponto_set.all():
+            origin = str(ptoi.lat) + "," + str(ptoi.lng)
+            destin = str(pto.lat) + "," + str(pto.lng)
+            calc = calculate_matrix_distance(origin, destin)
+            distance = distance + int(calc['dis_value'])
+            duration = duration + int(calc['dur_value'])
+            ptoi = pto
+        destin = str(pedido.estabelecimento.lat) + "," + str(pedido.estabelecimento.lng)
+        distance = distance + int(calculate_matrix_distance(pto, destin)['dis_value'])
+        duration = duration + int(calculate_matrix_distance(pto, destin)['dur_value'])
+        pedido.duration = duration
+        pedido.distance = distance
+        pedido.save()
+        return float(distance / 1000.0)
+    except (ValueError, ZeroDivisionError, Exception):
         return 0.0

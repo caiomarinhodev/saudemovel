@@ -96,6 +96,8 @@ class Pedido(TimeStamped):
     valor_total = models.CharField(max_length=6)
     btn_finalizado = models.BooleanField(default=False)
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    duration = models.CharField(max_length=100, blank=True, null=True)
+    distance = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
@@ -118,6 +120,8 @@ class Ponto(BaseAddress, TimeStamped):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     full_address = models.CharField(max_length=300, blank=True, null=True)
     status = models.BooleanField(default=False)
+    duration = models.CharField(max_length=100, blank=True, null=True)
+    distance = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.numero = self.numero.replace("_", "")
