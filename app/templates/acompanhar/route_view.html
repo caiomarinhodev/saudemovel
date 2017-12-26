@@ -195,7 +195,23 @@
                         <div class="message-item" id="m16">
                             <div class="message-inner">
                                 <div class="message-head clearfix">
-                                    <div class="pull-right">
+
+                                    <div class="user-detail">
+                                        <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
+                                        <div class="post-meta">
+                                            <div class="asker-meta">
+                                                <span class="qa-message-who">
+                                                    <span class="qa-message-who-pad">{{ pedido.estabelecimento.complemento }} </span>
+											    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="qa-message-content">
+                                    Buscar o pedido no estabelecimento {{ pedido.estabelecimento.user.first_name }}
+                                    <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
+                                </div>
+                                <div class="">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 {% if pedido.coletado %}
@@ -220,43 +236,46 @@
                                         <!--        <a href="waze://?ll={{ pedido.estabelecimento.lat }},{{ pedido.estabelecimento.lng }}&navigate=yes" class="btn btn-danger btn-block">Rota Google</a>-->
                                         <!--    </div>-->
                                         <!--</div>-->
-    										
+
     							    </div>
-                                    <div class="user-detail">
-                                        <h5 class="handle">{{ pedido.estabelecimento.endereco }}, {{ pedido.estabelecimento.numero }}, {{ pedido.estabelecimento.bairro }}</h5>
-                                        <div class="post-meta">
-                                            <div class="asker-meta">
-                                                <span class="qa-message-who">
-                                                    <span class="qa-message-who-pad">{{ pedido.estabelecimento.complemento }} </span>
-											    </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="qa-message-content">
-                                    Buscar o pedido no estabelecimento {{ pedido.estabelecimento.user.first_name }}
-                                    <p>Telefone Loja: {{ pedido.estabelecimento.phone }}</p>
-                                </div>
                             </div>
                         </div>
                         {% for ponto in pedido.ponto_set.all %}
                             <div class="message-item" id="m16">
                                 <div class="message-inner">
                                     <div class="message-head clearfix">
-                                        <div class="pull-right">
+
+        							    <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
+								
+                                        <div class="user-detail">
+                                            <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
+                                            <div class="post-meta">
+                                                <div class="asker-meta">
+                                                <span class="qa-message-who">
+                                                    <span class="qa-message-who-pad">{{ ponto.complemento }}</span>
+											    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="qa-message-content">
+                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }} 
+                                        <p>Telefone Cliente: {{ ponto.telefone }}</p>
+                                    </div>
+                                    <div class="">
                                             <div class="row">
                                                 <div class="col-xs-12">
                                                     {% if ponto.status %}
                                                         <label class="label label-success"><i
                                                                 class=""></i>
-                                                            ENTREGUE</label>    
+                                                            ENTREGUE</label>
                                                     {% else %}
                                                         {% if pedido.coletado %}
                                                             <a href="#" class='btn btn-danger btn-block fin_entrega_{{ ponto.id }}'>Finalizar</a>
                                                             <script>
                                                                 $(document).ready(function(){
                                                                     $('.fin_entrega_{{ ponto.id }}').click(function(){
-                                                                        play('alert');  
+                                                                        play('alert');
                                                                         swal({
                                                                             title: "Deseja marcar como concluido esta entrega?",
                                                                             text: 'Se este for seu ultimo ponto de entrega, não esqueça de finalizar o pedido por completo.',
@@ -290,25 +309,8 @@
                                             <!--        <a href="#" class="btn btn-danger btn-block">Rota Google</a>-->
                                             <!--    </div>-->
                                             <!--</div>-->
-        										
+
         							    </div>
-        							    <div class="avatar pull-left">Entrega: <h2>#{{ ponto.id }}</h2></div>
-								
-                                        <div class="user-detail">
-                                            <h5 class="handle">{{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}</h5>
-                                            <div class="post-meta">
-                                                <div class="asker-meta">
-                                                <span class="qa-message-who">
-                                                    <span class="qa-message-who-pad">{{ ponto.complemento }}</span>
-											    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="qa-message-content">
-                                        Entrega ao cliente {{ ponto.cliente }} - {{ ponto.observacoes }} 
-                                        <p>Telefone Cliente: {{ ponto.telefone }}</p>
-                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -390,5 +392,6 @@
             }, 300000);
         });
     </script>
+    {% include 'includes/script_message_notify.html' %}
 
 {% endblock %}

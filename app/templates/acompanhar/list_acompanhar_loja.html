@@ -215,10 +215,12 @@
             });
             setInterval(function () {
                 location.reload();
-            }, 60000);
+            }, 300000);
             $('#acompanhar').addClass('active');
         });
 
     </script>
+
+    {% include 'includes/script_message_notify.html' %}
 
 {% endblock %}

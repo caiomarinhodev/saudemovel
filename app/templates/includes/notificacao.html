@@ -82,30 +82,10 @@
             });
         {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
             play('alert');
-            {#            swal({#}
-            {#                title: "Mensagem!",#}
-            {#                text: 'A Loja lhe enviou uma mensagem, va para o CHAT.',#}
-            {#                type: 'warning',#}
-            {#                closeOnConfirm: false,#}
-            {#                showLoaderOnConfirm: true#}
-            {#            }, function () {#}
-            {#                setTimeout(function () {#}
-            {#                    window.location.href = '{% url 'chat_motorista_view' %}'#}
-            {#                }, 2000);#}
-            {#            });#}
+            swal("Mensagem!", "A Loja lhe enviou uma mensagem, va para o CHAT.", "warning");
         {% elif notificacao.type_message == 'MOTORISTA_MESSAGE' %}
             play('alert');
-            {#            swal({#}
-            {#                title: "Mensagem!",#}
-            {#                text: 'A Loja lhe enviou uma mensagem, va para o CHAT.',#}
-            {#                type: 'warning',#}
-            {#                closeOnConfirm: false,#}
-            {#                showLoaderOnConfirm: true#}
-            {#            }, function () {#}
-            {#                setTimeout(function () {#}
-            {#                    window.location.href = '{% url 'chat_motorista_view' %}'#}
-            {#                }, 2000);#}
-            {#            });#}
+            swal("Mensagem!", "O Motorista lhe enviou uma mensagem, va para o CHAT.", "warning");
         {% elif notificacao.type_message == 'ENABLE_ROTA' %}
             play('alert');
             swal({

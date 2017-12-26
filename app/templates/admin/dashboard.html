@@ -18,13 +18,14 @@
     </style>
     <style>
 
-        .green{
+        .green {
             color: green;
         }
 
-        .red{
+        .red {
             color: red;
         }
+
         .message-item {
             margin-bottom: 25px;
             margin-left: 40px;
@@ -211,6 +212,70 @@
             </div>
         </div>
         <!-- ./col -->
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table_0" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>LOJA</th>
+                                        <th>PEDIDOS</th>
+                                        <th>ENDEREÇO LOJA</th>
+                                        <th>ONLINE?</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for loja in lojas %}
+                                        <tr>
+                                            <td>
+                                                {% if loja.photo %}
+                                                    <img src="{{ loja.photo }}"
+                                                         name="aboutme" width="60" height="60" border="0"
+                                                         class="img-circle">
+                                                {% else %}
+                                                    <img src="{% static 'img/300.png' %}"
+                                                         name="aboutme" width="60" height="60" border="0"
+                                                         class="img-circle">
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ loja.id }}</td>
+                                            <td>{{ loja.user.first_name }}</td>
+                                            <td>{{ loja.pedido_set.all|length }}</td>
+                                            <td>
+                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}
+                                            </td>
+                                            <td>
+                                                {% if loja.is_online %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        ONLINE</label>
+                                                {% else %}
+                                                    <label class="label label-danger"><i
+                                                            class=""></i> OFFLINE</label>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -567,6 +632,11 @@
                                         <th>PLACA</th>
                                         <th>ONLINE</th>
                                         <th>OCUPADO</th>
+                                        <th>Corridas Mes</th>
+                                        <th>Ganho Mes</th>
+                                        <th>Corridas Hoje</th>
+                                        <th>Ganhos Hoje</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -661,6 +731,25 @@
                                                     <label class="label label-success"><i
                                                             class=""></i>
                                                         LIVRE</label>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ motorista|corridas_mes|length }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_mes|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|corridas_hoje|length }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_hoje|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {% if motorista.is_approved %}
+                                                    <span><i class="fa fa-check green"></i></span>
+                                                {% else %}
+                                                    <span><i class="fa fa-close red"></i></span>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -1163,6 +1252,10 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#table_0').DataTable({
+                responsive: true,
+                order: [[1, "desc"]]
+            });
             $('#table_1').DataTable({
                 responsive: true,
                 order: [[1, "desc"]]

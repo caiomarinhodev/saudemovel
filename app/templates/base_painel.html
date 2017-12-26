@@ -141,9 +141,7 @@
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                {% if pedidos_n %}
-                                    <span class="label label-warning">{{ pedidos_n|length }}</span>
-                                {% endif %}
+                                <span class="label label-warning">{{ pedidos_n|length }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header">Voce tem {{ pedidos_n|length }} Pedidos para entregar</li>
@@ -216,9 +214,7 @@
                     <li class="dropdown tasks-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-flag-o"></i>
-                            {% if notifications_n %}
-                                <span class="label label-danger">{{ notifications_n|length }}</span>
-                            {% endif %}
+                            <span class="label label-danger">{{ notifications_n|length }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="header">Você tem {{ notifications_n|length }} notificações</li>
@@ -558,22 +554,6 @@
 
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_new_message_for_motorista' %}",
-                    type: "GET", // http method
-                    success: function (data) {
-                        $('#notify').html(data);
-                    },
-                    complete: function () {
-                        $('#loading').hide();
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
-            }, 8000);
-
-            window.setInterval(function () {
-                $.ajax({
                     url: "{% url 'notify_enable_rota_motorista' %}",
                     type: "GET", // http method
                     success: function (data) {
@@ -620,12 +600,9 @@
                 });
             }, 8000);
 
-
-        {% else %}
-
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_new_message_for_loja' %}",
+                    url: "{% url 'notify_admin_message' %}",
                     type: "GET", // http method
                     success: function (data) {
                         $('#notify').html(data);
@@ -639,9 +616,12 @@
                 });
             }, 8000);
 
+
+        {% else %}
+
             window.setInterval(function () {
                 $.ajax({
-                    url: "{% url 'notify_novo_pedido_motorista' %}",
+                    url: "{% url 'notify_accept_order_loja' %}",
                     type: "GET", // http method
                     success: function (data) {
                         $('#notify').html(data);

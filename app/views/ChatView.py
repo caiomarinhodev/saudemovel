@@ -42,9 +42,18 @@ def get_chat(request, pk_pedido):
         if not m.is_read:
             m.is_read = True
             m.save()
-    for n in Notification.objects.filter(to=request.user, is_read=False): # sistema pode ler notificacao que pode ser importante. corrigir isso.
+    for n in Notification.objects.filter(to=request.user, is_read=False, message="Nova Mensagem"):
         n.is_read = True
         n.save()
+    context = Context({'pedido': pedido, 'user': request.user, 'messages': messages})
+    return_str = render_block_to_string('includes/messages.html', context)
+    return HttpResponse(return_str)
+
+
+@require_http_methods(["GET"])
+def return_to_get_chat(request, pk_pedido):
+    pedido = Pedido.objects.get(id=pk_pedido)
+    messages = pedido.message_set.all().order_by('created_at')
     context = Context({'pedido': pedido, 'user': request.user, 'messages': messages})
     return_str = render_block_to_string('includes/messages.html', context)
     return HttpResponse(return_str)
@@ -61,15 +70,15 @@ def submit_message(request, pk_pedido):
     except:
         loja = Estabelecimento.objects.get(user=request.user)
     if motorista:
-        mess = Message(u_from=motorista.user, u_to=pedido.estabelecimento.user, text=text, pedido=pedido)
+        mess = Message(u_from=motorista.user, u_to=pedido.estabelecimento.user, text=text, pedido=pedido, is_read=False)
         mess.save()
         message = "Nova Mensagem"
         n = Notification(type_message='MOTORISTA_MESSAGE', to=pedido.estabelecimento.user, message=message)
         n.save()
     elif loja:
-        mess = Message(u_from=loja.user, u_to=pedido.motorista, text=text, pedido=pedido)
+        mess = Message(u_from=loja.user, u_to=pedido.motorista, text=text, pedido=pedido, is_read=False)
         mess.save()
         message = "Nova Mensagem"
         n = Notification(type_message='LOJA_MESSAGE', to=pedido.motorista, message=message)
         n.save()
-    return get_chat(request, pedido.pk)
+    return return_to_get_chat(request, pedido.pk)

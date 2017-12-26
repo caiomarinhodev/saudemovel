@@ -59,13 +59,13 @@ class CustomContextMixin(ContextMixin):
         except:
             if 'messages_m' not in kwargs:
                 kwargs['messages_m'] = Message.objects.filter(u_to=self.request.user, is_read=False)
+                print(kwargs['messages_m'])
             if 'pedidos_n' not in kwargs:
                 kwargs['pedidos_n'] = Pedido.objects.filter(motorista=self.request.user, status=False,
                                                             is_complete=False).order_by(
                     '-created_at')
             if 'corridas_mes' not in kwargs:
                 now = datetime.now()
-                # TODO: Criar filter para jogar estes dados para cada motorista na tela de dashboard.
                 corridas_mes = User.objects.get(id=self.request.user.id).pedido_set.filter(created_at__month=now.month)
                 corridas_hoje = User.objects.get(id=self.request.user.id).pedido_set.filter(created_at__day=now.day)
                 kwargs['corridas_mes'] = corridas_mes
@@ -107,4 +107,5 @@ class DashboardMixin(ContextMixin):
         kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)
         kwargs['motoristas_livres'] = Motorista.objects.filter(is_online=True, ocupado=False)
         kwargs['motoristas_ocupados'] = Motorista.objects.filter(is_online=True, ocupado=True)
+        kwargs['lojas'] = Estabelecimento.objects.all().order_by('-created_at')
         return super(DashboardMixin, self).get_context_data(**kwargs)

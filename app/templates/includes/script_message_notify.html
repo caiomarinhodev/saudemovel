@@ -1,0 +1,38 @@
+<script>
+    {% if user.motorista %}
+        window.setInterval(function () {
+            $.ajax({
+                url: "{% url 'notify_new_message_for_motorista' %}",
+                type: "GET", // http method
+                success: function (data) {
+                    $('#notify').html(data);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }, 8000);
+    {% else %}
+
+        window.setInterval(function () {
+            $.ajax({
+                url: "{% url 'notify_new_message_for_loja' %}",
+                type: "GET", // http method
+                success: function (data) {
+                    $('#notify').html(data);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }, 8000);
+
+
+    {% endif %}
+</script>

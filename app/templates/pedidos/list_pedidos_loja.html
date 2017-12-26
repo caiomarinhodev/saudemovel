@@ -177,6 +177,12 @@
                                                     {% if not pedido.is_complete and not pedido.coletado %}
                                                         <div class="row">
                                                             <div class="col-xs-12">
+                                                                <a href="#"
+                                                                   class="btn btn-warning btn-block liberar_entrega_{{ pedido.pk }}">
+                                                                    Liberar p/ entrega
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-12">
                                                                 <a class="btn btn-info btn-block"
                                                                    href="{% url 'view_pedido_view' pedido.id %}">
                                                                     Ver Pedido
@@ -192,6 +198,26 @@
                                                         </div>
                                                         <script>
                                                             $(document).ready(function () {
+                                                                $('.liberar_entrega_{{ pedido.pk }}').click(function () {
+                                                                    swal({
+                                                                            title: "Deseja  Liberar o pedido para entrega ?",
+                                                                            text: "Vou notificar o motorista, e gerar uma rota para ele. Qualquer problema, ligue para o motorista: {{ pedido.motorista.phone }}.",
+                                                                            type: "warning",
+                                                                            showCancelButton: true,
+                                                                            confirmButtonClass: "btn-success",
+                                                                            confirmButtonText: "Liberar para Entrega",
+                                                                            cancelButtonText: "Cancelar",
+                                                                            closeOnConfirm: false,
+                                                                            showLoaderOnConfirm: true
+                                                                        },
+                                                                        function (isConfirm) {
+                                                                            if (isConfirm) {
+                                                                                setTimeout(function () {
+                                                                                    window.location.href = '{% url 'liberar_corrida' pedido.pk %}';
+                                                                                }, 3000)
+                                                                            }
+                                                                        });
+                                                                });
                                                                 $('.cancel_{{ pedido.id }}').click(function () {
                                                                     play('alert');
                                                                     swal({
@@ -321,10 +347,11 @@
             });
             setInterval(function () {
                 location.reload();
-            }, 60000);
+            }, 300000);
             $('#pedidos').addClass('active');
         });
 
     </script>
+    {% include 'includes/script_message_notify.html' %}
 
 {% endblock %}
