@@ -14,15 +14,15 @@ class PontoInline(admin.TabularInline):
 
 
 class MotoristaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'phone', 'is_online', 'placa')
+    list_display = ('id', 'user', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo')
 
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'id', 'endereco')
+    list_display = ('user', 'phone', 'id', 'full_address', 'photo', 'is_online', 'created_at')
 
 
 class PontoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cliente', 'endereco', 'numero', 'bairro', 'created_at')
+    list_display = ('id', 'cliente', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
 
 
 class PedidoAdmin(admin.ModelAdmin):
@@ -30,7 +30,7 @@ class PedidoAdmin(admin.ModelAdmin):
         PontoInline,
     ]
     list_display = ('estabelecimento',
-                    'id', 'motorista', 'valor_total', 'status', 'is_complete', 'coletado',
+                    'id', 'motorista', 'valor_total', 'status', 'is_complete', 'coletado', 'duration', 'distance',
                     'created_at')
 
 
@@ -51,7 +51,7 @@ class ClassificationAdmin(admin.ModelAdmin):
 
 
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('u_from', 'u_to', 'pedido', 'id', 'created_at')
+    list_display = ('u_from', 'u_to', 'pedido', 'id', 'is_read', 'created_at')
 
 
 admin.site.register(Motorista, MotoristaAdmin)
