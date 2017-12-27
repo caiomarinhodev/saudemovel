@@ -32,8 +32,7 @@ SECRET_KEY = '=6iehk1nzu)(iv%&lk%_qo+)$dd_eq-(3c8_@!)$7b7c0p^t3m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'c9.io', 'c9users.io', 'herokuapp.com', 'focusdelivery.org.br', 'localhost', '127.0.0.1', 'focusdelivery.tk',
-                 'focusdelivery.com.br', 'focusdelivery.net']
+ALLOWED_HOSTS = ['*', 'c9.io', 'c9users.io', 'herokuapp.com', 'focusdelivery.com.br', 'localhost', '127.0.0.1']
 
 # Application definition
 
