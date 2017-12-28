@@ -95,6 +95,7 @@ class Pedido(TimeStamped):
     is_complete = models.BooleanField(default=False)
     valor_total = models.CharField(max_length=6)
     btn_finalizado = models.BooleanField(default=False)
+    is_draft = models.BooleanField(default=False,)
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     duration = models.CharField(max_length=100, blank=True, null=True)
     distance = models.CharField(max_length=100, blank=True, null=True)

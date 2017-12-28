@@ -100,77 +100,88 @@
                                                 <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.ponto_set.all|length }} </a>
                                             </td>
                                             <td>
-                                                <a data-toggle="modal"
-                                                   href="#modal_{{ pedido.id }}"> {{ pedido.motorista.first_name }}</a>
+                                                {% if pedido.is_draft %}
+                                                    <label class="label label-warning">RASCUNHO</label>
+                                                {% else %}
+                                                    <a data-toggle="modal"
+                                                       href="#modal_{{ pedido.id }}"> {{ pedido.motorista.first_name }}</a>
 
-                                                <div class="modal fade" role="dialog" id="modal_{{ pedido.id }}">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal fade" role="dialog" id="modal_{{ pedido.id }}">
+                                                        <div class="modal-dialog">
 
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close"
-                                                                        data-dismiss="modal">&times;</button>
-                                                                <center><h3>Sobre {{ pedido.motorista.first_name }}</h3>
-                                                                </center>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="tab-content">
-                                                                    <center>
-                                                                        <div class="tab-pane active" id="about">
-                                                                            {% if pedido.motorista.motorista.photo %}
-                                                                                <img src="{{ pedido.motorista.motorista.photo }}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% else %}
-                                                                                <img src="{% static 'img/300.png' %}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% endif %}
-                                                                            <h3 class="media-heading">{{ pedido.motorista.first_name }}
-                                                                                <small> {{ pedido.motorista.motorista.placa }}</small>
-                                                                            </h3>
-                                                                            <span><strong>Pedidos Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
-                                                                            <!--</center>-->
-                                                                            <hr>
-                                                                            <center>
-                                                                                <p class="text-center">
-                                                                                    <strong>Telefone: </strong><br>
-                                                                                    {{ pedido.motorista.motorista.phone }}
-                                                                                </p>
-                                                                                <br>
-                                                                                <p class="text-center">
-                                                                                    <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
-                                                                                </p>
-                                                                            </center>
-                                                                        </div>
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal">&times;</button>
+                                                                    <center><h3>
+                                                                        Sobre {{ pedido.motorista.first_name }}</h3>
                                                                     </center>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Fechar
-                                                                </button>
+                                                                <div class="modal-body">
+                                                                    <div class="tab-content">
+                                                                        <center>
+                                                                            <div class="tab-pane active" id="about">
+                                                                                {% if pedido.motorista.motorista.photo %}
+                                                                                    <img src="{{ pedido.motorista.motorista.photo }}"
+                                                                                         name="aboutme" width="140"
+                                                                                         height="140" border="0"
+                                                                                         class="img-circle">
+                                                                                {% else %}
+                                                                                    <img src="{% static 'img/300.png' %}"
+                                                                                         name="aboutme" width="140"
+                                                                                         height="140" border="0"
+                                                                                         class="img-circle">
+                                                                                {% endif %}
+                                                                                <h3 class="media-heading">{{ pedido.motorista.first_name }}
+                                                                                    <small> {{ pedido.motorista.motorista.placa }}</small>
+                                                                                </h3>
+                                                                                <span><strong>Pedidos Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
+                                                                                <!--</center>-->
+                                                                                <hr>
+                                                                                <center>
+                                                                                    <p class="text-center">
+                                                                                        <strong>Telefone: </strong><br>
+                                                                                        {{ pedido.motorista.motorista.phone }}
+                                                                                    </p>
+                                                                                    <br>
+                                                                                    <p class="text-center">
+                                                                                        <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
+                                                                                    </p>
+                                                                                </center>
+                                                                            </div>
+                                                                        </center>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Fechar
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                {% endif %}
 
                                             </td>
                                             <td>
                                                 <a href="{% url 'view_pedido_view' pedido.id %}">R$ {{ pedido.valor_total }} </a>
                                             </td>
                                             <td>
-                                                {% if pedido.is_complete %}
-                                                    <label class="label label-success"><i
-                                                            class=""></i>
-                                                        ENTREGUE</label>
+                                                {% if pedido.is_draft %}
+                                                    <label class="label label-warning">RASCUNHO</label>
                                                 {% else %}
-                                                    <label class="label label-warning"><i
-                                                            class=""></i> EM ANDAMENTO</label>
+                                                    {% if pedido.is_complete %}
+                                                        <label class="label label-success"><i
+                                                                class=""></i>
+                                                            ENTREGUE</label>
+                                                    {% else %}
+                                                        <label class="label label-warning"><i
+                                                                class=""></i> EM ANDAMENTO</label>
+                                                    {% endif %}
                                                 {% endif %}
+
                                             </td>
                                             <td>
                                                 {% if pedido.motorista %}
@@ -182,8 +193,9 @@
                                                                     Liberar p/ entrega
                                                                 </a>
                                                             </div>
+                                                            <hr/>
                                                             <div class="col-xs-12">
-                                                                <a class="btn btn-info btn-block"
+                                                                <a class="btn btn-primary btn-block"
                                                                    href="{% url 'view_pedido_view' pedido.id %}">
                                                                     Ver Pedido
                                                                 </a>
@@ -292,7 +304,7 @@
                                                 {% else %}
                                                     <div class="row">
                                                         <div class="col-xs-12">
-                                                            <a class="btn btn-warning btn-block"
+                                                            <a class="btn btn-primary btn-block"
                                                                href="{% url 'view_pedido_view' pedido.id %}">
                                                                 Ver Pedido
                                                             </a>

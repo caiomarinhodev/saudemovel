@@ -831,6 +831,7 @@
                                         <th>N° ENTREGAS</th>
                                         <th>MOTORISTA</th>
                                         <th>VALOR ENTREGA</th>
+                                        <th>STATUS</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -997,6 +998,11 @@
                                             </td>
                                             <td>
                                                 R$ {{ ped.valor_total }}
+                                            </td>
+                                            <td>
+                                                {% if ped.is_draft %}
+                                                    <label class="label label-warning">RASCUNHO</label>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

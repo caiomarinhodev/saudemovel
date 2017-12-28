@@ -83,7 +83,7 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
     template_name = 'pedidos/list_pedidos_motorista.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(is_complete=False, coletado=False, status=True).order_by('-created_at')
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by('-created_at')
 
 
 class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
@@ -99,7 +99,7 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin
 class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'
-    fields = ['estabelecimento', ]
+    fields = ['estabelecimento', 'is_draft']
     template_name = 'pedidos/add_pedido.html'
 
     # def get_success_url(self):
@@ -128,11 +128,13 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
                 pontoset.save()
         message = "Um novo pedido foi feito pela " + self.request.user.first_name
         print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
-        a = func()
-        for m in Motorista.objects.all():
-            if m.is_online and not m.ocupado:
-                n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
-                n.save()
+        pedido = self.object
+        if not pedido.is_draft:
+            a = func()
+            for m in Motorista.objects.all():
+                if m.is_online and not m.ocupado:
+                    n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
+                    n.save()
         return super(PedidoCreateView, self).form_valid(form)
 
 
@@ -152,7 +154,7 @@ class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
 class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'
-    fields = ['estabelecimento', ]
+    fields = ['estabelecimento', 'is_draft']
     template_name = 'pedidos/edit_pedido.html'
 
     def get_initial(self):
@@ -178,6 +180,13 @@ class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
                 pontoset.instance = self.object
                 pontoset.save()
         print('>>>>>>>> Pedido editado pela loja ' + self.request.user.first_name)
+        pedido = self.object
+        if not pedido.is_draft:
+            a = func()
+            for m in Motorista.objects.all():
+                if m.is_online and not m.ocupado:
+                    n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
+                    n.save()
         return super(PedidoUpdateView, self).form_valid(form)
 
 

@@ -47,7 +47,7 @@ class FormLogin(BaseForm):
 class FormPedido(ModelForm, BaseForm):
     class Meta:
         model = Pedido
-        fields = ['estabelecimento', ]
+        fields = ['estabelecimento', 'is_draft']
 
 
 class FormPonto(ModelForm, BaseForm):
