@@ -322,7 +322,7 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
         if len(pedido.ponto_set.all()) == pto_entregues:
             pedido.is_complete = True
             pedido.save()
-            messages.success(request, 'Tudo entregue! Finalize este pedido para poder pegar outros.')
+            messages.success(request, 'Tudo entregue! Finalize esta Rota para poder pegar outros.')
         if pedido.estabelecimento.is_online:
             print('>>>>>>>> Motorista ' + request.user.first_name + ' entregou pedido ao cliente ' + ponto.cliente)
             message = "Motorista " + request.user.first_name + " entregou pedido ao cliente " + ponto.cliente + " no endereco " + ponto.full_address
@@ -358,7 +358,7 @@ def finalizar_pedido(request, pk_pedido):
 
 @require_http_methods(["GET"])
 def get_pedidos(request):
-    pedidos = Pedido.objects.filter(status=False)
+    pedidos = Pedido.objects.filter(status=True)
     if len(pedidos) > 0:
         return JsonResponse({'result': '1'})
     return JsonResponse({'result': '0'})

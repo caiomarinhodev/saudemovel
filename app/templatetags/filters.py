@@ -28,6 +28,22 @@ def soma_avaliacao(value):
 
 
 @register.filter
+def get_latitude(motorista):
+    try:
+        return motorista.user.location_set.all().order_by('-created_at').last().lat
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0.0
+
+
+@register.filter
+def get_longitude(motorista):
+    try:
+        return motorista.user.location_set.all().order_by('-created_at').last().lng
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0.0
+
+
+@register.filter
 def corridas_mes(motorista):
     try:
         now = datetime.now()

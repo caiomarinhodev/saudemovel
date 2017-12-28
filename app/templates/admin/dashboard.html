@@ -652,7 +652,7 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                <a href=""> {{ motorista.id }}</a>
+                                                {{ motorista.id }}
                                             </td>
                                             <td>
                                                 <a data-toggle="modal"
@@ -1241,9 +1241,9 @@
         {% for moto in motoristas %}
             {% if moto.user.location_set.last.lat %}
                 {% if moto.is_online %}
-                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m}).bindPopup("{{ moto.user.first_name }}").addTo(map);
+                    L.marker([{{ moto|get_latitude }}, {{ moto|get_longitude }}], {icon: icon_m}).bindPopup("{{ moto.user.first_name }}").addTo(map);
                 {% else %}
-                    L.marker([{{ moto.user.location_set.last.lat }}, {{ moto.user.location_set.last.lng }}], {icon: icon_m_2}).bindPopup("{{ moto.user.first_name }}").addTo(map);
+                    L.marker([{{ moto|get_latitude }}, {{ moto|get_longitude }}], {icon: icon_m_2}).bindPopup("{{ moto.user.first_name }}").addTo(map);
                 {% endif %}
             {% endif %}
         {% endfor %}
