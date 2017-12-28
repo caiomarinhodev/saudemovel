@@ -48,7 +48,10 @@
                                 </tr>
                             {% endfor %}
                         </table>
-                    <center>Salvar como Rascunho: {{ form.is_draft }}</center>
+                        <center>Salvar como Rascunho: {{ form.is_draft }}</center>
+                        <br/>
+                        <center><p style="font-size: 13px;">AO SALVAR COMO RASCUNHO, ESTE PEDIDO NAO SERA ENVIADO PARA
+                            OS MOTORISTAS, E ELES NAO SERAO NOTIFICADOS</p></center>
                     </div>
                     <script src="{% static 'js/jquery.formset.js' %}"></script>
                     <script type="text/javascript">
