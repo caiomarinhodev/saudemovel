@@ -183,10 +183,11 @@ class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
         pedido = self.object
         if not pedido.is_draft:
             a = func()
-            for m in Motorista.objects.all():
-                if m.is_online and not m.ocupado:
-                    n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
-                    n.save()
+            # message = "Um novo pedido foi feito pela " + self.request.user.first_name
+            # for m in Motorista.objects.all():
+            #     if m.is_online and not m.ocupado:
+            #         n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
+            #         n.save()
         return super(PedidoUpdateView, self).form_valid(form)
 
 
