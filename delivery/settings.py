@@ -30,9 +30,9 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '=6iehk1nzu)(iv%&lk%_qo+)$dd_eq-(3c8_@!)$7b7c0p^t3m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'c9.io', 'c9users.io', 'herokuapp.com', 'focusdelivery.com.br', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['focusdelivery.com.br', 'herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
