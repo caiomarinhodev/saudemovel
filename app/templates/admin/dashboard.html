@@ -811,6 +811,122 @@
         <!-- /.col -->
     </div>
     <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-header">
+                    <h3 class="box-title">Bairro mais frequente do mes</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table_bfm" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>BAIRRO</th>
+                                        <th>PEDIDOS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% regroup pontos_mes by bairro as bairros %}
+                                    {% for bairr in bairros %}
+                                        <tr>
+                                            <td>
+                                                {{ bairr.grouper }}
+                                            </td>
+                                            <td>{{ bairr.list|length }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-header">
+                    <h3 class="box-title">Bairro mais frequente total</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table_bft" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>BAIRRO</th>
+                                        <th>PEDIDOS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% regroup pontos_all by bairro as bairro_list %}
+                                    {% for bairr in bairro_list %}
+                                        <tr>
+                                            <td>
+                                                {{ bairr.grouper }}
+                                            </td>
+                                            <td>{{ bairr.list|length }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-header">
+                    <h3 class="box-title">Endereco mais frequente total</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table_aft" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ENDERECO</th>
+                                        <th>PEDIDOS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% regroup address_all by endereco as address_list %}
+                                    {% for address in address_list %}
+                                        <tr>
+                                            <td>
+                                                {{ address.grouper }}
+                                            </td>
+                                            <td>{{ address.list|length }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
@@ -1244,15 +1360,6 @@
                 L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).bindPopup("{{ est.user.first_name }}").addTo(map);
             {% endif %}
         {% endfor %}
-        {% for moto in motoristas %}
-            {% if moto.user.location_set.last.lat %}
-                {% if moto.is_online %}
-                    L.marker([{{ moto|get_latitude }}, {{ moto|get_longitude }}], {icon: icon_m}).bindPopup("{{ moto.user.first_name }}").addTo(map);
-                {% else %}
-                    L.marker([{{ moto|get_latitude }}, {{ moto|get_longitude }}], {icon: icon_m_2}).bindPopup("{{ moto.user.first_name }}").addTo(map);
-                {% endif %}
-            {% endif %}
-        {% endfor %}
 
 
     </script>
@@ -1260,6 +1367,21 @@
         $(document).ready(function () {
             $('#table_0').DataTable({
                 responsive: true,
+                order: [[1, "desc"]]
+            });
+            $('#table_bfm').DataTable({
+                responsive: true,
+                searching: false,
+                order: [[1, "desc"]]
+            });
+            $('#table_bft').DataTable({
+                responsive: true,
+                searching: false,
+                order: [[1, "desc"]]
+            });
+            $('#table_aft').DataTable({
+                responsive: true,
+                searching: false,
                 order: [[1, "desc"]]
             });
             $('#table_1').DataTable({

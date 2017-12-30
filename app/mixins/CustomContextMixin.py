@@ -85,6 +85,7 @@ class CustomContextMixin(ContextMixin):
 
 class DashboardMixin(ContextMixin):
     def get_context_data(self, **kwargs):
+        now = datetime.now()
         motoristas = Motorista.objects.all()
         pedidos = Pedido.objects.all()
         users = User.objects.all()
@@ -108,4 +109,7 @@ class DashboardMixin(ContextMixin):
         kwargs['motoristas_livres'] = Motorista.objects.filter(is_online=True, ocupado=False)
         kwargs['motoristas_ocupados'] = Motorista.objects.filter(is_online=True, ocupado=True)
         kwargs['lojas'] = Estabelecimento.objects.all().order_by('-created_at')
+        kwargs['pontos_mes'] = Ponto.objects.filter(created_at__month=now.month).order_by('bairro')
+        kwargs['pontos_all'] = Ponto.objects.all().order_by('bairro')
+        kwargs['address_all'] = Ponto.objects.all().order_by('endereco')
         return super(DashboardMixin, self).get_context_data(**kwargs)
