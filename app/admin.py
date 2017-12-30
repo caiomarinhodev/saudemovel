@@ -43,7 +43,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class BairroAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'valor', 'id')
+    list_display = ('nome', 'valor', 'valor_madrugada', 'id')
 
 
 class ClassificationAdmin(admin.ModelAdmin):

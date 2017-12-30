@@ -1,6 +1,8 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+from datetime import datetime, time
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -18,6 +20,7 @@ class TimeStamped(models.Model):
 class Bairro(TimeStamped):
     nome = models.CharField(max_length=100, blank=True)
     valor = models.CharField(max_length=3, blank=True, null=True)
+    valor_madrugada = models.CharField(max_length=3, default='8')
 
     def __unicode__(self):
         return u'%s' % self.nome
@@ -109,7 +112,12 @@ class Pedido(TimeStamped):
     def save(self, *args, **kwargs):
         valor = 0
         for pto in self.ponto_set.all():
-            valor = valor + int(pto.bairro.valor)
+            now = datetime.now()
+            now_time = now.time()
+            if time(23, 00) <= now_time <= time(6, 00):
+                valor = valor + int(pto.bairro.valor_madrugada)
+            else:
+                valor = valor + int(pto.bairro.valor)
         self.valor_total = valor
         super(Pedido, self).save(*args, **kwargs)
 
