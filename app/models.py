@@ -110,17 +110,18 @@ class Pedido(TimeStamped):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
 
     def save(self, *args, **kwargs):
-        valor = 0
-        for pto in self.ponto_set.all():
-            now = datetime.now()
-            now_time = now.time()
-            if time(22, 45) <= now_time <= time(23, 59):
-                valor = valor + int(pto.bairro.valor_madrugada)
-            elif time(1, 00) <= now_time <= time(5, 59):
-                valor = valor + int(pto.bairro.valor_madrugada)
-            else:
-                valor = valor + int(pto.bairro.valor)
-        self.valor_total = valor
+        if not self.valor_total:
+            valor = 0
+            for pto in self.ponto_set.all():
+                now = datetime.now()
+                now_time = now.time()
+                if time(22, 45) <= now_time <= time(23, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada)
+                elif time(1, 00) <= now_time <= time(5, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada)
+                else:
+                    valor = valor + int(pto.bairro.valor)
+            self.valor_total = valor
         super(Pedido, self).save(*args, **kwargs)
 
 
