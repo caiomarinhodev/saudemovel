@@ -115,9 +115,9 @@ class Pedido(TimeStamped):
             for pto in self.ponto_set.all():
                 now = datetime.now()
                 now_time = now.time()
-                if time(22, 45) <= now_time <= time(23, 59):
+                if time(22, 59) <= now_time <= time(23, 59):
                     valor = valor + int(pto.bairro.valor_madrugada)
-                elif time(1, 00) <= now_time <= time(5, 59):
+                elif time(0, 00) <= now_time <= time(5, 59):
                     valor = valor + int(pto.bairro.valor_madrugada)
                 else:
                     valor = valor + int(pto.bairro.valor)
