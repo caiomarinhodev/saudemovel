@@ -49,7 +49,7 @@ class Motorista(TimeStamped):
     ocupado = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
     placa = models.CharField(max_length=30, blank=True, null=True)
-    is_approved = models.BooleanField(default=True)
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.first_name
