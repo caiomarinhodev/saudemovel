@@ -225,12 +225,14 @@ class RegisterMotoristaView(FormView):
             return self.form_invalid(form)
         user_data = {}
         common_data = {}
-        CLIENT_ID = "cdadf801dc167ab"
-        bencode = b64encode(self.request.FILES['file'].read())
-        client = pyimgur.Imgur(CLIENT_ID)
-        r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
-        file = r['link']
-        print(file)
+        if self.request.FILES:
+            CLIENT_ID = "cdadf801dc167ab"
+            bencode = b64encode(self.request.FILES['file'].read())
+            client = pyimgur.Imgur(CLIENT_ID)
+            r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+            file = r['link']
+        else:
+            file = "http://placehold.it/300x300"
         user_data['first_name'] = data['first_name']
         user_data['username'] = data['username']
         user_data['password'] = data['password']

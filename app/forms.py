@@ -186,7 +186,7 @@ class FormMotoristaRegister(ModelForm, BaseForm):
                                                                                          'placeholder': 'Placa do Veiculo'
                                                                                          }))
     file = forms.FileField(required=False,
-                           widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Logotipo do Estabelecimento'
+                           widget=forms.FileInput(attrs={'required': False, 'placeholder': 'Logotipo do Estabelecimento'
                                                          }))
 
     class Meta:
