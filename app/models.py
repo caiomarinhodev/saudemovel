@@ -98,7 +98,7 @@ class Pedido(TimeStamped):
     is_complete = models.BooleanField(default=False)
     valor_total = models.CharField(max_length=6)
     btn_finalizado = models.BooleanField(default=False)
-    is_draft = models.BooleanField(default=False,)
+    is_draft = models.BooleanField(default=False, )
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     duration = models.CharField(max_length=100, blank=True, null=True)
     distance = models.CharField(max_length=100, blank=True, null=True)
@@ -114,7 +114,9 @@ class Pedido(TimeStamped):
         for pto in self.ponto_set.all():
             now = datetime.now()
             now_time = now.time()
-            if time(23, 00) <= now_time <= time(6, 00):
+            if time(22, 45) <= now_time <= time(23, 59):
+                valor = valor + int(pto.bairro.valor_madrugada)
+            elif time(1, 00) <= now_time <= time(5, 59):
                 valor = valor + int(pto.bairro.valor_madrugada)
             else:
                 valor = valor + int(pto.bairro.valor)
