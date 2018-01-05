@@ -102,7 +102,7 @@ class DashboardMixin(ContextMixin):
             len(motoristas) + len(pedidos) + len(users) + len(notificacoes) + len(locations) + len(bairros) + len(
                 estabelecimentos) + len(pontos)) / 10000) * 100)
         kwargs['num_pedidos_entregues'] = Pedido.objects.filter(is_complete=True)
-        kwargs['pedidos_entregues'] = Pedido.objects.filter(is_complete=True)[:50]
+        kwargs['pedidos_entregues'] = Pedido.objects.filter(is_complete=True).order_by('-created_at')
         kwargs['pedidos_pendentes'] = Pedido.objects.filter(status=True)
         kwargs['pedidos_andamento'] = Pedido.objects.filter(status=False, is_complete=False)
         kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)
