@@ -29,6 +29,12 @@
             <div class="col-md-8">
                 <p class="text-center">
                     <strong>Período: {{ user|get_init_date_period|date:"d, b" }} - {% now "d, b" %}</strong>
+                    &nbsp;||&nbsp;
+                    <span><label
+                            style="height: 10px;width: 10px;background-color: #3b8bba;"></label> Dia da Semana</span>
+                    &nbsp;&nbsp;
+                    <span><label
+                            style="height: 10px;width: 10px;background-color: #c1c7d1;"></label> Mesmo dia na Semana Passada</span>
                 </p>
 
                 <div class="chart">
