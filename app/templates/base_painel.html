@@ -351,7 +351,7 @@
                         {% endif %}
                     {% elif user.estabelecimento %}
                         {% if user.estabelecimento.photo %}
-                            <img src="{{ user.estabelecimento.photo }}" class="img-circle" alt="User Image">
+                            <img src="{{ user.estabelecimento.photo }}" class="img-circle" alt="User Image" style="margin-bottom: 15px;">
                         {% else %}
                             <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
