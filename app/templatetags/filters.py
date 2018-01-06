@@ -248,6 +248,43 @@ def get_data_grafico_seven(user):
 
 
 @register.filter
+def get_data_anterior_grafico_seven(user):
+    try:
+        now = datetime.now()
+        start_date = now - timedelta(days=14)
+        end_date = now - timedelta(days=7)
+        loja = Estabelecimento.objects.get(user=user)
+        pedidos = loja.pedido_set.filter(created_at__range=(start_date, end_date))
+        dic = {}
+        balde = []
+        arr = []
+        delta = end_date - start_date
+        for i in range(delta.days + 1):
+            arr.append(start_date + timedelta(days=i))
+
+        for pedido in pedidos:
+            if not (pedido.created_at.day) in dic:
+                dic[pedido.created_at.day] = [pedido]
+            else:
+                dic[pedido.created_at.day] += [pedido]
+        print(dic)
+        flag = False
+        for label in arr:
+            for k, v in dic.items():
+                if k == label.day:
+                    flag = True
+                    balde.append(len(v))
+            if not flag:
+                balde.append(0)
+            else:
+                flag = False
+        print(balde)
+        return balde
+    except Exception:
+        return None
+
+
+@register.filter
 def get_labels_grafico_seven(user):
     try:
         arr = []
