@@ -156,6 +156,33 @@
 
 
     <div class="row">
+        <div class="col-md-6">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>R$ {{ pedidos|get_renda_gerada_total|floatformat:2 }}</h3>
+
+                    <p>Renda Gerada Total</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-line-chart"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>R$ {{ pedidos|get_renda_gerada_mes|floatformat:2}}</h3>
+
+                    <p>Renda Gerada Mês</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-money"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">

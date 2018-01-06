@@ -155,3 +155,26 @@ def get_ganhos_mes(list_pedidos):
         return ganho_mes
     except (Motorista.DoesNotExist, Exception):
         return 0.0
+
+
+@register.filter
+def get_renda_gerada_total(pedidos):
+    count = 0.0
+    try:
+        for pedido in pedidos:
+            count = count + float(pedido.valor_total)
+        return count
+    except (ValueError, ZeroDivisionError, Exception):
+        return count
+
+
+@register.filter
+def get_renda_gerada_mes(pedidos):
+    now = datetime.now()
+    count = 0.0
+    try:
+        for pedido in pedidos.filter(created_at__month=now.month):
+            count = count + float(pedido.valor_total)
+        return count
+    except (ValueError, ZeroDivisionError, Exception):
+        return count
