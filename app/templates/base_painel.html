@@ -345,7 +345,7 @@
                 <div class="pull-left image">
                     {% if user.motorista %}
                         {% if user.motorista.photo %}
-                            <img src="{{ user.motorista.photo }}" class="img-circle" alt="User Image">
+                            <img src="{{ user.motorista.photo }}" class="img-circle" alt="User Image" style="margin-bottom: 15px;">
                         {% else %}
                             <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
