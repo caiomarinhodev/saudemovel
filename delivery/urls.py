@@ -19,7 +19,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos
-from app.views.RelatorioView import RelatorioTemplateView
+from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -69,6 +69,8 @@ urlpatterns = [
     url(r'^app/perfil/edit/$', EditarPerfilView.as_view(), name="edit_perfil_view"),
 
     url(r'^app/set-feriado/$', set_feriado_admin, name="set_feriado"),
+
+    url(r'^app/relatorio/$', DashboardReportViewUser.as_view(), name="relatorio-user"),
 
     url(r'^app/relatorios/$', RelatorioTemplateView.as_view(), name="relatorios"),
 

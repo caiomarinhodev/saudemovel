@@ -171,7 +171,7 @@
         <div class="col-md-6">
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>R$ {{ pedidos|get_renda_gerada_mes|floatformat:2}}</h3>
+                    <h3>R$ {{ pedidos|get_renda_gerada_mes|floatformat:2 }}</h3>
 
                     <p>Renda Gerada Mês</p>
                 </div>
@@ -378,6 +378,32 @@
             </div>
         </div>
     </div>
+
+    </hr>
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">Ver Relatório de:</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="{% url 'relatorio-user' %}" method="GET">
+                        <div class="col-xs-4">
+                            <select class="form-control" name="pk" id="pk">
+                                {% for estab in estabelecimentos %}
+                                    <option value="{{ estab.user.id }}">{{ estab.user.first_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="submit" class="btn btn-info btn-flat">Ver!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
 
     <div class="row">
         <div class="col-md-6">
