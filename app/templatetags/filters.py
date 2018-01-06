@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django import template
 
@@ -111,7 +111,6 @@ def calculate_distance(pedido):
         return 0.0
 
 
-
 @register.filter
 def get_pedidos_mes(user, filter):
     now = datetime.now()
@@ -126,7 +125,8 @@ def get_pedidos_mes(user, filter):
 def get_pontos_mes(user, filter):
     now = datetime.now()
     try:
-        return Ponto.objects.filter(created_at__month=now.month, pedido__estabelecimento__user=user, pedido__is_complete=True).order_by(filter)
+        return Ponto.objects.filter(created_at__month=now.month, pedido__estabelecimento__user=user,
+                                    pedido__is_complete=True).order_by(filter)
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
@@ -146,9 +146,7 @@ def get_gastos_entregas_mes(user):
 
 @register.filter
 def get_ganhos_mes(list_pedidos):
-    print(list_pedidos)
     try:
-        now = datetime.now()
         ganho_mes = 0.0
         for pedido in list_pedidos:
             ganho_mes = float(ganho_mes) + float(pedido.valor_total)
@@ -178,3 +176,88 @@ def get_renda_gerada_mes(pedidos):
         return count
     except (ValueError, ZeroDivisionError, Exception):
         return count
+
+
+@register.filter
+def get_init_date_period(user):
+    now = datetime.now()
+    try:
+        start_date = now - timedelta(days=7)
+        return start_date
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_pedidos_semana(user):
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        start_date = now - timedelta(days=7)
+        end_date = now
+        return loja.pedido_set.filter(created_at__range=(start_date, end_date))
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_media_pedidos_semana(user):
+    try:
+        return float(len(get_pedidos_semana(user))) / 7.0
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_pedidos_hoje(user):
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        return loja.pedido_set.filter(created_at__day=now.day)
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_data_grafico_seven(user):
+    try:
+        pedidos = get_pedidos_semana(user)
+        dic = {}
+        balde = []
+        # for label in get_labels_grafico_seven(user):
+        #     balde[label.day] = []
+
+        for pedido in pedidos:
+            if not pedido.created_at.day in dic:
+                dic[pedido.created_at.day] = [pedido]
+            else:
+                dic[pedido.created_at.day] += [pedido]
+        flag = False
+        for label in get_labels_grafico_seven(user):
+            for k, v in dic.items():
+                if k == label.day:
+                    flag = True
+                    balde.append(len(v))
+            if not flag:
+                balde.append(0)
+            else:
+                flag = False
+        print(balde)
+        return balde
+    except Exception:
+        return None
+
+
+@register.filter
+def get_labels_grafico_seven(user):
+    try:
+        arr = []
+        now = datetime.now()
+        start_date = now - timedelta(days=7)
+        end_date = now
+        delta = end_date - start_date
+        for i in range(delta.days + 1):
+            arr.append(start_date + timedelta(days=i))
+        return arr
+    except Exception:
+        return None
