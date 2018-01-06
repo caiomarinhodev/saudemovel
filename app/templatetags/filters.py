@@ -228,10 +228,12 @@ def get_data_grafico_seven(user):
         #     balde[label.day] = []
 
         for pedido in pedidos:
+            print(pedido.created_at)
             if not pedido.created_at.day in dic:
                 dic[pedido.created_at.day] = [pedido]
             else:
                 dic[pedido.created_at.day] += [pedido]
+        print(dic)
         flag = False
         for label in get_labels_grafico_seven(user):
             for k, v in dic.items():
