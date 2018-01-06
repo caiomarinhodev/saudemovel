@@ -43,7 +43,15 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class BairroAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'valor', 'valor_madrugada', 'id')
+    list_display = ('nome', 'valor', 'valor_madrugada', 'valor_feriado', 'valor_madrugada_feriado', 'id')
+
+
+class ConfigAdminAdmin(admin.ModelAdmin):
+    list_display = ('is_feriado', 'id',)
+
+
+class ConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('tema', 'id', 'plano',)
 
 
 class ClassificationAdmin(admin.ModelAdmin):
@@ -63,3 +71,5 @@ admin.site.register(Location, LocationAdmin)
 admin.site.register(Bairro, BairroAdmin)
 admin.site.register(Classification, ClassificationAdmin)
 admin.site.register(Message, MessageAdmin)
+admin.site.register(ConfigAdmin, ConfigAdminAdmin)
+admin.site.register(Configuration, ConfigurationAdmin)

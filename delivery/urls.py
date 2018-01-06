@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
-from app.views.HomeView import DashboardView
+from app.views.HomeView import DashboardView, set_feriado_admin
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
@@ -19,6 +19,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos
+from app.views.RelatorioView import RelatorioTemplateView
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -66,6 +67,10 @@ urlpatterns = [
     url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
 
     url(r'^app/perfil/edit/$', EditarPerfilView.as_view(), name="edit_perfil_view"),
+
+    url(r'^app/set-feriado/$', set_feriado_admin, name="set_feriado"),
+
+    url(r'^app/relatorios/$', RelatorioTemplateView.as_view(), name="relatorios"),
 
     url(r'^app/acompanhar/(?P<pk>[0-9]+)/$', AcompanharDetailView.as_view(), name="acompanhar_pedido_view"),
     url(r'^app/acompanhar/$', AcompanharListView.as_view(), name='acompanhar_list'),

@@ -46,7 +46,6 @@ class CustomContextMixin(ContextMixin):
                                                             status=False, is_complete=False).order_by(
                     '-created_at')
                 kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True, ocupado=False)
-                print(kwargs['motoristas_online'])
                 kwargs['pedidos_andamento'] = Pedido.objects.filter(estabelecimento=self.request.user.estabelecimento,
                                                                     status=False, is_complete=False,
                                                                     coletado=True).order_by(

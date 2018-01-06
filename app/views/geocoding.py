@@ -5,7 +5,6 @@ def calculate_matrix_distance(origin, destination):
     key = " AIzaSyBJZP7dFkC1lguafSNT0E_7rOIzvX03D5U"
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&key=%s" % (
     origin, destination, key)
-    print(url)
     response = requests.get(url)
     response = response.json()
     print(response)
@@ -31,7 +30,6 @@ def calculate_matrix_distance(origin, destination):
 def geocode(street):
     key = "AIzaSyCn8DVSybps_Qx8EeFz47d2O-QbxJhDeFI"
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s" % (street, key)
-    print(url)
     response = requests.get(url)
     response = response.json()
     if len(response['results']) == 0:

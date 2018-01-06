@@ -1,0 +1,94 @@
+{% load filters %}
+{% load staticfiles %}
+<link href="{% static 'plugins/morris/morris.css' %}"/>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/morris/morris.min.js' %}"></script>
+<script src="{% static 'plugins/fastclick/fastclick.min.js' %}"></script>
+
+<!-- DONUT CHART -->
+<div class="box box-default">
+
+    <div class="box-header with-border">
+        <h3 class="box-title">Gastos em Entregas no Mês</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body chart-responsive">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>R$ {{ user|get_gastos_entregas_mes|floatformat:"2" }}</h3>
+
+                        <p>Gastos com entregas neste Mês</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart" id="bar-chart" style="height: 300px;"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <center>
+            <span><label style="height: 10px;width: 10px;background-color: #00a65a;"></label> Ganhos em R$</span> &nbsp;&nbsp;
+            <span><label style="height: 10px;width: 10px;background-color: #f56954;"></label> N° de Entregas</span>
+        </center>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+<script>
+    $(function () {
+        {% if user|get_pedidos_mes:'motorista' %}
+            {#            var donut = new Morris.Donut({#}
+            {#                element: 'sales-chart',#}
+            {#                resize: true,#}
+            {#                data: [#}
+            {#                    {% regroup user|get_pedidos_mes:'motorista' by motorista as motorista_list %}#}
+            {#                    {% for motorista in motorista_list %}#}
+            {#                        {#}
+            {#                            'label': '{{ motorista.grouper.first_name }}',#}
+            {#                            'value': '{{ motorista.list|length }}'#}
+            {#                        },#}
+            {#                    {% endfor %}#}
+            {#                ],#}
+            {#                hideHover: 'auto'#}
+            {#            });#}
+            {##}
+
+
+            var bar = new Morris.Bar({
+                element: 'bar-chart',
+                resize: true,
+                barColors: ['#00a65a', '#f56954'],
+                xkey: 'y',
+                ykeys: ['a', 'b'],
+                labels: ['Ganhos em R$', 'N° Entregas'],
+                data: [
+                    {% regroup user|get_pedidos_mes:'motorista' by motorista as motorista_list %}
+                    {% for motorista in motorista_list %}
+                        {
+                            y: '{{ motorista.grouper.first_name }}',
+                            a: '{{ motorista.list|get_ganhos_mes|floatformat:2 }}',
+                            b: '{{ motorista.list|length }}'
+                        },
+                    {% endfor %}
+
+                ],
+
+            });
+
+
+        {% endif %}
+    });
+</script>

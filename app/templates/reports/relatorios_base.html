@@ -1,0 +1,31 @@
+{% extends 'admin/../base_painel.html' %}
+{% load staticfiles %}
+<link href="{% static 'plugins/morris/morris.css' %}"/>
+{% load filters %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'reports/gastos_com_entregas.html' %}
+        </div>
+        <div class="col-md-6">
+            {% include 'reports/relacao_motoristas_ganhos.html' %}
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <div class="row">
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#relatorios').addClass('active');
+            $('#btn_cancelar').click(function () {
+                return window.history.back();
+            });
+        });
+    </script>
+    {% include 'includes/script_message_notify.html' %}
+
+{% endblock %}

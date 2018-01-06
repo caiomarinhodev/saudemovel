@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django import template
 
-from app.models import Motorista
+from app.models import Motorista, Estabelecimento, Ponto
 from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
@@ -108,4 +108,50 @@ def calculate_distance(pedido):
         pedido.save()
         return float(distance / 1000.0)
     except (ValueError, ZeroDivisionError, Exception):
+        return 0.0
+
+
+
+@register.filter
+def get_pedidos_mes(user, filter):
+    now = datetime.now()
+    loja = Estabelecimento.objects.get(user=user)
+    try:
+        return loja.pedido_set.filter(created_at__month=now.month, is_complete=True).order_by(filter)
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_pontos_mes(user, filter):
+    now = datetime.now()
+    try:
+        return Ponto.objects.filter(created_at__month=now.month, pedido__estabelecimento__user=user, pedido__is_complete=True).order_by(filter)
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_gastos_entregas_mes(user):
+    now = datetime.now()
+    loja = Estabelecimento.objects.get(user=user)
+    count = 0.0
+    try:
+        for pedido in loja.pedido_set.filter(created_at__month=now.month, is_complete=True):
+            count = count + float(pedido.valor_total)
+        return count
+    except (ValueError, ZeroDivisionError, Exception):
+        return count
+
+
+@register.filter
+def get_ganhos_mes(list_pedidos):
+    print(list_pedidos)
+    try:
+        now = datetime.now()
+        ganho_mes = 0.0
+        for pedido in list_pedidos:
+            ganho_mes = float(ganho_mes) + float(pedido.valor_total)
+        return ganho_mes
+    except (Motorista.DoesNotExist, Exception):
         return 0.0

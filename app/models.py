@@ -21,6 +21,8 @@ class Bairro(TimeStamped):
     nome = models.CharField(max_length=100, blank=True)
     valor = models.CharField(max_length=3, blank=True, null=True)
     valor_madrugada = models.CharField(max_length=3, default='8')
+    valor_madrugada_feriado = models.CharField(max_length=3, default='11')
+    valor_feriado = models.CharField(max_length=3, default='9')
 
     def __unicode__(self):
         return u'%s' % self.nome
@@ -58,7 +60,38 @@ class Motorista(TimeStamped):
         return u'%s' % self.user.first_name
 
 
+class ConfigAdmin(TimeStamped):
+    is_feriado = models.BooleanField(default=False)
+
+
+THEMES = (
+    ('BLACK', 'skin-black'),
+    ('BLUE', 'skin-blue'),
+    ('RED', 'skin-red'),
+    ('YELLOW', 'skin-yellow'),
+    ('PURPLE', 'skin-purple'),
+    ('GREEN', 'skin-green'),
+    # 'skin-blue-light',
+    # 'skin-black-light',
+    # 'skin-red-light',
+    # 'skin-yellow-light',
+    # 'skin-purple-light',
+    # 'skin-green-light'
+)
+
+PLANS = (
+    ('BASIC', 'BASIC'),
+    ('PREMIUM', 'PREMIUM'),
+)
+
+
+class Configuration(TimeStamped):
+    tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
+    plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
+
+
 class Estabelecimento(TimeStamped, BaseAddress):
+    configuration = models.OneToOneField(Configuration, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     is_approved = models.BooleanField(default=False)
     photo = models.URLField(blank=True)
@@ -110,17 +143,26 @@ class Pedido(TimeStamped):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)
 
     def save(self, *args, **kwargs):
+        config = ConfigAdmin.objects.first()
         if not self.valor_total:
             valor = 0
             for pto in self.ponto_set.all():
                 now = datetime.now()
                 now_time = now.time()
-                if time(22, 59) <= now_time <= time(23, 59):
-                    valor = valor + int(pto.bairro.valor_madrugada)
-                elif time(0, 00) <= now_time <= time(5, 59):
-                    valor = valor + int(pto.bairro.valor_madrugada)
+                if config.is_feriado:
+                    if time(22, 59) <= now_time <= time(23, 59):
+                        valor = valor + int(pto.bairro.valor_madrugada_feriado)
+                    elif time(0, 00) <= now_time <= time(5, 59):
+                        valor = valor + int(pto.bairro.valor_madrugada_feriado)
+                    else:
+                        valor = valor + int(pto.bairro.valor_feriado)
                 else:
-                    valor = valor + int(pto.bairro.valor)
+                    if time(22, 59) <= now_time <= time(23, 59):
+                        valor = valor + int(pto.bairro.valor_madrugada)
+                    elif time(0, 00) <= now_time <= time(5, 59):
+                        valor = valor + int(pto.bairro.valor_madrugada)
+                    else:
+                        valor = valor + int(pto.bairro.valor)
             self.valor_total = valor
         super(Pedido, self).save(*args, **kwargs)
 

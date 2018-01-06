@@ -17,5 +17,3 @@ def func():
 
     resp = requests.post("https://gcm-http.googleapis.com/gcm/send", data=dataAsJSON,
                                headers={"Authorization": "key=" + MY_API_KEY, "Content-type": "application/json"})
-    print(resp.status_code)
-    print(resp.content)
