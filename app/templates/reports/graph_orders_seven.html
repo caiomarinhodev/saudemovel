@@ -89,8 +89,22 @@
         <div class="row">
             <div class="col-sm-3 col-xs-6">
                 <div class="description-block border-right">
-                    {#                                    <span class="description-percentage text-green"><i#}
-                    {#                                            class="fa fa-caret-up"></i> 17%</span>#}
+                    {% with user|compara_pedidos_semana as p_p_semana %}
+                        {% if p_p_semana.signal == '+' %}
+                            <span class="description-percentage text-green">
+                            <i class="fa fa-caret-up"></i>
+                             </span>
+                        {% elif p_p_semana.signal == '=' %}
+                            <span class="description-percentage text-yellow">
+                            <i class="fa fa-caret-left"></i>
+                            </span>
+                        {% else %}
+                            <span class="description-percentage text-red">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                        {% endif %}
+                        {{ p_p_semana.x|floatformat:2 }}%
+                    {% endwith %}
                     <h5 class="description-header">{{ user|get_pedidos_semana|length }}</h5>
                     <span class="description-text">TOTAL DE PEDIDOS EM 7 DIAS</span>
                 </div>
@@ -99,7 +113,22 @@
             <!-- /.col -->
             <div class="col-sm-3 col-xs-6">
                 <div class="description-block border-right">
-                    {#                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>#}
+                    {% with user|compara_ganhos_semana as p_ganhos_semana %}
+                        {% if p_ganhos_semana.signal == '+' %}
+                            <span class="description-percentage text-green">
+                            <i class="fa fa-caret-up"></i>
+                             </span>
+                        {% elif p_ganhos_semana.signal == '=' %}
+                            <span class="description-percentage text-yellow">
+                            <i class="fa fa-caret-left"></i>
+                            </span>
+                        {% else %}
+                            <span class="description-percentage text-red">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                        {% endif %}
+                        {{ p_ganhos_semana.x|floatformat:2 }}%
+                    {% endwith %}
                     <h5 class="description-header">R$ {{ user|get_pedidos_semana|get_ganhos_mes|floatformat:2 }}</h5>
                     <span class="description-text">TOTAL GASTO EM 7 DIAS</span>
                 </div>
@@ -108,8 +137,22 @@
             <!-- /.col -->
             <div class="col-sm-3 col-xs-6">
                 <div class="description-block border-right">
-                    {#                                    <span class="description-percentage text-green"><i#}
-                    {#                                            class="fa fa-caret-up"></i> 20%</span>#}
+                    {% with user|compara_pedidos_hoje as p_ph_semana %}
+                        {% if p_ph_semana.signal == '+' %}
+                            <span class="description-percentage text-green">
+                            <i class="fa fa-caret-up"></i>
+                             </span>
+                        {% elif p_ph_semana.signal == '=' %}
+                            <span class="description-percentage text-yellow">
+                            <i class="fa fa-caret-left"></i>
+                            </span>
+                        {% else %}
+                            <span class="description-percentage text-red">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                        {% endif %}
+                        {{ p_ph_semana.x|floatformat:2 }}%
+                    {% endwith %}
                     <h5 class="description-header">{{ user|get_pedidos_hoje|length }}</h5>
                     <span class="description-text">PEDIDOS HOJE</span>
                 </div>
@@ -118,8 +161,22 @@
             <!-- /.col -->
             <div class="col-sm-3 col-xs-6">
                 <div class="description-block">
-                    {#                                    <span class="description-percentage text-red"><i#}
-                    {#                                            class="fa fa-caret-down"></i> 18%</span>#}
+                    {% with user|compara_ganhos_hoje as p_gh_semana %}
+                        {% if p_gh_semana.signal == '+' %}
+                            <span class="description-percentage text-green">
+                            <i class="fa fa-caret-up"></i>
+                             </span>
+                        {% elif p_gh_semana.signal == '=' %}
+                            <span class="description-percentage text-yellow">
+                            <i class="fa fa-caret-left"></i>
+                            </span>
+                        {% else %}
+                            <span class="description-percentage text-red">
+                            <i class="fa fa-caret-down"></i>
+                            </span>
+                        {% endif %}
+                        {{ p_gh_semana.x|floatformat:2 }}%
+                    {% endwith %}
                     <h5 class="description-header">R$ {{ user|get_pedidos_hoje|get_ganhos_mes|floatformat:2 }}</h5>
                     <span class="description-text">GASTOS HOJE</span>
                 </div>

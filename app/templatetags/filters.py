@@ -228,12 +228,10 @@ def get_data_grafico_seven(user):
         #     balde[label.day] = []
 
         for pedido in pedidos:
-            print(pedido.created_at)
             if not pedido.created_at.day in dic:
                 dic[pedido.created_at.day] = [pedido]
             else:
                 dic[pedido.created_at.day] += [pedido]
-        print(dic)
         flag = False
         for label in get_labels_grafico_seven(user):
             for k, v in dic.items():
@@ -244,7 +242,6 @@ def get_data_grafico_seven(user):
                 balde.append(0)
             else:
                 flag = False
-        print(balde)
         return balde
     except Exception:
         return None
@@ -263,3 +260,79 @@ def get_labels_grafico_seven(user):
         return arr
     except Exception:
         return None
+
+
+@register.filter
+def compara_pedidos_semana(user):
+    pedidos_semana = get_pedidos_semana(user)
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        start_date = now - timedelta(days=14)
+        end_date = now - timedelta(days=7)
+        pedidos_anterior = loja.pedido_set.filter(created_at__range=(start_date, end_date))
+        value = float((100.0 * float(len(pedidos_semana))) / float(len(pedidos_anterior)))
+        if value > 100.0:
+            return {'signal': '+', 'x': float(value-100.0)}
+        elif value == 100.0:
+            return {'signal': '=', 'x': float(value-100.0)}
+        return {'signal': '-', 'x': float(100.0-value)}
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def compara_ganhos_semana(user):
+    ganhos_semana = get_ganhos_mes(get_pedidos_semana(user))
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        start_date = now - timedelta(days=14)
+        end_date = now - timedelta(days=7)
+        pedidos_anterior = loja.pedido_set.filter(created_at__range=(start_date, end_date))
+        ganhos_anterior = get_ganhos_mes(pedidos_anterior)
+        value = float((100.0 * float(ganhos_semana)) / float(ganhos_anterior))
+        if value > 100.0:
+            return {'signal': '+', 'x': float(value-100.0)}
+        elif value == 100.0:
+            return {'signal': '=', 'x': float(value-100.0)}
+        return {'signal': '-', 'x': float(100.0-value)}
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0.0
+
+
+@register.filter
+def compara_pedidos_hoje(user):
+    pedidos_hoje = get_pedidos_hoje(user)
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        ontem = now - timedelta(days=1)
+        pedidos_ontem = loja.pedido_set.filter(created_at__day=ontem.day)
+        value = float((100.0 * float(len(pedidos_hoje))) / float(len(pedidos_ontem)))
+        if value > 100.0:
+            return {'signal': '+', 'x': float(value-100.0)}
+        elif value == 100.0:
+            return {'signal': '=', 'x': float(value-100.0)}
+        return {'signal': '-', 'x': float(100.0-value)}
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def compara_ganhos_hoje(user):
+    ganhos_hoje = get_ganhos_mes(get_pedidos_hoje(user))
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        ontem = now - timedelta(days=1)
+        pedidos_ontem = loja.pedido_set.filter(created_at__day=ontem.day)
+        ganhos_ontem = get_ganhos_mes(pedidos_ontem)
+        value = float((100.0 * ganhos_hoje) / float(ganhos_ontem))
+        if value > 100.0:
+            return {'signal': '+', 'x': float(value-100.0)}
+        elif value == 100.0:
+            return {'signal': '=', 'x': float(value-100.0)}
+        return {'signal': '-', 'x': float(100.0-value)}
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0.0
