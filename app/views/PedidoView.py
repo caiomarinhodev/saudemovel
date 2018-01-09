@@ -354,7 +354,7 @@ def finalizar_pedido(request, pk_pedido):
         motorista = Motorista.objects.get(user=request.user)
         motorista.ocupado = False
         motorista.save()
-        message = "O motorista " + request.user.first_name + " finalizou por completo a entrega do Pedido ID #" + str(
+        message = "O motorista " + request.user.first_name + " finalizou por completo a ROTA ID #" + str(
             pedido.pk) + ". Se desejar confirmar, ligue para o motorista: " + motorista.phone
         n = Notification(type_message='ALL_DELIVERED', to=pedido.estabelecimento.user, message=message)
         n.save()

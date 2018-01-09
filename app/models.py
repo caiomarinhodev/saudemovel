@@ -144,26 +144,25 @@ class Pedido(TimeStamped):
 
     def save(self, *args, **kwargs):
         config = ConfigAdmin.objects.first()
-        if not self.valor_total:
-            valor = 0
-            for pto in self.ponto_set.all():
-                now = datetime.now()
-                now_time = now.time()
-                if config.is_feriado:
-                    if time(22, 59) <= now_time <= time(23, 59):
-                        valor = valor + int(pto.bairro.valor_madrugada_feriado)
-                    elif time(0, 00) <= now_time <= time(5, 59):
-                        valor = valor + int(pto.bairro.valor_madrugada_feriado)
-                    else:
-                        valor = valor + int(pto.bairro.valor_feriado)
+        valor = 0
+        for pto in self.ponto_set.all():
+            now = datetime.now()
+            now_time = now.time()
+            if config.is_feriado:
+                if time(22, 59) <= now_time <= time(23, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada_feriado)
+                elif time(0, 00) <= now_time <= time(5, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada_feriado)
                 else:
-                    if time(22, 59) <= now_time <= time(23, 59):
-                        valor = valor + int(pto.bairro.valor_madrugada)
-                    elif time(0, 00) <= now_time <= time(5, 59):
-                        valor = valor + int(pto.bairro.valor_madrugada)
-                    else:
-                        valor = valor + int(pto.bairro.valor)
-            self.valor_total = valor
+                    valor = valor + int(pto.bairro.valor_feriado)
+            else:
+                if time(22, 59) <= now_time <= time(23, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada)
+                elif time(0, 00) <= now_time <= time(5, 59):
+                    valor = valor + int(pto.bairro.valor_madrugada)
+                else:
+                    valor = valor + int(pto.bairro.valor)
+        self.valor_total = valor
         super(Pedido, self).save(*args, **kwargs)
 
 
