@@ -78,7 +78,7 @@
                                        cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>ROTA ID</th>
                                         <th>CRIADO EM</th>
                                         <th>N° ENTREGAS</th>
                                         <th>MOTORISTA</th>
@@ -190,21 +190,21 @@
                                                             <div class="col-xs-12">
                                                                 <a href="#"
                                                                    class="btn btn-warning btn-block liberar_entrega_{{ pedido.pk }}">
-                                                                    Liberar p/ entrega
+                                                                    Liberar p/ Entrega
                                                                 </a>
                                                             </div>
                                                             <hr/>
                                                             <div class="col-xs-12">
                                                                 <a class="btn btn-primary btn-block"
                                                                    href="{% url 'view_pedido_view' pedido.id %}">
-                                                                    Ver Pedido
+                                                                    Ver Rota
                                                                 </a>
                                                             </div>
                                                             <hr/>
                                                             <div class="col-xs-12">
                                                                 <a class="btn btn-danger btn-block cancel_{{ pedido.id }}"
                                                                    href="#">
-                                                                    Cancelar Entrega
+                                                                    Cancelar Rota
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -234,7 +234,7 @@
                                                                     play('alert');
                                                                     swal({
                                                                         title: "ALERTA!",
-                                                                        text: 'Você realmente vai cancelar este pedido?',
+                                                                        text: 'Você realmente vai cancelar esta Rota?',
                                                                         type: 'warning',
                                                                         showCancelButton: true,
                                                                         closeOnConfirm: false,
@@ -306,14 +306,14 @@
                                                         <div class="col-xs-12">
                                                             <a class="btn btn-primary btn-block"
                                                                href="{% url 'view_pedido_view' pedido.id %}">
-                                                                Ver Pedido
+                                                                Ver Rota
                                                             </a>
                                                         </div>
                                                         <hr/>
                                                         <div class="col-xs-12">
                                                             <a class="btn btn-danger btn-block  delete_{{ pedido.id }}"
                                                                href="#">
-                                                                Deletar Pedido
+                                                                Deletar Rota
                                                             </a>
                                                         </div>
                                                     </div>
@@ -323,7 +323,7 @@
                                                                 play('alert');
                                                                 swal({
                                                                     title: "ALERTA!",
-                                                                    text: 'Você realmente vai cancelar este pedido?',
+                                                                    text: 'Você realmente vai Deletar esta Rota?',
                                                                     type: 'warning',
                                                                     showCancelButton: true,
                                                                     closeOnConfirm: false,

@@ -8,7 +8,7 @@
     <div class="box box-primary" style="margin-top: 30px;">
         <div class="box-header">
             <h3 class="box-title">
-                <center style="font-size: 20px;">Visualizacao de Pedido</center>
+                <center style="font-size: 20px;">Visualizacao de Rota</center>
             </h3>
         </div>
         <!-- /.box-header -->
@@ -70,7 +70,7 @@
                 {% if pedido.coletado %}
                     
                 {% else %}
-                    <a href="{% url 'edit_pedido_view' object.id %}" class="btn btn-primary pull-right">Editar Pedido</a>
+                    <a href="{% url 'edit_pedido_view' object.id %}" class="btn btn-primary pull-right">Editar Rota</a>
                 {% endif %}
                 
             </div>
