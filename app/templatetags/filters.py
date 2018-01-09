@@ -305,8 +305,8 @@ def compara_pedidos_semana(user):
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
-        start_date = now - timedelta(days=14)
-        end_date = now - timedelta(days=7)
+        start_date = now - timedelta(days=15)
+        end_date = now - timedelta(days=8)
         pedidos_anterior = loja.pedido_set.filter(created_at__range=(start_date, end_date))
         value = float((100.0 * float(len(pedidos_semana))) / float(len(pedidos_anterior)))
         if value > 100.0:
@@ -324,8 +324,8 @@ def compara_ganhos_semana(user):
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
-        start_date = now - timedelta(days=14)
-        end_date = now - timedelta(days=7)
+        start_date = now - timedelta(days=15)
+        end_date = now - timedelta(days=8)
         pedidos_anterior = loja.pedido_set.filter(created_at__range=(start_date, end_date))
         ganhos_anterior = get_ganhos_mes(pedidos_anterior)
         value = float((100.0 * float(ganhos_semana)) / float(ganhos_anterior))
