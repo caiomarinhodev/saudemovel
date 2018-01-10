@@ -22,7 +22,7 @@ class FormBaseAddress(BaseForm):
                                                                        'maxlength': 200,
                                                                        'placeholder': 'CEP'
                                                                        }))
-    endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
+    endereco = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
                                                                             'maxlength': 200,
                                                                             'placeholder': 'Endereço'
                                                                             }))
@@ -57,7 +57,7 @@ class FormPonto(ModelForm, BaseForm):
     telefone = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'telefone',
                                                              'maxlength': 200,
                                                              'placeholder': 'Telefone do Cliente'}))
-    endereco = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'required': True,
+    endereco = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
                                                                              'maxlength': 200,
                                                                              'placeholder': 'Endereço'
                                                                              }))
@@ -66,7 +66,7 @@ class FormPonto(ModelForm, BaseForm):
                                                                          'placeholder': 'Número'
                                                                          }))
     complemento = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
-                                                                                'maxlength': 100,
+                                                                                'maxlength': 200,
                                                                                 'placeholder': 'Ponto de Referencia'
                                                                                 }))
     observacoes = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': True,
@@ -86,7 +86,7 @@ class FormEditPonto(ModelForm, BaseForm):
     telefone = forms.CharField(widget=forms.TextInput(attrs={'required': False, 'class': 'telefone',
                                                              'maxlength': 200,
                                                              'placeholder': 'Telefone do Cliente'}))
-    endereco = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'required': False,
+    endereco = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': False,
                                                                              'maxlength': 200,
                                                                              'placeholder': 'Endereço'
                                                                              }))
@@ -95,7 +95,7 @@ class FormEditPonto(ModelForm, BaseForm):
                                                                          'placeholder': 'Número'
                                                                          }))
     complemento = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': False,
-                                                                                'maxlength': 100,
+                                                                                'maxlength': 200,
                                                                                 'placeholder': 'Ponto de Referencia'
                                                                                 }))
     observacoes = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': False,
@@ -174,6 +174,14 @@ class FormMotoristaRegister(ModelForm, BaseForm):
                                                              'placeholder': 'Login'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
                                                                  'placeholder': 'Senha'}))
+    endereco = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': True,
+                                                                            'maxlength': 200,
+                                                                            'placeholder': 'Endereço'
+                                                                            }))
+    numero = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'required': True,
+                                                                         'maxlength': 200,
+                                                                         'placeholder': 'Número'
+                                                                         }))
     phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                           'maxlength': 200,
                                                           'placeholder': 'Telefone'}))

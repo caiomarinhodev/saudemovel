@@ -241,144 +241,6 @@
         <!-- ./col -->
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <!-- form start -->
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div id="list" class="col-sm-12">
-                                <table id="table_0" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>ID</th>
-                                        <th>LOJA</th>
-                                        <th>PEDIDOS</th>
-                                        <th>ENDEREÇO LOJA</th>
-                                        <th>ONLINE?</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for loja in lojas %}
-                                        <tr>
-                                            <td>
-                                                {% if loja.photo %}
-                                                    <img src="{{ loja.photo }}"
-                                                         name="aboutme" width="60" height="60" border="0"
-                                                         class="img-circle">
-                                                {% else %}
-                                                    <img src="{% static 'img/300.png' %}"
-                                                         name="aboutme" width="60" height="60" border="0"
-                                                         class="img-circle">
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ loja.id }}</td>
-                                            <td>{{ loja.user.first_name }}</td>
-                                            <td>{{ loja.pedido_set.all|length }}</td>
-                                            <td>
-                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}
-                                            </td>
-                                            <td>
-                                                {% if loja.is_online %}
-                                                    <label class="label label-success"><i
-                                                            class=""></i>
-                                                        ONLINE</label>
-                                                {% else %}
-                                                    <label class="label label-danger"><i
-                                                            class=""></i> OFFLINE</label>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Mapa</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="map" style="height: 450px;"></div>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-
-                <div class="box-footer">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h3>{{ users|length }}</h3>
-
-                                    <p>Usuários</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-person"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="small-box bg-aqua">
-                                <div class="inner">
-                                    <h3>{{ motoristas|length }}</h3>
-
-                                    <p>Motoristas</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-android-contact"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="small-box bg-yellow">
-                                <div class="inner">
-                                    <h3>{{ estabelecimentos|length }}</h3>
-
-                                    <p>Estabelecimentos</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-ios-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="small-box bg-red">
-                                <div class="inner">
-                                    <h3>{{ bd_space|floatformat:2 }} <sup style="font-size: 20px">%</sup></h3>
-
-                                    <p>Database</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-ios-speedometer"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-    </div>
-
     </hr>
     <div class="box box-default">
         <div class="box-header">
@@ -864,122 +726,6 @@
         <!-- /.col -->
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="box box-primary">
-                <!-- form start -->
-                <div class="box-header">
-                    <h3 class="box-title">Bairro mais frequente do mes</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div id="list" class="col-sm-12">
-                                <table id="table_bfm" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>BAIRRO</th>
-                                        <th>PEDIDOS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% regroup pontos_mes by bairro as bairros %}
-                                    {% for bairr in bairros %}
-                                        <tr>
-                                            <td>
-                                                {{ bairr.grouper }}
-                                            </td>
-                                            <td>{{ bairr.list|length }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="box box-primary">
-                <!-- form start -->
-                <div class="box-header">
-                    <h3 class="box-title">Bairro mais frequente total</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div id="list" class="col-sm-12">
-                                <table id="table_bft" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>BAIRRO</th>
-                                        <th>PEDIDOS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% regroup pontos_all by bairro as bairro_list %}
-                                    {% for bairr in bairro_list %}
-                                        <tr>
-                                            <td>
-                                                {{ bairr.grouper }}
-                                            </td>
-                                            <td>{{ bairr.list|length }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="box box-primary">
-                <!-- form start -->
-                <div class="box-header">
-                    <h3 class="box-title">Endereco mais frequente total</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div id="list" class="col-sm-12">
-                                <table id="table_aft" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>ENDERECO</th>
-                                        <th>PEDIDOS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% regroup address_all by endereco as address_list %}
-                                    {% for address in address_list %}
-                                        <tr>
-                                            <td>
-                                                {{ address.grouper }}
-                                            </td>
-                                            <td>{{ address.list|length }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
@@ -1181,6 +927,143 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <!-- form start -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div id="list" class="col-sm-12">
+                                <table id="table_0" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>LOJA</th>
+                                        <th>PEDIDOS</th>
+                                        <th>ENDEREÇO LOJA</th>
+                                        <th>ONLINE?</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for loja in lojas %}
+                                        <tr>
+                                            <td>
+                                                {% if loja.photo %}
+                                                    <img src="{{ loja.photo }}"
+                                                         name="aboutme" width="60" height="60" border="0"
+                                                         class="img-circle">
+                                                {% else %}
+                                                    <img src="{% static 'img/300.png' %}"
+                                                         name="aboutme" width="60" height="60" border="0"
+                                                         class="img-circle">
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ loja.id }}</td>
+                                            <td>{{ loja.user.first_name }}</td>
+                                            <td>{{ loja.pedido_set.all|length }}</td>
+                                            <td>
+                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}
+                                            </td>
+                                            <td>
+                                                {% if loja.is_online %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        ONLINE</label>
+                                                {% else %}
+                                                    <label class="label label-danger"><i
+                                                            class=""></i> OFFLINE</label>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Mapa</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="map" style="height: 450px;"></div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>{{ users|length }}</h3>
+
+                                    <p>Usuários</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-person"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-aqua">
+                                <div class="inner">
+                                    <h3>{{ motoristas|length }}</h3>
+
+                                    <p>Motoristas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-android-contact"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>{{ estabelecimentos|length }}</h3>
+
+                                    <p>Estabelecimentos</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-ios-heart"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>{{ bd_space|floatformat:2 }} <sup style="font-size: 20px">%</sup></h3>
+
+                                    <p>Database</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-ios-speedometer"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
             </div>
         </div>
     </div>

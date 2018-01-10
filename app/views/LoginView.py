@@ -239,6 +239,8 @@ class RegisterMotoristaView(FormView):
         common_data['placa'] = str(data['placa']).upper()
         common_data['phone'] = data['phone']
         common_data['cpf'] = data['cpf']
+        common_data['endereco'] = data['endereco']
+        common_data['numero'] = data['numero']
         common_data['photo'] = file
         if data['username'] and data['password']:
             new_user = User.objects.create_user(**user_data)

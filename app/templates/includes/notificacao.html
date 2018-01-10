@@ -45,7 +45,7 @@
         {% elif notificacao.type_message == 'ALL_DELIVERED' %}
             play('alert');
             swal({
-                title: "Motorista finalizou a entrega do pedido!",
+                title: "Motorista finalizou a Rota!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
                 closeOnConfirm: false,
