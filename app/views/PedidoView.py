@@ -358,7 +358,7 @@ def finalizar_pedido(request, pk_pedido):
             pedido.pk) + ". Se desejar confirmar, ligue para o motorista: " + motorista.phone
         n = Notification(type_message='ALL_DELIVERED', to=pedido.estabelecimento.user, message=message)
         n.save()
-        message = 'Voce concluiu a entrega do pedido, se voce estiver com algum material (maquineta ou bag) da Loja ' + pedido.estabelecimento.user.first_name + ',  favor devolver. Obrigado!'
+        message = 'Voce concluiu a Rota, se voce estiver com algum material (maquineta ou bag) da Loja ' + pedido.estabelecimento.user.first_name + ',  favor devolver. Obrigado!'
         messages.success(request, message)
         return HttpResponseRedirect('/app/pedidos/motorista/')
     except:

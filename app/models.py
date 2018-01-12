@@ -36,9 +36,9 @@ class BaseAddress(models.Model):
         abstract = True
 
     bairro = models.ForeignKey(Bairro, blank=True, null=True, verbose_name='Bairro')
-    endereco = models.CharField(max_length=200, blank=True, verbose_name='Endereço')
+    endereco = models.CharField(max_length=200, blank=True, null=True, verbose_name='Endereço')
     numero = models.CharField(max_length=5, blank=True, null=True, verbose_name='Número')
-    complemento = models.CharField(max_length=300, blank=True, verbose_name='Ponto de Referência')
+    complemento = models.CharField(max_length=300, blank=True, null=True, verbose_name='Ponto de Referência')
     lat = models.CharField(max_length=100, blank=True, null=True)
     lng = models.CharField(max_length=100, blank=True, null=True)
 
@@ -46,7 +46,7 @@ class BaseAddress(models.Model):
 class Motorista(TimeStamped, BaseAddress):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     cpf = models.CharField(max_length=100, blank=True, null=True, default="")
-    photo = models.URLField(blank=True)
+    photo = models.URLField(blank=True, null=True)
     phone = models.CharField(max_length=30, blank=True, null=True)
     ocupado = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
@@ -54,8 +54,8 @@ class Motorista(TimeStamped, BaseAddress):
     is_approved = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
         try:
+            address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
             pto = geocode(address)
             self.lat = pto['latitude']
             self.lng = pto['longitude']
@@ -104,7 +104,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     configuration = models.OneToOneField(Configuration, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     is_approved = models.BooleanField(default=False)
-    photo = models.URLField(blank=True)
+    photo = models.URLField(blank=True, null=True)
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)
     full_address = models.CharField(max_length=300, blank=True, null=True)

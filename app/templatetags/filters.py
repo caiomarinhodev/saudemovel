@@ -373,3 +373,12 @@ def compara_ganhos_hoje(user):
         return {'signal': '-', 'x': float(100.0-value)}
     except (ValueError, ZeroDivisionError, Exception):
         return 0.0
+
+
+
+@register.filter
+def lojas_online(user):
+    try:
+        return len(Estabelecimento.objects.filter(is_online=True))
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0

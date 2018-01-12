@@ -366,23 +366,23 @@
             <ul class="sidebar-menu">
                 <li class="header">MENU</li>
                 {% if user.motorista %}
-                    <li id="pedidos">
+                    <li id="pedidos" class="motorista">
                         <a href="{% url 'pedidos_motorista' %}">
                             <i class="fa fa-list-alt"></i> <span>Pedidos</span>
                         </a>
                     </li>
-                    <li id="entregas">
+                    <li id="entregas" class="motorista">
                         <a href="{% url 'entregas_motorista' %}">
                             <i class="fa fa-motorcycle"></i> <span>Entregas</span>
                         </a>
                     </li>
-                    <li id="lojas_credenciadas">
+                    <li id="lojas_credenciadas" class="motorista">
                         <a href="{% url 'lojas_credenciadas' %}">
                             <i class="fa fa-suitcase"></i> <span>Lojas Credenciadas</span>
                         </a>
                     </li>
                     {% if user.motorista.ocupado %}
-                        <li id="chat">
+                        <li id="chat" class="motorista">
                             <a href="{% url 'chat_motorista_view' %}">
                                 <i class="fa fa-comments-o"></i> <span>Chat</span>
                             </a>
@@ -420,12 +420,12 @@
                         </a>
                     </li>
                 {% endif %}
-                <li id="notificacoes">
+                <li id="notificacoes" class="motorista">
                     <a href="{% url "notificacoes" %}">
                         <i class="fa fa-warning"></i> <span>Notificações</span>
                     </a>
                 </li>
-                <li id="logout">
+                <li id="logout" class="motorista">
                     <a href="{% url "auth_logout" %}">
                         <i class="fa fa-sign-out"></i> <span>Sair</span>
                     </a>
@@ -511,7 +511,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+        $('.motorista').click(function () {
+            $('#loading').show();
+        });
 
         $('.datepicker').datepicker({
             clearBtn: true,

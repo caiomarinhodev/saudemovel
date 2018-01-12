@@ -46,7 +46,6 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        print(data)
         user = authenticate(**data)
         print(user)
         try:
@@ -62,6 +61,7 @@ class LoginView(FormView):
                 return self.form_invalid(form)
         except:
             pass
+
         if user is not None:
             login(self.request, user)
         else:
