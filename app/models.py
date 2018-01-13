@@ -110,11 +110,11 @@ class Estabelecimento(TimeStamped, BaseAddress):
     full_address = models.CharField(max_length=300, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.numero = self.numero.replace("_", "")
-        self.phone = self.phone.replace("_", "")
-        address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
-        self.full_address = address
         try:
+            self.numero = self.numero.replace("_", "")
+            self.phone = self.phone.replace("_", "")
+            address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
+            self.full_address = address
             pto = geocode(address)
             self.lat = pto['latitude']
             self.lng = pto['longitude']
@@ -190,10 +190,10 @@ class Ponto(BaseAddress, TimeStamped):
     distance = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.numero = self.numero.replace("_", "")
-        self.telefone = self.telefone.replace("_", "")
-        address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
         try:
+            self.numero = self.numero.replace("_", "")
+            self.telefone = self.telefone.replace("_", "")
+            address = self.endereco + ", " + self.numero + ",Campina Grande,PB"
             pto = geocode(address)
             self.lat = pto['latitude']
             self.lng = pto['longitude']
