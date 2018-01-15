@@ -83,7 +83,8 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
     template_name = 'pedidos/list_pedidos_motorista.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by('-created_at')
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
+            '-created_at')
 
 
 class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
@@ -103,7 +104,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     template_name = 'pedidos/add_pedido.html'
 
     # def get_success_url(self):
-        # return reverse('view_pedido_view', kwargs={'pk': self.object.pk})
+    # return reverse('view_pedido_view', kwargs={'pk': self.object.pk})
 
     def get_initial(self):
         return {
@@ -268,7 +269,11 @@ def accept_corrida(request, pk_pedido):
     try:
         pedido = Pedido.objects.get(id=pk_pedido)
         if pedido.motorista:
-            messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
+            try:
+                messages.error(request,
+                               'O motorista ' + pedido.motorista.first_name + ' pegou esta entrega antes de você')
+            except (Exception,):
+                messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
             return HttpResponseRedirect('/app/pedidos/motorista/')
         else:
             pedido.status = False
