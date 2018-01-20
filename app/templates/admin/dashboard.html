@@ -241,6 +241,52 @@
         <!-- ./col -->
     </div>
 
+     <div class="row">
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-check-square-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Online</span>
+                    <span class="info-box-number">{{ motoristas_online|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-location-arrow"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Ocupados</span>
+                    <span class="info-box-number">{{ motoristas_ocupados|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-rocket"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Livres</span>
+                    <span class="info-box-number">{{ motoristas_livres|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
     </hr>
     <div class="box box-default">
         <div class="box-header">
@@ -680,51 +726,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-check-square-o"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Motoristas Online</span>
-                    <span class="info-box-number">{{ motoristas_online|length }}</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-location-arrow"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Motoristas Ocupados</span>
-                    <span class="info-box-number">{{ motoristas_ocupados|length }}</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-
-        <!-- fix for small devices only -->
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-4">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-rocket"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Motoristas Livres</span>
-                    <span class="info-box-number">{{ motoristas_livres|length }}</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
