@@ -159,8 +159,10 @@ class Pedido(TimeStamped):
         config = ConfigAdmin.objects.first()
         valor = 0
         for pto in self.ponto_set.all():
-            now = datetime.now()
-            now_time = now.time()
+            # now = datetime.now()
+            # now_time = now.time()
+            now_time = pto.created_at.time()
+            print(now_time)
             if config.is_feriado:
                 if time(22, 59) <= now_time <= time(23, 59):
                     valor = valor + int(pto.bairro.valor_madrugada_feriado)
