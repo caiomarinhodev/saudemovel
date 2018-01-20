@@ -22,7 +22,7 @@ class EstabelecimentoAdmin(admin.ModelAdmin):
 
 
 class PontoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cliente', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
+    list_display = ('id', 'cliente', 'telefone', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
 
 
 class PedidoAdmin(admin.ModelAdmin):
