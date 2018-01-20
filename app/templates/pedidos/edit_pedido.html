@@ -72,6 +72,7 @@
     </div>
 
     <script type="text/javascript">
+        var forms = 0;
         $(document).ready(function () {
 
             $('#btn_salvar').click(function () {
@@ -79,8 +80,8 @@
                         return $.trim($(this).val()).length == 0
                     }).length == 0) {
                     $('form').submit();
-                }else{
-                    swal('Preencha todos os campos', 'Verifique se voce selecionou o bairro e as informacoes de pagamento...' , 'error');
+                } else {
+                    swal('Preencha todos os campos', 'Verifique se voce selecionou o bairro e as informacoes de pagamento...', 'error');
                 }
             });
 
@@ -94,11 +95,152 @@
             });
             $("[name=estabelecimento]").attr("required", "false");
             $('.numero').inputmask('99999');
-            $('.telefone').inputmask('(99) [9]99999999');
+            $('.telefone').inputmask('[9]99999999');
             $('.add-row').click(function () {
                 {#                $(":input").inputmask();#}
                 $('.numero').inputmask('99999');
-                $('.telefone').inputmask('(99) [9]99999999');
+                $('.telefone').inputmask('[9]99999999');
+                forms = $('.dynamic-form').not('.formset-custom-template').length - 1;
+                $('.telefone').on('focusout', function () {
+                    var myClass = $(this).attr("name");
+                    console.log(myClass);
+                    var query = $(this).val().replace(/_/g, '');
+                    console.log(query);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{% url 'buscar-cliente' %}',
+                        data: {q: query},
+                        beforeSend: function () {
+                            $('#loading').show();
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                            $('#loading').hide();
+                        },
+                        success: function (result) {
+                            console.log(result);
+                            console.table(result);
+                            $('#loading').hide();
+                            if (result.results.length == 0) {
+                                swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                                $('[name=ponto_set-' + forms + '-cliente]').val('');
+                                $('[name=ponto_set-' + forms + '-endereco]').val('');
+                                $('[name=ponto_set-' + forms + '-numero]').val('');
+                                $("[name=ponto_set-" + forms + "-bairro]").val('');
+                                $('[name=ponto_set-' + forms + '-complemento]').val('');
+                                $('[name=ponto_set-' + forms + '-observacoes]').val('');
+                                return;
+                            } else {
+                                console.table(result.results);
+                                $('[name=ponto_set-' + forms + '-cliente]').val(result.results[0].cliente);
+                                $('[name=ponto_set-' + forms + '-endereco]').val(result.results[0].endereco);
+                                $('[name=ponto_set-' + forms + '-numero]').val(result.results[0].numero);
+                                $("[name=ponto_set-" + forms + "-bairro]").val($("[name=ponto_set-" + forms + "-bairro]" + " option").filter(function () {
+                                    return this.text == result.results[0].bairro
+                                }).val());
+                                $('[name=ponto_set-' + forms + '-complemento]').val(result.results[0].complemento);
+                                $('[name=ponto_set-' + forms + '-observacoes]').val(result.results[0].observacoes);
+                            }
+                        }
+
+                    });
+                });
+            });
+
+            forms = $('.dynamic-form').not('.formset-custom-template').length - 1;
+            $('.telefone').on('focusout', function () {
+                var myClass = $(this).attr("name");
+                console.log(myClass);
+                var query = $(this).val().replace(/_/g, '');
+                console.log(query);
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url 'buscar-cliente' %}',
+                    data: {q: query},
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                        $('#loading').hide();
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        console.table(result);
+                        $('#loading').hide();
+                        if (result.results.length == 0) {
+                            swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                            $('[name=ponto_set-' + forms + '-cliente]').val('');
+                            $('[name=ponto_set-' + forms + '-endereco]').val('');
+                            $('[name=ponto_set-' + forms + '-numero]').val('');
+                            $("[name=ponto_set-" + forms + "-bairro]").val('');
+                            $('[name=ponto_set-' + forms + '-complemento]').val('');
+                            $('[name=ponto_set-' + forms + '-observacoes]').val('');
+                            return;
+                        } else {
+                            console.table(result.results);
+                            $('[name=ponto_set-' + forms + '-cliente]').val(result.results[0].cliente);
+                            $('[name=ponto_set-' + forms + '-endereco]').val(result.results[0].endereco);
+                            $('[name=ponto_set-' + forms + '-numero]').val(result.results[0].numero);
+                            $("[name=ponto_set-" + forms + "-bairro]").val($("[name=ponto_set-" + forms + "-bairro]" + " option").filter(function () {
+                                return this.text == result.results[0].bairro
+                            }).val());
+                            $('[name=ponto_set-' + forms + '-complemento]').val(result.results[0].complemento);
+                            $('[name=ponto_set-' + forms + '-observacoes]').val(result.results[0].observacoes);
+                        }
+                    }
+
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.telefone').on('focusout', function () {
+                var query = $(this).val().replace(/_/g, '');
+                console.log(query);
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url 'buscar-cliente' %}',
+                    data: {q: query},
+                    beforeSend: function () {
+                        $('#loading').show();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                        $('#loading').hide();
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        console.table(result);
+                        $('#loading').hide();
+                        if (result.results.length == 0) {
+                            swal('Nenhum Usuario cadastrado com este numero', '', 'error');
+                            $('[name=nome]').val('');
+                            $('[name=endereco]').val('');
+                            $('[name=numero]').val('');
+                            $('[name=bairro]').val('');
+                            $('[name=cidade]').val('');
+                            $('[name=phone]').val('');
+                            $('[name=email]').val('');
+                            return;
+                        } else {
+                            console.table(resul.results);
+                            $('[name=nome]').val(result.results[0].nome);
+                            $('[name=endereco]').val(result.results[0].endereco);
+                            $('[name=numero]').val(result.results[0].numero);
+                            $('[name=bairro]').val(result.results[0].bairro);
+                            $('[name=cidade]').val(result.results[0].cidade);
+                            $('[name=phone]').val(result.results[0].phone);
+                            $('[name=email]').val(result.results[0].email);
+                        }
+                    }
+
+                });
             });
         });
     </script>

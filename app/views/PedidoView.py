@@ -3,7 +3,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -95,6 +94,27 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin
 
     def get_queryset(self):
         return Pedido.objects.filter(motorista=self.request.user).order_by('-published_at')
+
+
+@require_http_methods(["GET"])
+def buscar_cliente(request):
+    q = request.GET['q']
+    results = []
+    try:
+        qs = Ponto.objects.filter(telefone__icontains=q).order_by('-created_at')
+        for ponto in qs:
+            results.append({
+                'cliente': ponto.cliente,
+                'endereco': ponto.endereco,
+                'numero': ponto.numero,
+                'bairro': ponto.bairro.nome,
+                'complemento': ponto.complemento,
+                'observacoes': ponto.observacoes
+            })
+    except (Exception,):
+        pass
+    print(results)
+    return JsonResponse({'results': results})
 
 
 class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):

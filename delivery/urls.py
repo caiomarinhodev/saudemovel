@@ -18,7 +18,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
-    PedidoDetailView, avaliar_motorista, get_pedidos
+    PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser
 
 __author__ = "Caio Marinho"
@@ -103,6 +103,8 @@ urlpatterns = [
     url(r'get-pedidos-pendentes/$', get_pedidos, name="get_pedidos"),
 
     url(r'submit-message/(?P<pk_pedido>[0-9]+)/$', submit_message, name="submit_message"),
+
+    url(r'^buscar-cliente/$', buscar_cliente, name='buscar-cliente'),
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
