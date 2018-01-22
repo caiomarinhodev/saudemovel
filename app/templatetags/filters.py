@@ -47,7 +47,8 @@ def get_longitude(motorista):
 def corridas_mes(motorista):
     try:
         now = datetime.now()
-        return motorista.user.pedido_set.filter(created_at__month=now.month)
+        return motorista.user.pedido_set.filter(created_at__month=now.month,
+                                                created_at__year=now.year)
     except (Motorista.DoesNotExist, Exception):
         return None
 
@@ -56,7 +57,8 @@ def corridas_mes(motorista):
 def corridas_hoje(motorista):
     try:
         now = datetime.now()
-        return motorista.user.pedido_set.filter(created_at__day=now.day)
+        return motorista.user.pedido_set.filter(created_at__day=now.day, created_at__month=now.month,
+                                                created_at__year=now.year)
     except (Motorista.DoesNotExist, Exception):
         return None
 
@@ -65,7 +67,8 @@ def corridas_hoje(motorista):
 def ganhos_mes(motorista):
     try:
         now = datetime.now()
-        corridas_mes = motorista.user.pedido_set.filter(created_at__month=now.month)
+        corridas_mes = motorista.user.pedido_set.filter(created_at__month=now.month,
+                                                        created_at__year=now.year)
         ganho_mes = 0.0
         for pedido in corridas_mes:
             ganho_mes = float(ganho_mes) + float(pedido.valor_total)
@@ -78,7 +81,8 @@ def ganhos_mes(motorista):
 def ganhos_hoje(motorista):
     try:
         now = datetime.now()
-        corridas_hoje = motorista.user.pedido_set.filter(created_at__day=now.day)
+        corridas_hoje = motorista.user.pedido_set.filter(created_at__day=now.day, created_at__month=now.month,
+                                                         created_at__year=now.year)
         ganho_hoje = 0.0
         for pedido in corridas_hoje:
             ganho_hoje = float(ganho_hoje) + float(pedido.valor_total)
@@ -310,10 +314,10 @@ def compara_pedidos_semana(user):
         pedidos_anterior = loja.pedido_set.filter(created_at__range=(start_date, end_date))
         value = float((100.0 * float(len(pedidos_semana))) / float(len(pedidos_anterior)))
         if value > 100.0:
-            return {'signal': '+', 'x': float(value-100.0)}
+            return {'signal': '+', 'x': float(value - 100.0)}
         elif value == 100.0:
-            return {'signal': '=', 'x': float(value-100.0)}
-        return {'signal': '-', 'x': float(100.0-value)}
+            return {'signal': '=', 'x': float(value - 100.0)}
+        return {'signal': '-', 'x': float(100.0 - value)}
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
@@ -330,10 +334,10 @@ def compara_ganhos_semana(user):
         ganhos_anterior = get_ganhos_mes(pedidos_anterior)
         value = float((100.0 * float(ganhos_semana)) / float(ganhos_anterior))
         if value > 100.0:
-            return {'signal': '+', 'x': float(value-100.0)}
+            return {'signal': '+', 'x': float(value - 100.0)}
         elif value == 100.0:
-            return {'signal': '=', 'x': float(value-100.0)}
-        return {'signal': '-', 'x': float(100.0-value)}
+            return {'signal': '=', 'x': float(value - 100.0)}
+        return {'signal': '-', 'x': float(100.0 - value)}
     except (ValueError, ZeroDivisionError, Exception):
         return 0.0
 
@@ -348,10 +352,10 @@ def compara_pedidos_hoje(user):
         pedidos_ontem = loja.pedido_set.filter(created_at__day=ontem.day)
         value = float((100.0 * float(len(pedidos_hoje))) / float(len(pedidos_ontem)))
         if value > 100.0:
-            return {'signal': '+', 'x': float(value-100.0)}
+            return {'signal': '+', 'x': float(value - 100.0)}
         elif value == 100.0:
-            return {'signal': '=', 'x': float(value-100.0)}
-        return {'signal': '-', 'x': float(100.0-value)}
+            return {'signal': '=', 'x': float(value - 100.0)}
+        return {'signal': '-', 'x': float(100.0 - value)}
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
@@ -367,13 +371,12 @@ def compara_ganhos_hoje(user):
         ganhos_ontem = get_ganhos_mes(pedidos_ontem)
         value = float((100.0 * ganhos_hoje) / float(ganhos_ontem))
         if value > 100.0:
-            return {'signal': '+', 'x': float(value-100.0)}
+            return {'signal': '+', 'x': float(value - 100.0)}
         elif value == 100.0:
-            return {'signal': '=', 'x': float(value-100.0)}
-        return {'signal': '-', 'x': float(100.0-value)}
+            return {'signal': '=', 'x': float(value - 100.0)}
+        return {'signal': '-', 'x': float(100.0 - value)}
     except (ValueError, ZeroDivisionError, Exception):
         return 0.0
-
 
 
 @register.filter
