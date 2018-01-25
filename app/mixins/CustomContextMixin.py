@@ -110,7 +110,8 @@ class DashboardMixin(ContextMixin):
         kwargs['bd_space'] = float(float(float(
             len(motoristas) + len(pedidos) + len(users) + len(notificacoes) + len(locations) + len(bairros) + len(
                 estabelecimentos) + len(pontos)) / 10000) * 100)
-        kwargs['num_pedidos_entregues'] = Pedido.objects.filter(is_complete=True)
+        kwargs['num_pedidos_entregues'] = Pedido.objects.filter(created_at__month=datetime.now().month,
+                                                                is_complete=True)
         kwargs['pedidos_do_mes'] = Pedido.objects.filter(created_at__month=datetime.now().month).order_by('-created_at')
         kwargs['pedidos_entregues'] = Pedido.objects.filter(is_complete=True,
                                                             created_at__month=datetime.now().month).order_by(
