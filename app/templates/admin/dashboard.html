@@ -156,7 +156,7 @@
 
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3 col-xs-6">
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3>R$ {{ pedidos|get_renda_gerada_total|floatformat:2 }}</h3>
@@ -168,7 +168,33 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ pontos_mes|length }}</h3>
+
+                    <p>Entregas no Mes</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-ios-navigate-outline"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ pontos_all|length }}</h3>
+
+                    <p>Entregas Totais</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-navigate"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-6">
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>R$ {{ pedidos|get_renda_gerada_mes|floatformat:2 }}</h3>
@@ -241,7 +267,7 @@
         <!-- ./col -->
     </div>
 
-     <div class="row">
+    <div class="row">
         <div class="col-md-4">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"><i class="fa fa-check-square-o"></i></span>
@@ -311,13 +337,12 @@
             </div>
         </div>
     </div>
-    <hr/>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Pedidos em Andamento</h3>
+                    <h3 class="box-title">Pedidos do Mês</h3>
                 </div>
                 <div class="box-body">
                     <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
@@ -328,16 +353,17 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>LOJA</th>
+                                        <th>MOTORISTA</th>
+                                        <th>VALOR ENTREGA</th>
                                         <th>CRIADO EM</th>
                                         <th>N° ENTREGAS</th>
-                                        <th>MOTORISTA</th>
-                                        <th>LOJA</th>
-                                        <th>VALOR ENTREGA</th>
-                                        <th>COLETADO</th>
+                                        <th>STATUS</th>
+                                        <th>AVALIACAO</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for pedido in pedidos_andamento %}
+                                    {% for pedido in pedidos_do_mes %}
                                         <tr>
                                             <td>
                                                 <a data-toggle="modal"
@@ -484,10 +510,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
-                                            <td>
-                                                {{ pedido.ponto_set.all|length }}
-                                            </td>
+                                            <td>{{ pedido.estabelecimento }}</td>
                                             <td>
                                                 <a data-toggle="modal"
                                                    href="#modaln_{{ pedido.id }}"> {{ pedido.motorista.first_name }}</a>
@@ -548,171 +571,38 @@
                                                 </div>
 
                                             </td>
-                                            <td>{{ pedido.estabelecimento }}</td>
                                             <td>
                                                 <a href="#modal_{{ pedido.id }}">R$ {{ pedido.valor_total }} </a>
                                             </td>
+                                            <td>{{ pedido.created_at|date:"d/m/Y G:i" }}</td>
                                             <td>
+                                                {{ pedido.ponto_set.all|length }}
+                                            </td>
+                                            <td>
+                                                {% if pedido.is_complete %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        ENTREGUE</label>
+                                                {% elif not pedido.is_complete and not pedido.status %}
+                                                    <label class="label label-info"><i
+                                                            class=""></i>
+                                                        EM ANDAMENTO</label>
+                                                {% elif not pedido.is_complete and pedido.status %}
+                                                    <label class="label label-warning"><i
+                                                            class=""></i>
+                                                        PENDENTE</label>
+                                                {% endif %}
                                                 {% if pedido.coletado %}
                                                     <label class="label label-success"><i
-                                                            class=""></i>
-                                                        COLETADO</label>
+                                                            class=""></i>COLETADO</label>
                                                 {% else %}
                                                     <label class="label label-warning"><i
-                                                            class=""></i> NAO COLETADO</label>
+                                                            class=""></i>NÃO COLETADO</label>
                                                 {% endif %}
                                             </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                                            <td>{{ pedi.classification_set.last.nota }}</td>
 
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Meus Motoristas</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="table_2" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>FOTO</th>
-                                        <th>ID</th>
-                                        <th>MOTORISTA</th>
-                                        <th>PLACA</th>
-                                        <th>ONLINE</th>
-                                        <th>OCUPADO</th>
-                                        <th>Corridas Mes</th>
-                                        <th>Ganho Mes</th>
-                                        <th>Corridas Hoje</th>
-                                        <th>Ganhos Hoje</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for motorista in motoristas %}
-                                        <tr>
-                                            <td>
-                                                {% if motorista.photo %}
-                                                    <img src='{{ motorista.photo }}' class=""
-                                                         style="max-height: 25px; "/>
-                                                {% else %}
-                                                    <img src='{% static 'img/300.png' %}' class=""
-                                                         style="max-height: 25px; "/>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {{ motorista.id }}
-                                            </td>
-                                            <td>
-                                                <a data-toggle="modal"
-                                                   href="#modal_{{ motorista.id }}"> {{ motorista.user.first_name }}</a>
 
-                                                <div class="modal fade" role="dialog" id="modal_{{ motorista.id }}">
-                                                    <div class="modal-dialog">
-
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close"
-                                                                        data-dismiss="modal">&times;</button>
-                                                                <center><h3>Sobre {{ motorista.user.first_name }}</h3>
-                                                                </center>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="tab-content">
-                                                                    <center>
-                                                                        <div class="tab-pane active" id="about">
-                                                                            {% if motorista.photo %}
-                                                                                <img src="{{ motorista.photo }}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% else %}
-                                                                                <img src="{% static 'img/300.png' %}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% endif %}
-                                                                            <h3 class="media-heading">{{ motorista.user.first_name }}
-                                                                                <small> {{ motorista.placa }}</small>
-                                                                            </h3>
-                                                                            <span><strong>Pedidos Entregues: {{ motorista.user.pedido_set.all|length }}</strong></span>
-                                                                            <!--</center>-->
-                                                                            <hr>
-                                                                            <center>
-                                                                                <p class="text-center">
-                                                                                    <strong>Telefone: </strong><br>
-                                                                                    {{ motorista.phone }}</p>
-                                                                                <br>
-                                                                                <p class="text-center">
-                                                                                    <span><strong>Media Avaliacao: {{ motorista.user.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
-                                                                                </p>
-                                                                            </center>
-                                                                        </div>
-                                                                    </center>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Fechar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>{{ motorista.placa }}</td>
-                                            <td>
-                                                {% if motorista.is_online %}
-                                                    <label class="label label-success"><i
-                                                            class=""></i>
-                                                        ONLINE</label>
-                                                {% else %}
-                                                    <label class="label label-danger"><i
-                                                            class=""></i> OFFLINE</label>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if motorista.ocupado %}
-                                                    <label class="label label-danger"><i
-                                                            class=""></i> OCUPADO</label>
-                                                {% elif motorista.is_online and not motorista.ocupado %}
-                                                    <label class="label label-success"><i
-                                                            class=""></i>
-                                                        LIVRE</label>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {{ motorista|corridas_mes|length }}
-                                            </td>
-                                            <td>
-                                                {{ motorista|ganhos_mes|floatformat:2 }}
-                                            </td>
-                                            <td>
-                                                {{ motorista|corridas_hoje|length }}
-                                            </td>
-                                            <td>
-                                                {{ motorista|ganhos_hoje|floatformat:2 }}
-                                            </td>
-                                            <td>
-                                                {% if motorista.is_approved %}
-                                                    <span><i class="fa fa-check green"></i></span>
-                                                {% else %}
-                                                    <span><i class="fa fa-close red"></i></span>
-                                                {% endif %}
-                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -730,265 +620,75 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Pedidos Pendentes</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="table_3" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>CRIADO EM</th>
-                                        <th>LOJA</th>
-                                        <th>TELEFONE LOJA</th>
-                                        <th>N° ENTREGAS</th>
-                                        <th>MOTORISTA</th>
-                                        <th>VALOR ENTREGA</th>
-                                        <th>STATUS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for ped in pedidos_pendentes %}
-                                        <tr>
-                                            <td>
-                                                <a data-toggle="modal" href="#modalk_{{ ped.id }}"> {{ ped.id }}</a>
-
-                                                <div class="modal fade" role="dialog" id="modalk_{{ ped.id }}">
-                                                    <div class="modal-dialog">
-
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close"
-                                                                        data-dismiss="modal">&times;</button>
-                                                                <center><h3>Pedido #{{ ped.id }}</h3></center>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="tab-content">
-                                                                    <center>
-                                                                        <div class="tab-pane active" id="about">
-                                                                            {% if ped.estabelecimento.photo %}
-                                                                                <img src="{{ ped.estabelecimento.photo }}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% else %}
-                                                                                <img src="{% static 'img/300.png' %}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% endif %}
-                                                                            <h3 class="media-heading">
-                                                                                Inicio: {{ ped.published_at|date:"G:i" }}
-                                                                                <small>
-                                                                                    Criado: {{ ped.created_at|date:"d/m/Y" }}</small>
-                                                                            </h3>
-                                                                            <span><strong>Valor Entrega: R$ {{ ped.valor_total }}</strong></span>
-                                                                            <!--</center>-->
-                                                                            <hr>
-                                                                            <center>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="qa-message-list"
-                                                                                             id="wallmessages">
-                                                                                            <div class="message-item"
-                                                                                                 id="m16">
-                                                                                                <div class="message-inner">
-                                                                                                    <div class="message-head clearfix">
-                                                                                                        {% if ped.coletado %}
-                                                                                                            <div class="pull-right">
-                                                                                                                <label class="label label-success"><i
-                                                                                                                        class=""></i>
-                                                                                                                    COLETADO</label>
-                                                                                                            </div>
-                                                                                                        {% else %}
-                                                                                                            <div class="pull-right">
-                                                                                                                <label class="label label-warning"><i
-                                                                                                                        class=""></i>NÃO
-                                                                                                                    COLETADO</label>
-                                                                                                            </div>
-
-                                                                                                        {% endif %}
-
-
-                                                                                                        <div class="user-detail">
-                                                                                                            <h5 class="handle">{{ ped.estabelecimento.endereco }}, {{ ped.estabelecimento.numero }}, {{ ped.estabelecimento.bairro }}</h5>
-                                                                                                            <div class="post-meta">
-                                                                                                                <div class="asker-meta">
-                                                                                                            <span class="qa-message-who">
-                                                                                                                <span class="qa-message-who-pad">{{ ped.estabelecimento.complemento }} </span>
-                                                            											    </span>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="qa-message-content">
-                                                                                                        Buscar o pedido
-                                                                                                        no
-                                                                                                        estabelecimento {{ ped.estabelecimento.user.first_name }}
-                                                                                                        <p>Telefone
-                                                                                                            Loja: {{ ped.estabelecimento.phone }}</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            {% for p in ped.ponto_set.all %}
-                                                                                                <div class="message-item"
-                                                                                                     id="m16">
-                                                                                                    <div class="message-inner">
-                                                                                                        <div class="message-head clearfix">
-                                                                                                            {% if p.status %}
-                                                                                                                <div class="pull-right">
-                                                                                                                    <label class="label label-success"><i
-                                                                                                                            class=""></i>
-                                                                                                                        ENTREGUE</label>
-                                                                                                                </div>
-                                                                                                            {% else %}
-                                                                                                                <div class="pull-right">
-                                                                                                                    <label class="label label-warning"><i
-                                                                                                                            class=""></i>EM
-                                                                                                                        ANDAMENTO</label>
-                                                                                                                </div>
-
-                                                                                                            {% endif %}
-                                                                                                            <div class="avatar pull-left">
-                                                                                                                Entrega:
-                                                                                                                <h2>
-                                                                                                                    #{{ p.id }}</h2>
-                                                                                                            </div>
-
-                                                                                                            <div class="user-detail">
-                                                                                                                <h5 class="handle">{{ p.endereco }}, {{ p.numero }}, {{ p.bairro }}</h5>
-                                                                                                                <div class="post-meta">
-                                                                                                                    <div class="asker-meta">
-                                                                                                            <span class="qa-message-who">
-                                                                                                                <span class="qa-message-who-pad">{{ p.complemento }}</span>
-                                                            											    </span>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="qa-message-content">
-                                                                                                            Entrega ao
-                                                                                                            cliente {{ p.cliente }}
-                                                                                                            - {{ p.observacoes }}
-                                                                                                            <p>Telefone
-                                                                                                                Cliente: {{ p.telefone }}</p>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </center>
-                                                                        </div>
-                                                                    </center>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Fechar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ ped.created_at|date:"d/m/Y G:i" }}
-                                            </td>
-                                            <td>
-                                                {{ ped.estabelecimento }}
-                                            </td>
-                                            <td>
-                                                {{ ped.estabelecimento.phone }}
-                                            </td>
-                                            <td>
-                                                {{ ped.ponto_set.all|length }}
-                                            </td>
-                                            <td>
-                                                {{ ped.motorista.first_name }}
-                                            </td>
-                                            <td>
-                                                R$ {{ ped.valor_total }}
-                                            </td>
-                                            <td>
-                                                {% if ped.is_draft %}
-                                                    <label class="label label-warning">RASCUNHO</label>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="box-header">
+                <h3 class="box-title">
+                    Lojas Credenciadas
+                </h3>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
                 <!-- form start -->
                 <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div id="list" class="col-sm-12">
-                                <table id="table_0" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>ID</th>
-                                        <th>LOJA</th>
-                                        <th>PEDIDOS</th>
-                                        <th>ENDEREÇO LOJA</th>
-                                        <th>ONLINE?</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for loja in lojas %}
-                                        <tr>
-                                            <td>
-                                                {% if loja.photo %}
-                                                    <img src="{{ loja.photo }}"
-                                                         name="aboutme" width="60" height="60" border="0"
-                                                         class="img-circle">
-                                                {% else %}
-                                                    <img src="{% static 'img/300.png' %}"
-                                                         name="aboutme" width="60" height="60" border="0"
-                                                         class="img-circle">
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ loja.id }}</td>
-                                            <td>{{ loja.user.first_name }}</td>
-                                            <td>{{ loja.pedido_set.all|length }}</td>
-                                            <td>
-                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}
-                                            </td>
-                                            <td>
-                                                {% if loja.is_online %}
-                                                    <label class="label label-success"><i
-                                                            class=""></i>
-                                                        ONLINE</label>
-                                                {% else %}
-                                                    <label class="label label-danger"><i
-                                                            class=""></i> OFFLINE</label>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="users-list clearfix">
+                        {% for loja in lojas %}
+                            <li>
+                                <img src="{{ loja.photo }}" alt="{{ loja.pk }}">
+                                <a class="users-list-name" href="#">{{ loja.user.first_name }}</a>
+                                <span class="users-list-date">
+                                {% if loja.is_online %}
+                                    <label class="label label-success"><i
+                                            class=""></i> ONLINE</label>
+                                {% else %}
+                                    <label class="label label-danger"><i
+                                            class=""></i> OFFLINE</label>
+                                {% endif %}
+                            </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {#                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">#}
+                    {#                        <div class="row">#}
+                    {#                            <div id="list" class="col-sm-12">#}
+                    {#                                <table id="table_0" class="table table-bordered table-striped" class="display"#}
+                    {#                                       cellspacing="0" width="100%">#}
+                    {#                                    <thead>#}
+                    {#                                    <tr>#}
+                    {#                                        <th></th>#}
+                    {#                                        <th>ID</th>#}
+                    {#                                        <th>LOJA</th>#}
+                    {#                                        <th>PEDIDOS</th>#}
+                    {#                                        <th>ENDEREÇO LOJA</th>#}
+                    {#                                        <th>ONLINE?</th>#}
+                    {#                                    </tr>#}
+                    {#                                    </thead>#}
+                    {#                                    <tbody>#}
+                    {#                                    {% for loja in lojas %}#}
+                    {#                                        <tr>#}
+                    {#                                            <td>#}
+                    {#                                                {% if loja.photo %}#}
+                    {#                                                    <img src="{{ loja.photo }}"#}
+                    {#                                                         name="aboutme" width="60" height="60" border="0"#}
+                    {#                                                         class="img-circle">#}
+                    {#                                                {% else %}#}
+                    {#                                                    <img src="{% static 'img/300.png' %}"#}
+                    {#                                                         name="aboutme" width="60" height="60" border="0"#}
+                    {#                                                         class="img-circle">#}
+                    {#                                                {% endif %}#}
+                    {#                                            </td>#}
+                    {#                                            <td>{{ loja.id }}</td>#}
+                    {#                                            <td>{{ loja.user.first_name }}</td>#}
+                    {#                                            <td>{{ loja.pedido_set.all|length }}</td>#}
+                    {#                                            <td>#}
+                    {#                                                {{ loja.endereco }}, {{ loja.numero }}, {{ loja.bairro }}#}
+                    {#                                            </td>#}
+                    {#                                            <td>#}
+
+                    {#                                            </td>#}
+                    {#                                        </tr>#}
+                    {#                                    {% endfor %}#}
+                    {#                                    </tbody>#}
+                    {#                                </table>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
 
                 </div>
                 <!-- /.box-body -->
@@ -1069,205 +769,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Pedidos Entregues</h3>
-                </div>
-                <div class="box-body">
-                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="table_4" class="table table-bordered table-striped" class="display"
-                                       cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>CRIADO EM</th>
-                                        <th>LOJA</th>
-                                        <th>TELEFONE LOJA</th>
-                                        <th>N° ENTREGAS</th>
-                                        <th>VALOR ENTREGA</th>
-                                        <th>MOTORISTA</th>
-                                        <th>AVALIACAO</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for pedi in pedidos_entregues %}
-                                        <tr>
-                                            <td>
-                                                <a data-toggle="modal" href="#modalk_{{ pedi.id }}"> {{ pedi.id }}</a>
-
-                                                <div class="modal fade" role="dialog" id="modalk_{{ pedi.id }}">
-                                                    <div class="modal-dialog">
-
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close"
-                                                                        data-dismiss="modal">&times;</button>
-                                                                <center><h3>Pedido #{{ pedi.id }}</h3></center>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="tab-content">
-                                                                    <center>
-                                                                        <div class="tab-pane active" id="about">
-                                                                            {% if pedi.estabelecimento.photo %}
-                                                                                <img src="{{ pedi.estabelecimento.photo }}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% else %}
-                                                                                <img src="{% static 'img/300.png' %}"
-                                                                                     name="aboutme" width="140"
-                                                                                     height="140" border="0"
-                                                                                     class="img-circle">
-                                                                            {% endif %}
-                                                                            <h3 class="media-heading">
-                                                                                Inicio: {{ pedi.published_at|date:"G:i" }}
-                                                                                <small>
-                                                                                    Criado: {{ pedi.created_at|date:"d/m/Y" }}</small>
-                                                                            </h3>
-                                                                            <span><strong>Valor Entrega: R$ {{ pedi.valor_total }}</strong></span>
-                                                                            <!--</center>-->
-                                                                            <hr>
-                                                                            <center>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="qa-message-list"
-                                                                                             id="wallmessages">
-                                                                                            <div class="message-item"
-                                                                                                 id="m16">
-                                                                                                <div class="message-inner">
-                                                                                                    <div class="message-head clearfix">
-                                                                                                        {% if pedi.coletado %}
-                                                                                                            <div class="pull-right">
-                                                                                                                <label class="label label-success"><i
-                                                                                                                        class=""></i>
-                                                                                                                    COLETADO</label>
-                                                                                                            </div>
-                                                                                                        {% else %}
-                                                                                                            <div class="pull-right">
-                                                                                                                <label class="label label-warning"><i
-                                                                                                                        class=""></i>NÃO
-                                                                                                                    COLETADO</label>
-                                                                                                            </div>
-
-                                                                                                        {% endif %}
-
-
-                                                                                                        <div class="user-detail">
-                                                                                                            <h5 class="handle">{{ pedi.estabelecimento.endereco }}, {{ pedi.estabelecimento.numero }}, {{ pedi.estabelecimento.bairro }}</h5>
-                                                                                                            <div class="post-meta">
-                                                                                                                <div class="asker-meta">
-                                                                                                            <span class="qa-message-who">
-                                                                                                                <span class="qa-message-who-pad">{{ pedi.estabelecimento.complemento }} </span>
-                                                            											    </span>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="qa-message-content">
-                                                                                                        Buscar o pedido
-                                                                                                        no
-                                                                                                        estabelecimento {{ pedi.estabelecimento.user.first_name }}
-                                                                                                        <p>Telefone
-                                                                                                            Loja: {{ pedi.estabelecimento.phone }}</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            {% for p in pedi.ponto_set.all %}
-                                                                                                <div class="message-item"
-                                                                                                     id="m16">
-                                                                                                    <div class="message-inner">
-                                                                                                        <div class="message-head clearfix">
-                                                                                                            {% if p.status %}
-                                                                                                                <div class="pull-right">
-                                                                                                                    <label class="label label-success"><i
-                                                                                                                            class=""></i>
-                                                                                                                        ENTREGUE</label>
-                                                                                                                </div>
-                                                                                                            {% else %}
-                                                                                                                <div class="pull-right">
-                                                                                                                    <label class="label label-warning"><i
-                                                                                                                            class=""></i>EM
-                                                                                                                        ANDAMENTO</label>
-                                                                                                                </div>
-
-                                                                                                            {% endif %}
-                                                                                                            <div class="avatar pull-left">
-                                                                                                                Entrega:
-                                                                                                                <h2>
-                                                                                                                    #{{ p.id }}</h2>
-                                                                                                            </div>
-
-                                                                                                            <div class="user-detail">
-                                                                                                                <h5 class="handle">{{ p.endereco }}, {{ p.numero }}, {{ p.bairro }}</h5>
-                                                                                                                <div class="post-meta">
-                                                                                                                    <div class="asker-meta">
-                                                                                                            <span class="qa-message-who">
-                                                                                                                <span class="qa-message-who-pad">{{ p.complemento }}</span>
-                                                            											    </span>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="qa-message-content">
-                                                                                                            Entrega ao
-                                                                                                            cliente {{ p.cliente }}
-                                                                                                            - {{ p.observacoes }}
-                                                                                                            <p>Telefone
-                                                                                                                Cliente: {{ p.telefone }}</p>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </center>
-                                                                        </div>
-                                                                    </center>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Fechar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ pedi.created_at|date:"d/m/Y G:i" }}
-                                            </td>
-                                            <td>
-                                                {{ pedi.estabelecimento }}
-                                            </td>
-                                            <td>
-                                                {{ pedi.estabelecimento.phone }}
-                                            </td>
-                                            <td>
-                                                {{ pedi.ponto_set.all|length }}
-                                            </td>
-                                            <td>
-                                                R$ {{ pedi.valor_total }}
-                                            </td>
-                                            <td>{{ pedi.motorista.first_name }}</td>
-                                            <td>{{ pedi.classification_set.last.nota }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js' %}"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/examples/Control.Geocoder.js' %}"></script>
@@ -1303,37 +804,7 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#table_0').DataTable({
-                responsive: true,
-                order: [[1, "desc"]]
-            });
-            $('#table_bfm').DataTable({
-                responsive: true,
-                searching: false,
-                order: [[1, "desc"]]
-            });
-            $('#table_bft').DataTable({
-                responsive: true,
-                searching: false,
-                order: [[1, "desc"]]
-            });
-            $('#table_aft').DataTable({
-                responsive: true,
-                searching: false,
-                order: [[1, "desc"]]
-            });
-            $('#table_1').DataTable({
-                responsive: true,
-                order: [[1, "desc"]]
-            });
-            $('#table_2').DataTable({
-                responsive: true,
-            });
-            $('#table_3').DataTable({
-                responsive: true,
-                order: [[1, "desc"]]
-            });
-            $('#table_4').DataTable({
+            $('#table').DataTable({
                 responsive: true,
                 order: [[1, "desc"]]
             });

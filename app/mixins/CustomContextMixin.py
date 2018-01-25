@@ -82,6 +82,16 @@ class CustomContextMixin(ContextMixin):
         return super(CustomContextMixin, self).get_context_data(**kwargs)
 
 
+class ListMotoristasMixin(ContextMixin):
+    def get_context_data(self, **kwargs):
+        motoristas = Motorista.objects.all()
+        kwargs['motoristas'] = motoristas
+        kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)
+        kwargs['motoristas_livres'] = Motorista.objects.filter(is_online=True, ocupado=False)
+        kwargs['motoristas_ocupados'] = Motorista.objects.filter(is_online=True, ocupado=True)
+        return super(ListMotoristasMixin, self).get_context_data(**kwargs)
+
+
 class DashboardMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         now = datetime.now()
@@ -101,7 +111,10 @@ class DashboardMixin(ContextMixin):
             len(motoristas) + len(pedidos) + len(users) + len(notificacoes) + len(locations) + len(bairros) + len(
                 estabelecimentos) + len(pontos)) / 10000) * 100)
         kwargs['num_pedidos_entregues'] = Pedido.objects.filter(is_complete=True)
-        kwargs['pedidos_entregues'] = Pedido.objects.filter(is_complete=True, created_at__month=datetime.now().month).order_by('-created_at')
+        kwargs['pedidos_do_mes'] = Pedido.objects.filter(created_at__month=datetime.now().month).order_by('-created_at')
+        kwargs['pedidos_entregues'] = Pedido.objects.filter(is_complete=True,
+                                                            created_at__month=datetime.now().month).order_by(
+            '-created_at')
         kwargs['pedidos_pendentes'] = Pedido.objects.filter(status=True)
         kwargs['pedidos_andamento'] = Pedido.objects.filter(status=False, is_complete=False)
         kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)

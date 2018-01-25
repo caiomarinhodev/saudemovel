@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
-from app.views.HomeView import DashboardView, set_feriado_admin
+from app.views.HomeView import DashboardView, set_feriado_admin, ListMotoristasView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
@@ -105,6 +105,9 @@ urlpatterns = [
     url(r'submit-message/(?P<pk_pedido>[0-9]+)/$', submit_message, name="submit_message"),
 
     url(r'^buscar-cliente/$', buscar_cliente, name='buscar-cliente'),
+
+    url(r'^dashboard/list-motoristas/$', ListMotoristasView.as_view(), name='list-motoristas-view'),
+
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),
