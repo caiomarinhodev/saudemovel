@@ -29,6 +29,11 @@ class DashboardView(LoginRequiredMixin, TemplateView, DashboardMixin):
     login_url = '/login/'
     template_name = 'admin/dashboard.html'
 
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('/login')
+        return super(DashboardView, self).get(request, *args, **kwargs)
+
 
 class ListMotoristasView(LoginRequiredMixin, TemplateView, ListMotoristasMixin):
     login_url = '/login/'
