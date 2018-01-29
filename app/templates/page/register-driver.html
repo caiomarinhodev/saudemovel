@@ -81,6 +81,7 @@
             </div>
             <div class="form-group has-feedback">
                 <label>Login:</label>
+                <p>(Tudo junto e minúsculo)</p>
                 {{ form.username }}
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
@@ -121,6 +122,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $('.telefone').attr('type', 'number')
 
         $('[name=cep]').focusout(function () {
             $('#loading').show();
