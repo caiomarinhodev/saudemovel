@@ -3,66 +3,66 @@
 {% load staticfiles %}
 
 {% block content %}
+    {% if user.estabelecimento.configuration.plano == 'PREMIUM' %}
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>{{ motoristas_online|length }}</h3>
 
-    <div class="row">
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-aqua">
-                <div class="inner">
-                    <h3>{{ motoristas_online|length }}</h3>
-
-                    <p>Motoristas Ativos</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person"></i>
+                        <p>Motoristas Ativos</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person"></i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3>{{ pedidos|length }}</h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>{{ pedidos|length }}</h3>
 
-                    <p>Pedidos Criados</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                        <p>Pedidos Criados</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <h3>{{ pedidos_andamento|length }}</h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>{{ pedidos_andamento|length }}</h3>
 
-                    <p>Pedidos em Andamento</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-paper-airplane"></i>
+                        <p>Pedidos em Andamento</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-paper-airplane"></i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <h3>{{ pedidos_pendentes|length }}</h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>{{ pedidos_pendentes|length }}</h3>
 
-                    <p>Pedidos Pendentes</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-clock"></i>
+                        <p>Pedidos Pendentes</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-clock"></i>
+                    </div>
                 </div>
             </div>
+            <!-- ./col -->
         </div>
-        <!-- ./col -->
-    </div>
-
+    {% endif %}
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
