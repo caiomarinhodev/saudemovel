@@ -9,6 +9,7 @@ from app.views.HomeView import DashboardView, set_feriado_admin, ListMotoristasV
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
+from app.views.ClientesView import *
 from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
     notificar_admin_message, notificar_order_delivered_loja, notify_new_message_for_motorista, \
@@ -65,6 +66,10 @@ urlpatterns = [
     url(r'^app/chats/all/$', ListChatView.as_view(), name='list_all_chats'),
     url(r'^app/chat/(?P<pk>[0-9]+)/$', ChatPedidoView.as_view(), name='chat_view'),
     url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
+
+    url(r'^app/clientes/(?P<pk>[0-9]+)/edit/$', ClienteUpdateView.as_view(), name="edit_clientes"),
+    url(r'^app/clientes/add/$', ClienteCreateView.as_view(), name="add_clientes"),
+    url(r'^app/clientes/$', ClientesListView.as_view(), name="clientes"),
 
     url(r'^app/perfil/edit/$', EditarPerfilView.as_view(), name="edit_perfil_view"),
 

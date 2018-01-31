@@ -50,8 +50,8 @@
                 </p>
 
                 <div class="progress-group">
-                    <span class="progress-text">Pedidos Entregues</span>
-                    <span class="progress-number"><b>{{ user|get_pedidos_semana|length }}</b></span>
+                    <span class="progress-text">N° de Entregas</span>
+                    <span class="progress-number"><b>{{ user|get_entregas_semana|length }}</b></span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-aqua" style="width: 100%"></div>
@@ -59,8 +59,8 @@
                 </div>
                 <!-- /.progress-group -->
                 <div class="progress-group">
-                    <span class="progress-text">Média de Pedidos por dia</span>
-                    <span class="progress-number"><b>{{ user|get_media_pedidos_semana|floatformat:1 }}</b></span>
+                    <span class="progress-text">Média de Entregas por dia</span>
+                    <span class="progress-number"><b>{{ user|get_media_entregas_semana|floatformat:1 }}</b></span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-red" style="width: 100%"></div>
@@ -69,7 +69,7 @@
                 <!-- /.progress-group -->
                 <div class="progress-group">
                     <span class="progress-text">Gastos em Entregas</span>
-                    <span class="progress-number"><b>R$ {{ user|get_pedidos_semana|get_ganhos_mes|floatformat:2 }}</b></span>
+                    <span class="progress-number"><b>R$ {{ user|get_rotas_semana|get_ganhos_mes|floatformat:2 }}</b></span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-green" style="width: 100%"></div>
@@ -78,7 +78,7 @@
                 <!-- /.progress-group -->
                 <div class="progress-group">
                     <span class="progress-text">Média de Gasto Diário</span>
-                    <span class="progress-number"><b>R$ {{ user|get_pedidos_semana|get_ganhos_mes|divide:7.0|floatformat:2 }}</b></span>
+                    <span class="progress-number"><b>R$ {{ user|get_rotas_semana|get_ganhos_mes|divide:7.0|floatformat:2 }}</b></span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
@@ -111,8 +111,8 @@
                         {% endif %}
                         {{ p_p_semana.x|floatformat:2 }}%
                     {% endwith %}
-                    <h5 class="description-header">{{ user|get_pedidos_semana|length }}</h5>
-                    <span class="description-text">TOTAL DE PEDIDOS EM 7 DIAS</span>
+                    <h5 class="description-header">{{ user|get_entregas_semana|length }}</h5>
+                    <span class="description-text">TOTAL DE ENTREGAS EM 7 DIAS</span>
                 </div>
                 <!-- /.description-block -->
             </div>
@@ -135,7 +135,7 @@
                         {% endif %}
                         {{ p_ganhos_semana.x|floatformat:2 }}%
                     {% endwith %}
-                    <h5 class="description-header">R$ {{ user|get_pedidos_semana|get_ganhos_mes|floatformat:2 }}</h5>
+                    <h5 class="description-header">R$ {{ user|get_rotas_semana|get_ganhos_mes|floatformat:2 }}</h5>
                     <span class="description-text">TOTAL GASTO EM 7 DIAS</span>
                 </div>
                 <!-- /.description-block -->
@@ -159,8 +159,8 @@
                         {% endif %}
                         {{ p_ph_semana.x|floatformat:2 }}%
                     {% endwith %}
-                    <h5 class="description-header">{{ user|get_pedidos_hoje|length }}</h5>
-                    <span class="description-text">PEDIDOS HOJE</span>
+                    <h5 class="description-header">{{ user|get_entregas_hoje|length }}</h5>
+                    <span class="description-text">ENTREGAS HOJE</span>
                 </div>
                 <!-- /.description-block -->
             </div>

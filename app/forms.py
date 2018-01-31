@@ -203,3 +203,9 @@ class FormMotoristaRegister(ModelForm, BaseForm):
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
 
 PontoFormUpdateSet = inlineformset_factory(Pedido, Ponto, form=FormEditPonto, extra=0)
+
+
+class FormPontoCliente(ModelForm, BaseForm):
+    class Meta:
+        model = Ponto
+        fields = ['cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento']

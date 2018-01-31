@@ -136,7 +136,7 @@
                                                                                 <h3 class="media-heading">{{ pedido.motorista.first_name }}
                                                                                     <small> {{ pedido.motorista.motorista.placa }}</small>
                                                                                 </h3>
-                                                                                <span><strong>Pedidos Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
+                                                                                <span><strong>Rotas Entregues: {{ pedido.motorista.pedido_set.all|length }}</strong></span>
                                                                                 <!--</center>-->
                                                                                 <hr>
                                                                                 <center>
@@ -204,7 +204,7 @@
                                                             <div class="col-xs-12">
                                                                 <a class="btn btn-danger btn-block cancel_{{ pedido.id }}"
                                                                    href="#">
-                                                                    Cancelar Rota
+                                                                    Rejeitar Motorista
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -234,7 +234,7 @@
                                                                     play('alert');
                                                                     swal({
                                                                         title: "ALERTA!",
-                                                                        text: 'Você realmente vai cancelar esta Rota?',
+                                                                        text: 'Você realmente vai rejeitar Motorista?',
                                                                         type: 'warning',
                                                                         showCancelButton: true,
                                                                         closeOnConfirm: false,
