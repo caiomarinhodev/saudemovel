@@ -122,10 +122,6 @@ class FormRegister(ModelForm, BaseForm):
     phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                           'maxlength': 200,
                                                           'placeholder': 'Telefone'}))
-    cep = forms.CharField(max_length=10, widget=forms.TextInput(attrs={'required': True,
-                                                                       'maxlength': 200,
-                                                                       'placeholder': 'CEP'
-                                                                       }))
     endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
                                                                             'maxlength': 200,
                                                                             'placeholder': 'Endereço'
@@ -207,3 +203,9 @@ class FormMotoristaRegister(ModelForm, BaseForm):
 PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
 
 PontoFormUpdateSet = inlineformset_factory(Pedido, Ponto, form=FormEditPonto, extra=0)
+
+
+class FormPontoCliente(ModelForm, BaseForm):
+    class Meta:
+        model = Ponto
+        fields = ['cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento']
