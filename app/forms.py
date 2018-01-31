@@ -122,10 +122,6 @@ class FormRegister(ModelForm, BaseForm):
     phone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                           'maxlength': 200,
                                                           'placeholder': 'Telefone'}))
-    cep = forms.CharField(max_length=10, widget=forms.TextInput(attrs={'required': True,
-                                                                       'maxlength': 200,
-                                                                       'placeholder': 'CEP'
-                                                                       }))
     endereco = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'required': True,
                                                                             'maxlength': 200,
                                                                             'placeholder': 'Endereço'

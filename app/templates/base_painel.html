@@ -97,95 +97,25 @@
             </a>
 
             <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    {% if user.estabelecimento %}
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="label label-success">{{ messages_e|length }}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">Você tem {{ messages_e|length }} mensagens</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        {% for message in messages_e %}
-                                            <li><!-- start message -->
-                                                <a href="{% url 'chat_view' message.pedido.pk %}">
-                                                    <div class="pull-left">
-                                                        {% if message.u_from.motorista.photo %}
-                                                            <img src="{{ message.u_from.motorista.photo }}"
-                                                                 class="img-circle"
-                                                                 alt="User Image">
-                                                        {% else %}
-                                                            <img src="{% static 'img/300.png' %}" class="img-circle"
-                                                                 alt="User Image">
-                                                        {% endif %}
-                                                    </div>
-                                                    <h4>
-                                                        <small><i
-                                                                class="fa fa-clock-o"></i> {{ message.created_at|date:"G:i" }}
-                                                        </small>
-                                                    </h4>
-                                                    <p>{{ message.text }}</p>
-                                                </a>
-                                            </li>
-                                            <!-- end message -->
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                <li class="footer"><a href="{% url 'list_all_chats' %}">Veja todas as
-                                    mensagens</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning">{{ pedidos_n|length }}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">Voce tem {{ pedidos_n|length }} Pedidos para entregar</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        {% for ped in pedidos_n %}
-                                            <li>
-                                                <a href="{% url 'acompanhar_pedido_view' ped.pk %}">
-                                                    <i class="fa fa-warning text-yellow"></i>
-                                                    Pedido #{{ ped.pk }} está em andamento.
-                                                </a>
-                                            </li>
-                                        {% empty %}
-                                            <li>
-                                                <a href="#">
-                                                    Nenhum pedido em andamento
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-
-                                    </ul>
-                                </li>
-                                <li class="footer"><a href="{% url 'acompanhar_list' %}">Acompanhar Pedidos</a></li>
-                            </ul>
-                        </li>
-                    {% elif user.motorista %}
-                        {% if user.motorista.ocupado %}
+                {% if user.estabelecimento.configuration.plan == 'PREMIUM' %}
+                    <ul class="nav navbar-nav">
+                        {% if user.estabelecimento %}
                             <li class="dropdown messages-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="label label-success">{{ messages_m|length }}</span>
+                                    <span class="label label-success">{{ messages_e|length }}</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="header">Voce tem {{ messages_m|length }} mensagens</li>
+                                    <li class="header">Você tem {{ messages_e|length }} mensagens</li>
                                     <li>
                                         <!-- inner menu: contains the actual data -->
                                         <ul class="menu">
-                                            {% for message in messages_m %}
+                                            {% for message in messages_e %}
                                                 <li><!-- start message -->
-                                                    <a href="{% url 'chat_motorista_view' %}">
+                                                    <a href="{% url 'chat_view' message.pedido.pk %}">
                                                         <div class="pull-left">
-                                                            {% if message.u_from.estabelecimento.photo %}
-                                                                <img src="{{ message.u_from.estabelecimento.photo }}"
+                                                            {% if message.u_from.motorista.photo %}
+                                                                <img src="{{ message.u_from.motorista.photo }}"
                                                                      class="img-circle"
                                                                      alt="User Image">
                                                             {% else %}
@@ -205,102 +135,156 @@
                                             {% endfor %}
                                         </ul>
                                     </li>
-                                    <li class="footer"><a href="{% url 'chat_motorista_view' %}">Veja todas as
+                                    <li class="footer"><a href="{% url 'list_all_chats' %}">Veja todas as
                                         mensagens</a></li>
                                 </ul>
                             </li>
-                        {% endif %}
-                    {% endif %}
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">{{ notifications_n|length }}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Você tem {{ notifications_n|length }} notificações</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    {% for n in notifications_n %}
-                                        <li><!-- Task item -->
-                                            <a href="#">
-                                                <h3>
-                                                    {{ n.message|truncatechars:'37' }}
-                                                    <small class="pull-right">
-                                                        {% if n.type_message == 'NOVO_PEDIDO' %}
-                                                            <label class="label label-info"><i
-                                                                    class=""></i>
-                                                                NOVO PEDIDO</label>
-                                                        {% elif n.type_message == 'DELETE_LOJA' %}
-                                                            <label class="label label-warning"><i
-                                                                    class=""></i>
-                                                                CANCELAMENTO</label>
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="label label-warning">{{ pedidos_n|length }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">Voce tem {{ pedidos_n|length }} Pedidos para entregar</li>
+                                    <li>
+                                        <!-- inner menu: contains the actual data -->
+                                        <ul class="menu">
+                                            {% for ped in pedidos_n %}
+                                                <li>
+                                                    <a href="{% url 'acompanhar_pedido_view' ped.pk %}">
+                                                        <i class="fa fa-warning text-yellow"></i>
+                                                        Pedido #{{ ped.pk }} está em andamento.
+                                                    </a>
+                                                </li>
+                                            {% empty %}
+                                                <li>
+                                                    <a href="#">
+                                                        Nenhum pedido em andamento
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
 
-                                                        {% elif n.type_message == 'CANCEL_ORDER' %}
-                                                            <label class="label label-warning"><i
-                                                                    class=""></i>
-                                                                CANCELAMENTO</label>
-
-                                                        {% elif n.type_message == 'ORDER_DELIVERED' %}
-                                                            <label class="label label-info"><i
-                                                                    class=""></i>
-                                                                ENTREGA</label>
-
-                                                        {% elif n.type_message == 'ACCEPT_ORDER' %}
-                                                            <label class="label label-default"><i
-                                                                    class=""></i>
-                                                                PEDIDO ACEITO</label>
-
-                                                        {% elif n.type_message == 'ENABLE_ROTA' %}
-                                                            <label class="label label-info"><i
-                                                                    class=""></i>
-                                                                ROTA</label>
-                                                        {% elif n.type_message == 'ALL_DELIVERED' %}
-                                                            <label class="label label-success"><i
-                                                                    class=""></i>
-                                                                PEDIDO ENTREGUE</label>
-                                                        {% endif %}
-                                                    </small>
-                                                </h3>
-                                            </a>
-                                        </li>
-                                    {% empty %}
-                                        <li><!-- Task item -->
-                                            <a href="#">
-                                                <h3>
-                                                    Nenhuma notificação nova
-                                                </h3>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="footer"><a href="{% url 'acompanhar_list' %}">Acompanhar Pedidos</a></li>
                                 </ul>
                             </li>
-                            <li class="footer">
-                                <a href="{% url 'notificacoes' %}">Ver Notificações</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {% if user.motorista %}
-                                {% if user.motorista.photo %}
-                                    <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
-                                {% else %}
-                                    <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
-                                {% endif %}
-                            {% elif user.estabelecimento %}
-                                {% if user.estabelecimento.photo %}
-                                    <img src="{{ user.estabelecimento.photo }}" class="user-image" alt="User Image">
-                                {% else %}
-                                    <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
-                                {% endif %}
+                        {% elif user.motorista %}
+                            {% if user.motorista.ocupado %}
+                                <li class="dropdown messages-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span class="label label-success">{{ messages_m|length }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="header">Voce tem {{ messages_m|length }} mensagens</li>
+                                        <li>
+                                            <!-- inner menu: contains the actual data -->
+                                            <ul class="menu">
+                                                {% for message in messages_m %}
+                                                    <li><!-- start message -->
+                                                        <a href="{% url 'chat_motorista_view' %}">
+                                                            <div class="pull-left">
+                                                                {% if message.u_from.estabelecimento.photo %}
+                                                                    <img src="{{ message.u_from.estabelecimento.photo }}"
+                                                                         class="img-circle"
+                                                                         alt="User Image">
+                                                                {% else %}
+                                                                    <img src="{% static 'img/300.png' %}"
+                                                                         class="img-circle"
+                                                                         alt="User Image">
+                                                                {% endif %}
+                                                            </div>
+                                                            <h4>
+                                                                <small><i
+                                                                        class="fa fa-clock-o"></i> {{ message.created_at|date:"G:i" }}
+                                                                </small>
+                                                            </h4>
+                                                            <p>{{ message.text }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <!-- end message -->
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="footer"><a href="{% url 'chat_motorista_view' %}">Veja todas as
+                                            mensagens</a></li>
+                                    </ul>
+                                </li>
                             {% endif %}
-                            <span class="hidden-xs">{{ user.first_name }}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
+                        {% endif %}
+                        <li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                                <span class="label label-danger">{{ notifications_n|length }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">Você tem {{ notifications_n|length }} notificações</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        {% for n in notifications_n %}
+                                            <li><!-- Task item -->
+                                                <a href="#">
+                                                    <h3>
+                                                        {{ n.message|truncatechars:'37' }}
+                                                        <small class="pull-right">
+                                                            {% if n.type_message == 'NOVO_PEDIDO' %}
+                                                                <label class="label label-info"><i
+                                                                        class=""></i>
+                                                                    NOVO PEDIDO</label>
+                                                            {% elif n.type_message == 'DELETE_LOJA' %}
+                                                                <label class="label label-warning"><i
+                                                                        class=""></i>
+                                                                    CANCELAMENTO</label>
+
+                                                            {% elif n.type_message == 'CANCEL_ORDER' %}
+                                                                <label class="label label-warning"><i
+                                                                        class=""></i>
+                                                                    CANCELAMENTO</label>
+
+                                                            {% elif n.type_message == 'ORDER_DELIVERED' %}
+                                                                <label class="label label-info"><i
+                                                                        class=""></i>
+                                                                    ENTREGA</label>
+
+                                                            {% elif n.type_message == 'ACCEPT_ORDER' %}
+                                                                <label class="label label-default"><i
+                                                                        class=""></i>
+                                                                    PEDIDO ACEITO</label>
+
+                                                            {% elif n.type_message == 'ENABLE_ROTA' %}
+                                                                <label class="label label-info"><i
+                                                                        class=""></i>
+                                                                    ROTA</label>
+                                                            {% elif n.type_message == 'ALL_DELIVERED' %}
+                                                                <label class="label label-success"><i
+                                                                        class=""></i>
+                                                                    PEDIDO ENTREGUE</label>
+                                                            {% endif %}
+                                                        </small>
+                                                    </h3>
+                                                </a>
+                                            </li>
+                                        {% empty %}
+                                            <li><!-- Task item -->
+                                                <a href="#">
+                                                    <h3>
+                                                        Nenhuma notificação nova
+                                                    </h3>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="{% url 'notificacoes' %}">Ver Notificações</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {% if user.motorista %}
                                     {% if user.motorista.photo %}
                                         <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
@@ -314,25 +298,47 @@
                                         <img src="{% static 'img/300x300.png' %}" class="user-image" alt="User Image">
                                     {% endif %}
                                 {% endif %}
+                                <span class="hidden-xs">{{ user.first_name }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    {% if user.motorista %}
+                                        {% if user.motorista.photo %}
+                                            <img src="{{ user.motorista.photo }}" class="user-image" alt="User Image">
+                                        {% else %}
+                                            <img src="{% static 'img/300x300.png' %}" class="user-image"
+                                                 alt="User Image">
+                                        {% endif %}
+                                    {% elif user.estabelecimento %}
+                                        {% if user.estabelecimento.photo %}
+                                            <img src="{{ user.estabelecimento.photo }}" class="user-image"
+                                                 alt="User Image">
+                                        {% else %}
+                                            <img src="{% static 'img/300x300.png' %}" class="user-image"
+                                                 alt="User Image">
+                                        {% endif %}
+                                    {% endif %}
 
 
-                                <p>
-                                    <small>Username: {{ user.username }}</small>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{% url "auth_logout" %}" class="btn btn-default btn-flat">Sair</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Control Sidebar Toggle Button -->
-                </ul>
+                                    <p>
+                                        <small>Username: {{ user.username }}</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="{% url "auth_logout" %}" class="btn btn-default btn-flat">Sair</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                    </ul>
+                {% endif %}
             </div>
         </nav>
     </header>
@@ -345,13 +351,15 @@
                 <div class="pull-left image">
                     {% if user.motorista %}
                         {% if user.motorista.photo %}
-                            <img src="{{ user.motorista.photo }}" class="img-circle" alt="User Image" style="margin-bottom: 15px;">
+                            <img src="{{ user.motorista.photo }}" class="img-circle" alt="User Image"
+                                 style="margin-bottom: 15px;">
                         {% else %}
                             <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
                     {% elif user.estabelecimento %}
                         {% if user.estabelecimento.photo %}
-                            <img src="{{ user.estabelecimento.photo }}" class="img-circle" alt="User Image" style="margin-bottom: 15px;">
+                            <img src="{{ user.estabelecimento.photo }}" class="img-circle" alt="User Image"
+                                 style="margin-bottom: 15px;">
                         {% else %}
                             <img src="{% static 'img/300x300.png' %}" class="img-circle" alt="User Image">
                         {% endif %}
@@ -388,6 +396,11 @@
                             </a>
                         </li>
                     {% endif %}
+                    <li id="notificacoes" class="motorista">
+                        <a href="{% url "notificacoes" %}">
+                            <i class="fa fa-warning"></i> <span>Notificações</span>
+                        </a>
+                    </li>
                 {% else %}
                     <li id="pedidos">
                         <a href="{% url 'pedidos_estabelecimento' %}">
@@ -404,32 +417,35 @@
                             <i class="fa fa-location-arrow"></i> <span>Acompanhar</span>
                         </a>
                     </li>
-                    <li id="relatorios">
-                        <a href="{% url 'relatorios' %}">
-                            <i class="fa fa-bar-chart"></i> <span>Relatorios</span>
-                        </a>
-                    </li>
-                    <!--<li id="motoristas_ativos">-->
-                    <!--    <a href="{% url 'motoristas_ativos_view' %}">-->
-                    <!--        <i class="fa fa-dashboard"></i> <span>Motoristas em Entrega</span>-->
-                    <!--    </a>-->
-                    <!--</li>-->
-                    <li id="chat">
-                        <a href="{% url 'list_all_chats' %}">
-                            <i class="fa fa-comments-o"></i> <span>Chat</span>
-                        </a>
-                    </li>
+                    {% if user.estabelecimento.configuration.plano == 'PREMIUM' %}
+                        <li id="relatorios">
+                            <a href="{% url 'relatorios' %}">
+                                <i class="fa fa-bar-chart"></i> <span>Relatorios</span>
+                            </a>
+                        </li>
+                        <!--<li id="motoristas_ativos">-->
+                        <!--    <a href="{% url 'motoristas_ativos_view' %}">-->
+                        <!--        <i class="fa fa-dashboard"></i> <span>Motoristas em Entrega</span>-->
+                        <!--    </a>-->
+                        <!--</li>-->
+                        <li id="chat">
+                            <a href="{% url 'list_all_chats' %}">
+                                <i class="fa fa-comments-o"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <li id="notificacoes" class="motorista">
+                            <a href="{% url "notificacoes" %}">
+                                <i class="fa fa-warning"></i> <span>Notificações</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     <li id="editar_perfil">
                         <a href="{% url 'edit_perfil_view' %}">
                             <i class="fa fa-user"></i> <span>Editar Perfil</span>
                         </a>
                     </li>
                 {% endif %}
-                <li id="notificacoes" class="motorista">
-                    <a href="{% url "notificacoes" %}">
-                        <i class="fa fa-warning"></i> <span>Notificações</span>
-                    </a>
-                </li>
+
                 <li id="logout" class="motorista">
                     <a href="{% url "auth_logout" %}">
                         <i class="fa fa-sign-out"></i> <span>Sair</span>
