@@ -193,7 +193,20 @@ def get_init_date_period(user):
 
 
 @register.filter
-def get_pedidos_semana(user):
+def get_entregas_semana(user):
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        start_date = now - timedelta(days=7)
+        end_date = now
+        return Ponto.objects.filter(pedido__estabelecimento=loja, created_at__range=(start_date, end_date))
+        # return loja.pedido_set.filter(created_at__range=(start_date, end_date))
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_rotas_semana(user):
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
@@ -205,9 +218,9 @@ def get_pedidos_semana(user):
 
 
 @register.filter
-def get_media_pedidos_semana(user):
+def get_media_entregas_semana(user):
     try:
-        return float(len(get_pedidos_semana(user))) / 7.0
+        return float(len(get_entregas_semana(user))) / 7.0
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
@@ -223,19 +236,29 @@ def get_pedidos_hoje(user):
 
 
 @register.filter
+def get_entregas_hoje(user):
+    loja = Estabelecimento.objects.get(user=user)
+    now = datetime.now()
+    try:
+        return Ponto.objects.filter(pedido__estabelecimento=loja, created_at__day=now.day)
+        # return loja.pedido_set.filter(created_at__day=now.day)
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+@register.filter
 def get_data_grafico_seven(user):
     try:
-        pedidos = get_pedidos_semana(user)
+        pedidos = get_entregas_semana(user)
         dic = {}
         balde = []
         # for label in get_labels_grafico_seven(user):
         #     balde[label.day] = []
 
-        for pedido in pedidos:
-            if not pedido.created_at.day in dic:
-                dic[pedido.created_at.day] = [pedido]
+        for pont in pedidos:
+            if not pont.created_at.day in dic:
+                dic[pont.created_at.day] = [pont]
             else:
-                dic[pedido.created_at.day] += [pedido]
+                dic[pont.created_at.day] += [pont]
         flag = False
         for label in get_labels_grafico_seven(user):
             for k, v in dic.items():
@@ -258,7 +281,8 @@ def get_data_anterior_grafico_seven(user):
         start_date = now - timedelta(days=14)
         end_date = now - timedelta(days=7)
         loja = Estabelecimento.objects.get(user=user)
-        pedidos = loja.pedido_set.filter(created_at__range=(start_date, end_date))
+        pedidos = Ponto.objects.filter(pedido__estabelecimento=loja, created_at__range=(start_date, end_date))
+        # pedidos = loja.pedido_set.filter(created_at__range=(start_date, end_date))
         dic = {}
         balde = []
         arr = []
@@ -305,7 +329,7 @@ def get_labels_grafico_seven(user):
 
 @register.filter
 def compara_pedidos_semana(user):
-    pedidos_semana = get_pedidos_semana(user)
+    pedidos_semana = get_rotas_semana(user)
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
@@ -324,7 +348,7 @@ def compara_pedidos_semana(user):
 
 @register.filter
 def compara_ganhos_semana(user):
-    ganhos_semana = get_ganhos_mes(get_pedidos_semana(user))
+    ganhos_semana = get_ganhos_mes(get_rotas_semana(user))
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
