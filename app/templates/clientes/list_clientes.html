@@ -33,7 +33,7 @@
                                         {{ cliente.id }}
                                     </td>
                                     <td>
-                                        {{ cliente.cliente }}
+                                       <a href="{% url 'edit_clientes' cliente.pk %}"> {{ cliente.cliente }}</a>
                                     </td>
                                     <td>{{ cliente.telefone }}</td>
                                     <td>
