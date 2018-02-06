@@ -14,7 +14,7 @@ class PontoInline(admin.TabularInline):
 
 
 class MotoristaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo')
+    list_display = ('id', 'user', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo', 'created_at')
 
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
