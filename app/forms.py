@@ -189,7 +189,7 @@ class FormMotoristaRegister(ModelForm, BaseForm):
                                                                                        }))
     placa = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={'required': True,
                                                                                          'maxlength': 200,
-                                                                                         'placeholder': 'Placa do VeiSeu localculo'
+                                                                                         'placeholder': 'Placa do Veiculo'
                                                                                          }))
     file = forms.FileField(required=False,
                            widget=forms.FileInput(attrs={'required': False, 'placeholder': 'Logotipo do Estabelecimento'
