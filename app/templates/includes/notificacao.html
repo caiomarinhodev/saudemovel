@@ -1,19 +1,19 @@
 <script>
     $(document).ready(function () {
         {% if notificacao.type_message == 'NOVO_PEDIDO' %}
-            play('alert');
-            swal({
-                title: "Um novo pedido foi cadastrado!",
-                text: '{{ notificacao.message }}',
-                type: 'success',
-                closeOnConfirm: false,
-                confirmButtonClass: 'btn-primary',
-                showLoaderOnConfirm: true
-            }, function () {
-                setTimeout(function () {
-                    window.location.href = '{% url 'pedidos_motorista' %}'
-                }, 2000);
-            });
+{#            play('alert');#}
+{#            swal({#}
+{#                title: "Um novo pedido foi cadastrado!",#}
+{#                text: '{{ notificacao.message }}',#}
+{#                type: 'success',#}
+{#                closeOnConfirm: false,#}
+{#                confirmButtonClass: 'btn-primary',#}
+{#                showLoaderOnConfirm: true#}
+{#            }, function () {#}
+{#                setTimeout(function () {#}
+{#                    window.location.href = '{% url 'pedidos_motorista' %}'#}
+{#                }, 2000);#}
+{#            });#}
         {% elif notificacao.type_message == 'DELETE_LOJA' %}
             play('alert');
             swal({
