@@ -451,6 +451,13 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if user|is_promo %}
+                        <li id="promocoes" class="motorista">
+                            <a href="{% url 'promocoes' %}">
+                                <i class="fa fa-gift"></i> <span>Promoções</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     <li id="editar_perfil">
                         <a href="{% url 'edit_perfil_view' %}">
                             <i class="fa fa-user"></i> <span>Editar Perfil</span>
