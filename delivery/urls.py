@@ -20,7 +20,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente
-from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser
+from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017, LES-UFCG"
@@ -67,6 +67,10 @@ urlpatterns = [
     url(r'^app/chat/(?P<pk>[0-9]+)/$', ChatPedidoView.as_view(), name='chat_view'),
     url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
 
+    url(r'^app/motorista/timeline/$', TimelineView.as_view(), name='timeline_motorista'),
+
+    url(r'^app/motorista/promocoes/$', PromocaoListView.as_view(), name='promocoes'),
+
     url(r'^app/clientes/(?P<pk>[0-9]+)/edit/$', ClienteUpdateView.as_view(), name="edit_clientes"),
     url(r'^app/clientes/add/$', ClienteCreateView.as_view(), name="add_clientes"),
     url(r'^app/clientes/$', ClientesListView.as_view(), name="clientes"),
@@ -112,7 +116,6 @@ urlpatterns = [
     url(r'^buscar-cliente/$', buscar_cliente, name='buscar-cliente'),
 
     url(r'^dashboard/list-motoristas/$', ListMotoristasView.as_view(), name='list-motoristas-view'),
-
 
     url(r'^app/notificacoes/$', NotificacoesListView.as_view(), name='notificacoes'),
     url(r'^notificacao/novo-pedido/motorista/$', notificar_novo_pedido_motorista, name="notify_novo_pedido_motorista"),

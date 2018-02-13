@@ -384,6 +384,18 @@
                             <i class="fa fa-motorcycle"></i> <span>Entregas</span>
                         </a>
                     </li>
+                    <li id="timeline" class="motorista">
+                        <a href="{% url 'timeline_motorista' %}">
+                            <i class="fa fa-sort-amount-asc"></i> <span>Timeline</span>
+                        </a>
+                    </li>
+                    {% if user|is_promo %}
+                        <li id="promocoes" class="motorista">
+                            <a href="{% url 'promocoes' %}">
+                                <i class="fa fa-gift"></i> <span>Promoções</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     <li id="lojas_credenciadas" class="motorista">
                         <a href="{% url 'lojas_credenciadas' %}">
                             <i class="fa fa-suitcase"></i> <span>Lojas Credenciadas</span>
@@ -436,6 +448,13 @@
                         <li id="notificacoes" class="motorista">
                             <a href="{% url "notificacoes" %}">
                                 <i class="fa fa-warning"></i> <span>Notificações</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if user|is_promo %}
+                        <li id="promocoes" class="motorista">
+                            <a href="{% url 'promocoes' %}">
+                                <i class="fa fa-gift"></i> <span>Promoções</span>
                             </a>
                         </li>
                     {% endif %}

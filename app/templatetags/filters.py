@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django import template
 
-from app.models import Motorista, Estabelecimento, Ponto
+from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin
 from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
@@ -25,6 +25,16 @@ def soma_avaliacao(value):
         return float(float(sum) / float(len(value)))
     except (ValueError, ZeroDivisionError):
         return "Nao Avaliado"
+
+
+
+@register.filter
+def is_promo(user):
+    try:
+        config = ConfigAdmin.objects.first()
+        return config.is_promo
+    except (Motorista.DoesNotExist, Exception):
+        return False
 
 
 @register.filter
@@ -73,6 +83,32 @@ def ganhos_mes(motorista):
         for pedido in corridas_mes:
             ganho_mes = float(ganho_mes) + float(pedido.valor_total)
         return ganho_mes
+    except (Motorista.DoesNotExist, Exception):
+        return 0.0
+
+
+@register.filter
+def ganhos_promo(motorista):
+    try:
+        config = ConfigAdmin.objects.first()
+        start_date = config.start_promo
+        end_date = config.end_promo
+        rotas = motorista.user.pedido_set.filter(created_at__range=(start_date, end_date))
+        ganho_hoje = 0.0
+        for rota in rotas:
+            ganho_hoje = float(ganho_hoje) + float(rota.valor_total)
+        return ganho_hoje
+    except (Motorista.DoesNotExist, Exception):
+        return 0.0
+
+
+@register.filter
+def rotas_promo(motorista):
+    try:
+        start_date = date(2018, 2, 13)
+        end_date = date(2018, 2, 28)
+        rotas = motorista.user.pedido_set.filter(created_at__range=(start_date, end_date))
+        return rotas
     except (Motorista.DoesNotExist, Exception):
         return 0.0
 
@@ -244,6 +280,7 @@ def get_entregas_hoje(user):
         # return loja.pedido_set.filter(created_at__day=now.day)
     except (ValueError, ZeroDivisionError, Exception):
         return None
+
 
 @register.filter
 def get_data_grafico_seven(user):
