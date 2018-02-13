@@ -8,7 +8,7 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 
 from app.mixins.CustomContextMixin import CustomContextMixin
-from app.models import Pedido
+from app.models import Pedido, Motorista
 
 
 class RelatorioTemplateView(LoginRequiredMixin, TemplateView, CustomContextMixin):
@@ -38,3 +38,13 @@ class TimelineView(LoginRequiredMixin, ListView, CustomContextMixin):
     def get_queryset(self):
         now = datetime.now()
         return Pedido.objects.filter(is_draft=False, created_at__day=now.day).order_by('-created_at')
+
+
+class PromocaoListView(LoginRequiredMixin, ListView, CustomContextMixin):
+    login_url = '/login/'
+    template_name = 'promo/list_motoristas.html'
+    model = Motorista
+    context_object_name = 'motoristas'
+
+    def get_queryset(self):
+        return Motorista.objects.all()
