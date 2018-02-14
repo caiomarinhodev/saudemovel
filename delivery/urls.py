@@ -19,7 +19,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
-    PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente
+    PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 
 __author__ = "Caio Marinho"
@@ -66,6 +66,8 @@ urlpatterns = [
     url(r'^app/chats/all/$', ListChatView.as_view(), name='list_all_chats'),
     url(r'^app/chat/(?P<pk>[0-9]+)/$', ChatPedidoView.as_view(), name='chat_view'),
     url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
+    url(r'^app/pedidos/motorista/premium/$', PedidosMotoristaPremiumListView.as_view(),
+        name='pedidos_motorista_premium'),
 
     url(r'^app/motorista/timeline/$', TimelineView.as_view(), name='timeline_motorista'),
 
