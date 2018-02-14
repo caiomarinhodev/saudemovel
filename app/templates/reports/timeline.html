@@ -30,7 +30,7 @@
                         {% endif %}
 
                         <div class="timeline-body">
-                            O Estabelecimento {{ rota.estabelecimento.user.first_name }} fez o pedido com {{ rota.ponto_set.all|length }} entrega(s) para fazer.
+                            {{ rota.estabelecimento.user.first_name }} fez o pedido com {{ rota.ponto_set.all|length }} entrega(s) para fazer.
                         </div>
                         <div class="timeline-footer">
                             <label class="btn btn-primary btn-xs">R$ {{ rota.valor_total }}</label>

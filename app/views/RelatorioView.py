@@ -37,7 +37,7 @@ class TimelineView(LoginRequiredMixin, ListView, CustomContextMixin):
 
     def get_queryset(self):
         now = datetime.now()
-        return Pedido.objects.filter(is_draft=False, created_at__day=now.day).order_by('-created_at')
+        return Pedido.objects.filter(is_draft=False, created_at__day=now.day, created_at__month=now.month).order_by('-created_at')
 
 
 class PromocaoListView(LoginRequiredMixin, ListView, CustomContextMixin):
