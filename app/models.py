@@ -72,6 +72,9 @@ class Motorista(TimeStamped, BaseAddress):
 
 class ConfigAdmin(TimeStamped):
     is_feriado = models.BooleanField(default=False)
+    is_promo = models.BooleanField(default=False)
+    start_promo = models.DateField(blank=True, null=True)
+    end_promo = models.DateField(blank=True, null=True)
 
 
 THEMES = (
