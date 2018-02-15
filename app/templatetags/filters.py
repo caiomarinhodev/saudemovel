@@ -27,7 +27,6 @@ def soma_avaliacao(value):
         return "Nao Avaliado"
 
 
-
 @register.filter
 def is_promo(user):
     try:
@@ -266,7 +265,7 @@ def get_pedidos_hoje(user):
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
-        return loja.pedido_set.filter(created_at__day=now.day)
+        return loja.pedido_set.filter(created_at__day=now.day, created_at__month=now.month)
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
@@ -276,8 +275,17 @@ def get_entregas_hoje(user):
     loja = Estabelecimento.objects.get(user=user)
     now = datetime.now()
     try:
-        return Ponto.objects.filter(pedido__estabelecimento=loja, created_at__day=now.day)
+        return Ponto.objects.filter(pedido__estabelecimento=loja, created_at__day=now.day, created_at__month=now.month)
         # return loja.pedido_set.filter(created_at__day=now.day)
+    except (ValueError, ZeroDivisionError, Exception):
+        return None
+
+
+@register.filter
+def get_entregas_hoje_motoristas(user):
+    now = datetime.now()
+    try:
+        return Ponto.objects.filter(created_at__day=now.day, created_at__month=now.month)
     except (ValueError, ZeroDivisionError, Exception):
         return None
 
