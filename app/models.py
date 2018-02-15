@@ -43,7 +43,40 @@ class BaseAddress(models.Model):
     lng = models.CharField(max_length=100, blank=True, null=True)
 
 
+THEMES = (
+    ('BLACK', 'skin-black'),
+    ('BLUE', 'skin-blue'),
+    ('RED', 'skin-red'),
+    ('YELLOW', 'skin-yellow'),
+    ('PURPLE', 'skin-purple'),
+    ('GREEN', 'skin-green'),
+    # 'skin-blue-light',
+    # 'skin-black-light',
+    # 'skin-red-light',
+    # 'skin-yellow-light',
+    # 'skin-purple-light',
+    # 'skin-green-light'
+)
+
+PLANS = (
+    ('BASIC', 'BASIC'),
+    ('PREMIUM', 'PREMIUM'),
+)
+
+
+class Configuration(TimeStamped):
+    tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
+    plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
+
+    def __str__(self):
+        return "%s" % self.plano
+
+    def __unicode__(self):
+        return "%s" % self.plano
+
+
 class Motorista(TimeStamped, BaseAddress):
+    configuration = models.OneToOneField(Configuration, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     cpf = models.CharField(max_length=100, blank=True, null=True, default="")
     photo = models.URLField(blank=True, null=True)
@@ -75,32 +108,6 @@ class ConfigAdmin(TimeStamped):
     is_promo = models.BooleanField(default=False)
     start_promo = models.DateField(blank=True, null=True)
     end_promo = models.DateField(blank=True, null=True)
-
-
-THEMES = (
-    ('BLACK', 'skin-black'),
-    ('BLUE', 'skin-blue'),
-    ('RED', 'skin-red'),
-    ('YELLOW', 'skin-yellow'),
-    ('PURPLE', 'skin-purple'),
-    ('GREEN', 'skin-green'),
-    # 'skin-blue-light',
-    # 'skin-black-light',
-    # 'skin-red-light',
-    # 'skin-yellow-light',
-    # 'skin-purple-light',
-    # 'skin-green-light'
-)
-
-PLANS = (
-    ('BASIC', 'BASIC'),
-    ('PREMIUM', 'PREMIUM'),
-)
-
-
-class Configuration(TimeStamped):
-    tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
-    plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
 
 
 class Estabelecimento(TimeStamped, BaseAddress):

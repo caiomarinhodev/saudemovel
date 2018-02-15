@@ -86,6 +86,17 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
             '-created_at')
 
 
+class PedidosMotoristaPremiumListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
+    login_url = '/login/'
+    model = Pedido
+    context_object_name = 'pedidos'
+    template_name = 'pedidos/list_pedidos_premium.html'
+
+    def get_queryset(self):
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True).order_by(
+            '-created_at')
+
+
 class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
