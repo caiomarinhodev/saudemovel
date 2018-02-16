@@ -24,7 +24,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '{% url 'pedidos_motorista' %}'
+                   // window.location.href = '{% url 'pedidos_motorista' %}'
                 }, 2000);
             });
         {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
@@ -38,7 +38,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '{% url 'acompanhar_list' %}'
+                    //window.location.href = '{% url 'acompanhar_list' %}'
                 }, 2000);
             });
 
@@ -53,7 +53,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '{% url 'pedidos_estabelecimento' %}';
+                   // window.location.href = '{% url 'pedidos_estabelecimento' %}';
                 }, 2000);
             });
 
@@ -68,7 +68,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = '{% url 'acompanhar_list' %}';
+                   // window.location.href = '{% url 'acompanhar_list' %}';
                 }, 1000);
             });
 
@@ -82,7 +82,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = ''
+                  //  window.location.href = ''
                 }, 2000);
             });
         {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
@@ -102,7 +102,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    window.location.href = ''
+                   // window.location.href = ''
                 }, 2000);
             });
         {% endif %}
