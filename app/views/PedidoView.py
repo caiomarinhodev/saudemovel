@@ -26,6 +26,7 @@ class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/order_view.html'
     context_object_name = 'pedido'
+    login_url='/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -40,6 +41,7 @@ class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/route_view.html'
     context_object_name = 'pedido'
+    login_url='/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -54,6 +56,7 @@ class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/map_view.html'
     context_object_name = 'pedido'
+    login_url='/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -133,6 +136,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento', 'is_draft']
     template_name = 'pedidos/add_pedido.html'
+    login_url = '/login/'
 
     # def get_success_url(self):
     # return reverse('view_pedido_view', kwargs={'pk': self.object.pk})
@@ -172,6 +176,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
 
 class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
+    login_url = '/login/'
     template_name = 'pedidos/../../templates/acompanhar/view_pedido.html'
 
     def get_context_data(self, **kwargs):
@@ -185,6 +190,7 @@ class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
 
 class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
     model = Pedido
+    login_url = '/login/'
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento', 'is_draft']
     template_name = 'pedidos/edit_pedido.html'
