@@ -217,6 +217,8 @@
                                     <tr>
                                         <th>FOTO</th>
                                         <th>ID</th>
+                                        <th>LOGIN</th>
+                                        <th>CPF</th>
                                         <th>MOTORISTA</th>
                                         <th>PLACA</th>
                                         <th>ONLINE</th>
@@ -225,6 +227,7 @@
                                         <th>Ganho Mes</th>
                                         <th>Corridas Hoje</th>
                                         <th>Ganhos Hoje</th>
+                                        <th>Ganhos Totais</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -242,6 +245,12 @@
                                             </td>
                                             <td>
                                                 {{ motorista.id }}
+                                            </td>
+                                            <td>
+                                                {{ motorista.user.username }}
+                                            </td>
+                                            <td>
+                                                {{ motorista.cpf }}
                                             </td>
                                             <td>
                                                 <a data-toggle="modal"
@@ -320,6 +329,10 @@
                                                     <label class="label label-success"><i
                                                             class=""></i>
                                                         LIVRE</label>
+                                                {% elif not motorista.is_online and not motorista.ocupado %}
+                                                     <label class="label label-danger"><i
+                                                            class=""></i>
+                                                        OFFLINE</label>
                                                 {% endif %}
                                             </td>
                                             <td>
@@ -333,6 +346,9 @@
                                             </td>
                                             <td>
                                                 {{ motorista|ganhos_hoje|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_totais|floatformat:2 }}
                                             </td>
                                             <td>
                                                 {% if motorista.is_approved %}
@@ -395,36 +411,36 @@
     <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js' %}"></script>
     <script src="{% static 'plugins/leaflet-routing-machine/examples/Control.Geocoder.js' %}"></script>
-        <script>
-            var map = L.map('map').setView([-7.2428323, -35.936586], 12);
-            //
-            // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            // 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            // }).addTo(map);
+    <script>
+        var map = L.map('map').setView([-7.2428323, -35.936586], 12);
+        //
+        // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        // 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        // }).addTo(map);
 
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                maxZoom: 18,
-                id: 'mapbox.streets',
-                accessToken: 'pk.eyJ1IjoiY2Fpb21hcmluaG84IiwiYSI6ImNpZ2RzdHR3cTJ2aHZ2OW04cnc5YTBiengifQ.oDcflEacffSkQxXd6RiQ2A'
-            }).addTo(map);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1IjoiY2Fpb21hcmluaG84IiwiYSI6ImNpZ2RzdHR3cTJ2aHZ2OW04cnc5YTBiengifQ.oDcflEacffSkQxXd6RiQ2A'
+        }).addTo(map);
 
-            icon = L.divIcon({className: 'fa fa-street-view fa-2x green'});
-            icon_2 = L.divIcon({className: 'fa fa-street-view fa-2x red'});
+        icon = L.divIcon({className: 'fa fa-street-view fa-2x green'});
+        icon_2 = L.divIcon({className: 'fa fa-street-view fa-2x red'});
 
-            icon_m = L.divIcon({className: 'fa fa-dot-circle-o fa-2x green'});
-            icon_m_2 = L.divIcon({className: 'fa fa-dot-circle-o fa-2x red'});
+        icon_m = L.divIcon({className: 'fa fa-dot-circle-o fa-2x green'});
+        icon_m_2 = L.divIcon({className: 'fa fa-dot-circle-o fa-2x red'});
 
-            {% for est in motoristas %}
-                {% if est.is_online %}
-                    L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).bindPopup("{{ est.user.first_name }}").addTo(map);
-                {% else %}
-                    L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).bindPopup("{{ est.user.first_name }}").addTo(map);
-                {% endif %}
-            {% endfor %}
+        {% for est in motoristas %}
+            {% if est.is_online %}
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).bindPopup("{{ est.user.first_name }}").addTo(map);
+            {% else %}
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).bindPopup("{{ est.user.first_name }}").addTo(map);
+            {% endif %}
+        {% endfor %}
 
 
-        </script>
+    </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table').DataTable({
