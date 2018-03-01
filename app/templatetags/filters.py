@@ -104,8 +104,9 @@ def ganhos_promo(motorista):
 @register.filter
 def rotas_promo(motorista):
     try:
-        start_date = date(2018, 2, 13)
-        end_date = date(2018, 2, 28)
+        config = ConfigAdmin.objects.first()
+        start_date = config.start_promo
+        end_date = config.end_promo
         rotas = motorista.user.pedido_set.filter(created_at__range=(start_date, end_date))
         return rotas
     except (Motorista.DoesNotExist, Exception):
@@ -125,6 +126,17 @@ def ganhos_hoje(motorista):
     except (Motorista.DoesNotExist, Exception):
         return 0.0
 
+
+@register.filter
+def ganhos_totais(motorista):
+    try:
+        corridas = motorista.user.pedido_set.all()
+        ganho = 0.0
+        for pedido in corridas:
+            ganho = float(ganho) + float(pedido.valor_total)
+        return ganho
+    except (Motorista.DoesNotExist, Exception):
+        return 0.0
 
 @register.filter
 def calculate_distance(pedido):
