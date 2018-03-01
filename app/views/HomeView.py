@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from app.mixins.CustomContextMixin import DashboardMixin, ListMotoristasMixin
+from app.mixins.CustomContextMixin import DashboardMixin, ListMotoristasMixin, DashboardListMixin
 from app.models import ConfigAdmin
 
 """HomeView.py: Especifica a pagina inicial da aplicacao."""
@@ -25,14 +25,24 @@ class ContributeView(TemplateView):
     template_name = 'page/contribute.html'
 
 
-class DashboardView(LoginRequiredMixin, TemplateView, DashboardMixin):
+class DashboardListPedidosView(LoginRequiredMixin, TemplateView, DashboardListMixin):
+    login_url = '/login/'
+    template_name = 'admin/list_pedidos.html'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('/login')
+        return super(DashboardListPedidosView, self).get(request, *args, **kwargs)
+
+
+class DashboardDataView(LoginRequiredMixin, TemplateView, DashboardMixin):
     login_url = '/login/'
     template_name = 'admin/dashboard.html'
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('/login')
-        return super(DashboardView, self).get(request, *args, **kwargs)
+        return super(DashboardDataView, self).get(request, *args, **kwargs)
 
 
 class ListMotoristasView(LoginRequiredMixin, TemplateView, ListMotoristasMixin):
