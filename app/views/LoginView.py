@@ -22,6 +22,10 @@ class AppView(RedirectView):
             try:
                 motorista = Motorista.objects.get(user=self.request.user)
                 if motorista:
+                    print('motor:'+motorista)
+                    print(motorista.configuration.plano)
+                    if motorista.configuration.plano == 'PREMIUM':
+                        return '/app/pedidos/motorista/premium/'
                     print ('--------- motorista is logged')
                     return '/app/pedidos/motorista'
             except:
@@ -101,7 +105,10 @@ class LoginView(FormView):
                 loja.save()
                 self.success_url = url
             elif motorista:
-                url = '/app/pedidos/motorista'
+                if motorista.configuration.plano == 'PREMIUM':
+                    url = '/app/pedidos/motorista/premium/'
+                else:
+                    url = '/app/pedidos/motorista'
                 motorista.is_online = True
                 motorista.save()
                 # if motorista.ocupado:

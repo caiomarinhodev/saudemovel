@@ -173,18 +173,18 @@
                         {#                            <label for="id_percurso">Percurso: </label>#}
                         {#                            {{ pedido.percurso }}#}
                         {#                        </div>#}
-                        <div class="col-xs-12">
-                            <center><label for="id_percurso">Distância</label></center>
-                        </div>
-                        <div class="col-xs-12">
-                            <center><h3 style="margin-top: 0px;">
-                                {% if pedido.distance %}
-                                    {{ pedido.distance|divide:1000|floatformat:1 }} KM
-                                {% else %}
-                                    {{ pedido|calculate_distance|floatformat:1 }} KM
-                                {% endif %}
-                            </h3></center>
-                        </div>
+{#                        <div class="col-xs-12">#}
+{#                            <center><label for="id_percurso">Distância</label></center>#}
+{#                        </div>#}
+{#                        <div class="col-xs-12">#}
+{#                            <center><h3 style="margin-top: 0px;">#}
+{#                                {% if pedido.distance %}#}
+{#                                    {{ pedido.distance|divide:1000|floatformat:1 }} KM#}
+{#                                {% else %}#}
+{#                                    {{ pedido|calculate_distance|floatformat:1 }} KM#}
+{#                                {% endif %}#}
+{#                            </h3></center>#}
+{#                        </div>#}
 
                     </div>
                 </div>

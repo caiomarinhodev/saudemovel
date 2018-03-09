@@ -96,7 +96,7 @@ class PedidosMotoristaPremiumListView(LoginRequiredMixin, RedirectMotoristaOcupa
     template_name = 'pedidos/list_pedidos_premium.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(is_complete=False, coletado=False, status=True).order_by(
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
             '-created_at')
 
 
