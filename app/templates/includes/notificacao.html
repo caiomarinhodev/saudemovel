@@ -1,19 +1,19 @@
 <script>
     $(document).ready(function () {
         {% if notificacao.type_message == 'NOVO_PEDIDO' %}
-{#            play('alert');#}
-{#            swal({#}
-{#                title: "Um novo pedido foi cadastrado!",#}
-{#                text: '{{ notificacao.message }}',#}
-{#                type: 'success',#}
-{#                closeOnConfirm: false,#}
-{#                confirmButtonClass: 'btn-primary',#}
-{#                showLoaderOnConfirm: true#}
-{#            }, function () {#}
-{#                setTimeout(function () {#}
-{#                    window.location.href = '{% url 'pedidos_motorista' %}'#}
-{#                }, 2000);#}
-{#            });#}
+            {#            play('alert');#}
+            {#            swal({#}
+            {#                title: "Um novo pedido foi cadastrado!",#}
+            {#                text: '{{ notificacao.message }}',#}
+            {#                type: 'success',#}
+            {#                closeOnConfirm: false,#}
+            {#                confirmButtonClass: 'btn-primary',#}
+            {#                showLoaderOnConfirm: true#}
+            {#            }, function () {#}
+            {#                setTimeout(function () {#}
+            {#                    window.location.href = '{% url 'pedidos_motorista' %}'#}
+            {#                }, 2000);#}
+            {#            });#}
         {% elif notificacao.type_message == 'DELETE_LOJA' %}
             play('alert');
             swal({
@@ -24,7 +24,7 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                   // window.location.href = '{% url 'pedidos_motorista' %}'
+                    window.location.href = '{% url 'pedidos_motorista' %}'
                 }, 2000);
             });
         {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
@@ -38,8 +38,8 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                    //window.location.href = '{% url 'acompanhar_list' %}'
-                }, 2000);
+                    window.location.href = window.location.href;
+                }, 1000);
             });
 
         {% elif notificacao.type_message == 'ALL_DELIVERED' %}
@@ -48,13 +48,9 @@
                 title: "Motorista finalizou a Rota!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
-                closeOnConfirm: false,
+                closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
                 showLoaderOnConfirm: true
-            }, function () {
-                setTimeout(function () {
-                   // window.location.href = '{% url 'pedidos_estabelecimento' %}';
-                }, 2000);
             });
 
         {% elif notificacao.type_message == 'ORDER_DELIVERED' %}
@@ -63,13 +59,9 @@
                 title: "Motorista finalizou uma entrega!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
-                closeOnConfirm: false,
+                closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
                 showLoaderOnConfirm: true
-            }, function () {
-                setTimeout(function () {
-                   // window.location.href = '{% url 'acompanhar_list' %}';
-                }, 1000);
             });
 
         {% elif notificacao.type_message == 'ADMIN_MESSAGE' %}
@@ -77,13 +69,9 @@
                 title: "ALERTA!",
                 text: '{{ notificacao.message }}',
                 type: 'warning',
-                closeOnConfirm: false,
+                closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
                 showLoaderOnConfirm: true
-            }, function () {
-                setTimeout(function () {
-                  //  window.location.href = ''
-                }, 2000);
             });
         {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
             play('alert');
@@ -102,8 +90,8 @@
                 showLoaderOnConfirm: true
             }, function () {
                 setTimeout(function () {
-                   // window.location.href = ''
-                }, 2000);
+                    window.location.href = '{% url 'pedidos_motorista' %}'
+                }, 1000);
             });
         {% endif %}
     });

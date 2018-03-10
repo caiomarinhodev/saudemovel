@@ -5,8 +5,10 @@ from base64 import b64encode
 import pyimgur
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
+from django.views.generic import TemplateView
 
 from app.forms import FormLogin, FormRegister, FormEditPerfil, FormMotoristaRegister
 from app.models import *
@@ -16,28 +18,26 @@ __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
 
 
-class AppView(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
+class AppView(TemplateView):
+    def get(self, request, *args, **kwargs):
         if self.request.user:
             try:
-                motorista = Motorista.objects.get(user=self.request.user)
+                motorista = self.request.user.motorista
                 if motorista:
-                    print('motor:'+motorista)
-                    print(motorista.configuration.plano)
                     if motorista.configuration.plano == 'PREMIUM':
-                        return '/app/pedidos/motorista/premium/'
+                        return redirect('/app/pedidos/motorista/premium/')
                     print ('--------- motorista is logged')
-                    return '/app/pedidos/motorista'
-            except:
+                    return redirect('/app/pedidos/motorista')
+            except (Exception,):
                 try:
-                    loja = Estabelecimento.objects.get(user=self.request.user)
+                    loja = self.request.user.estabelecimento
                     if loja:
                         print ('--------- estabelecimento is logged')
-                        return '/app/pedidos/loja'
+                        return redirect('/app/pedidos/loja')
                 except:
-                    return '/login'
+                    return redirect('/login')
         else:
-            return '/login'
+            return redirect('/login')
 
 
 class LoginView(FormView):

@@ -20,7 +20,7 @@
                         <div style="display: none;">
                             {{ form.estabelecimento }}
                         </div>
-                        
+
                         <table class="table">
                             {{ pontoset.management_form }}
 
@@ -48,7 +48,13 @@
                                                 {% endfor %}
                                             {% endif %}
                                             {{ field.errors.as_ul }}
-                                            {{ field }}
+                                            {% if field.label_tag == 'Itens' or field.label_tag == 'itens' %}
+                                                {% if user.estabelecimento.configuration.has_cozinha %}
+                                                    {{ field }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ field }}
+                                            {% endif %}
                                         </td>
                                     {% endfor %}
                                 </tr>
@@ -66,19 +72,34 @@
             </div>
             <!-- /.box-body -->
             <div class=" box-footer ">
-                <a href="{% url 'pedidos_estabelecimento' %}" id="btn_cancelar" class="btn btn-default pull-left">Voltar</a>
+                <a href="{% url 'pedidos_estabelecimento' %}" id="btn_cancelar"
+                   class="btn btn-default pull-left">Voltar</a>
                 {% if pedido.coletado %}
-                    
+
                 {% else %}
                     <a href="{% url 'edit_pedido_view' object.id %}" class="btn btn-primary pull-right">Editar Rota</a>
                 {% endif %}
-                
+
             </div>
         </form>
     </div>
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $('textarea').wysihtml5({
+                toolbar: {
+                    "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+                    "emphasis": false, //Italics, bold, etc. Default true
+                    "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                    "html": false, //Button which allows you to edit the generated HTML. Default false
+                    "link": false, //Button to insert a link. Default true
+                    "image": false, //Button to insert an image. Default true,
+                    "color": false, //Button to change color of font
+                    "blockquote": false, //Blockquote
+                    "size": 'none' //default: none, other options are xs, sm, lg
+                }
+            });
             $('.add-row').addClass('hidden');
             $('input').addClass('readonly').attr('readonly', 'true');
             $('#pedidos').addClass('active');

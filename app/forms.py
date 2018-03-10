@@ -75,9 +75,14 @@ class FormPonto(ModelForm, BaseForm):
                                                                                                'placeholder': 'Insira aqui as instrucoes de pagamento e o valor do pedido para ser coletado pelo motoboy'
                                                                                                }))
 
+    itens = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': True,
+                                                                                         'maxlength': 300,
+                                                                                         'placeholder': 'Insira o Pedido para a Cozinha'
+                                                                                         }))
+
     class Meta:
         model = Ponto
-        fields = ['telefone', 'cliente', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes']
+        fields = ['telefone', 'cliente', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes', 'itens']
 
 
 class FormEditPonto(ModelForm, BaseForm):
@@ -105,9 +110,14 @@ class FormEditPonto(ModelForm, BaseForm):
                                                                                                'placeholder': 'Observações'
                                                                                                }))
 
+    itens = forms.CharField(required=False, max_length=300, widget=forms.Textarea(attrs={'required': True,
+                                                                                         'maxlength': 300,
+                                                                                         'placeholder': 'Insira o Pedido para a Cozinha'
+                                                                                         }))
+
     class Meta:
         model = Ponto
-        fields = ['id', 'telefone', 'cliente', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes']
+        fields = ['id', 'telefone', 'cliente', 'endereco', 'numero', 'bairro', 'complemento', 'observacoes', 'itens']
 
 
 class FormRegister(ModelForm, BaseForm):
