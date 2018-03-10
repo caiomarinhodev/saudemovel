@@ -67,6 +67,7 @@ PLANS = (
 class Configuration(TimeStamped):
     tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
     plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
+    has_cozinha = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % self.plano
@@ -152,6 +153,7 @@ class Pedido(TimeStamped):
     status = models.BooleanField(default=True)
     coletado = models.BooleanField(default=False)
     is_complete = models.BooleanField(default=False)
+    status_cozinha = models.BooleanField(default=False)
     valor_total = models.CharField(max_length=6)
     btn_finalizado = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False, )
@@ -201,6 +203,8 @@ class Ponto(BaseAddress, TimeStamped):
     status = models.BooleanField(default=False)
     duration = models.CharField(max_length=100, blank=True, null=True)
     distance = models.CharField(max_length=100, blank=True, null=True)
+    itens = models.TextField(blank=True, null=True)
+    is_prepared = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         try:

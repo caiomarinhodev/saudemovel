@@ -133,7 +133,7 @@
                                                         href="tel:{{ ponto.telefone }}">{{ ponto.telefone }}</a></span>
                                               </span><!-- /.username -->
                                                     {{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.bairro }}, {{ ponto.complemento }}
-                                                    - {{ ponto.observacoes }}
+                                                    - {{ ponto.observacoes|safe }}
                                                 </div>
                                                 <!-- /.comment-text -->
                                             </div>
