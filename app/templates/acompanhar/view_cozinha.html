@@ -54,15 +54,19 @@
                             {% endif %}
                         </div>
                         <div class="col-xs-6">
-                            <a href="#" class="btn btn-success btn-lg btn-block"
-                                    {% if not entrega.pedido.motorista %}
+
+                            {% if not entrega.pedido.motorista %}
+                                <label
+                                        class="btn btn-success btn-lg btn-block"
                                         {% if not entrega.is_prepared or not entrega.pedido.motorista %}
-                                            disabled="disabled"
+                                        disabled="disabled"
                                         {% endif %}
-                                        >Aguardando Motorista ...</a>
-                                    {% else %}
-                                        >Entregar</a>
-                                    {% endif %}
+                                >Aguardando Motorista ...</label>
+                            {% else %}
+                                <a href="{% url 'liberar_corrida_cozinha' entrega.pedido.pk %}"
+                                   class="btn btn-success btn-lg btn-block"
+                                >Entregar</a>
+                            {% endif %}
 
                         </div>
                     </div>
@@ -100,10 +104,10 @@
                         <hr/>
                         <div class="row">
                             <div class="col-xs-6">
-                                <a href="#" class="btn btn-info btn-lg btn-block">Preparar</a>
+                                {#                                <a href="#" class="btn btn-info btn-lg btn-block">Preparar</a>#}
                             </div>
                             <div class="col-xs-6">
-                                <a href="#" class="btn btn-success btn-lg btn-block">Entregar</a>
+                                {#                                <a href="#" class="btn btn-success btn-lg btn-block">Entregar</a>#}
                             </div>
                         </div>
                     </div>

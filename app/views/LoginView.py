@@ -20,19 +20,17 @@ __copyright__ = "Copyright 2017"
 
 class AppView(TemplateView):
     def get(self, request, *args, **kwargs):
-        if request.user:
+        if self.request.user:
             try:
-                motorista = Motorista.objects.get(user=request.user)
+                motorista = self.request.user.motorista
                 if motorista:
-                    print('motor:'+motorista)
-                    print(motorista.configuration.plano)
                     if motorista.configuration.plano == 'PREMIUM':
-                        return '/app/pedidos/motorista/premium/'
+                        return redirect('/app/pedidos/motorista/premium/')
                     print ('--------- motorista is logged')
                     return redirect('/app/pedidos/motorista')
-            except:
+            except (Exception,):
                 try:
-                    loja = Estabelecimento.objects.get(user=request.user)
+                    loja = self.request.user.estabelecimento
                     if loja:
                         print ('--------- estabelecimento is logged')
                         return redirect('/app/pedidos/loja')

@@ -47,6 +47,18 @@ def set_to_prepared_pedido(request, id_ponto):
         ponto.save()
         return HttpResponseRedirect('/app/cozinha/')
 
+@require_http_methods(["GET"])
+def liberar_corrida_cozinha(request, pk_pedido):
+    pedido = Pedido.objects.get(id=pk_pedido)
+    pedido.coletado = True
+    pedido.save()
+    if Motorista.objects.get(user=pedido.motorista).is_online:
+        print(
+            '>>>>>>>> Motorista ' + pedido.motorista.first_name + ' foi liberado pela loja ' + pedido.estabelecimento.user.first_name)
+        message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual esta no menu ENTREGAS. Quando terminar uma entrega, marque finalizar. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
+        n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
+        n.save()
+    return redirect('/app/cozinha')
 
 class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
