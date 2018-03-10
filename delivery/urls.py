@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
-from app.views.HomeView import DashboardView, set_feriado_admin, ListMotoristasView
+from app.views.HomeView import DashboardDataView, set_feriado_admin, ListMotoristasView, DashboardListPedidosView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
@@ -46,7 +46,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/login/$', auth_views.login),
     url(r'^$', AppView.as_view(), name='home'),
-    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
+    url(r'^dashboard/data/$', DashboardDataView.as_view(), name='dashboard-data'),
+    url(r'^dashboard/$', DashboardListPedidosView.as_view(), name='dashboard'),
+
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^registro/$', RegisterView.as_view(), name='registro'),
     url(r'^register-driver/$', RegisterMotoristaView.as_view(), name='register-driver'),

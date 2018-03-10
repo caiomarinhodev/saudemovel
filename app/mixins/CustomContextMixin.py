@@ -92,6 +92,17 @@ class ListMotoristasMixin(ContextMixin):
         return super(ListMotoristasMixin, self).get_context_data(**kwargs)
 
 
+class DashboardListMixin(ContextMixin):
+    def get_context_data(self, **kwargs):
+        now = datetime.now()
+        kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)
+        kwargs['motoristas_livres'] = Motorista.objects.filter(is_online=True, ocupado=False)
+        kwargs['motoristas_ocupados'] = Motorista.objects.filter(is_online=True, ocupado=True)
+        kwargs['pedidos_do_mes'] = Pedido.objects.filter(created_at__month=now.month,
+                                                         created_at__year=now.year).order_by('-created_at')
+        return super(DashboardListMixin, self).get_context_data(**kwargs)
+
+
 class DashboardMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         now = datetime.now()
