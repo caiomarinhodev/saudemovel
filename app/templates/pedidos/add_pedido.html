@@ -42,7 +42,14 @@
                                                 {% endfor %}
                                             {% endif %}
                                             {{ field.errors.as_ul }}
-                                            {{ field }}
+                                            {% if field.label_tag == 'Itens' or field.label_tag == 'itens' %}
+                                                {% if user.estabelecimento.configuration.has_cozinha %}
+                                                    {{ field }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ field }}
+                                            {% endif %}
+
                                         </td>
                                     {% endfor %}
                                 </tr>
@@ -71,7 +78,7 @@
             </div>
         </form>
     </div>
-
+    <script src="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js' %}"></script>
     <script type="text/javascript">
         var forms = 0;
         $(document).ready(function () {
@@ -90,6 +97,19 @@
                 $(this).val($(this).val().toUpperCase());
             });
 
+            $('textarea').wysihtml5({
+                toolbar: {
+                    "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+                    "emphasis": false, //Italics, bold, etc. Default true
+                    "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                    "html": false, //Button which allows you to edit the generated HTML. Default false
+                    "link": false, //Button to insert a link. Default true
+                    "image": false, //Button to insert an image. Default true,
+                    "color": false, //Button to change color of font
+                    "blockquote": false, //Blockquote
+                    "size": 'none' //default: none, other options are xs, sm, lg
+                }
+            });
             $(":input").inputmask();
             $('#body').addClass('sidebar-collapse');
             $('#pedidos').addClass('active');
@@ -101,7 +121,20 @@
             $('.numero').inputmask('99999');
             $('.telefone').inputmask('(99) [9]99999999');
             $('.add-row').click(function () {
-                {#                $(":input").inputmask();#}
+                $('textarea').wysihtml5({
+                    toolbar: {
+                        "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+                        "emphasis": false, //Italics, bold, etc. Default true
+                        "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                        "html": false, //Button which allows you to edit the generated HTML. Default false
+                        "link": false, //Button to insert a link. Default true
+                        "image": false, //Button to insert an image. Default true,
+                        "color": false, //Button to change color of font
+                        "blockquote": false, //Blockquote
+                        "size": 'none' //default: none, other options are xs, sm, lg
+                    }
+                });
+
                 $('.numero').inputmask('99999');
                 $('.telefone').inputmask('(99) [9]99999999');
                 forms = $('.dynamic-form').not('.formset-custom-template').length - 1;

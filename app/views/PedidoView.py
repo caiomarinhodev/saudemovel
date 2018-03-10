@@ -22,6 +22,32 @@ from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 
 
+class CozinhaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
+    login_url = '/login/'
+    model = Ponto
+    context_object_name = 'entregas'
+    template_name = 'acompanhar/view_cozinha.html'
+
+    def get_queryset(self):
+        return Ponto.objects.filter(pedido__coletado=False, status=False,
+                                    pedido__btn_finalizado=False).order_by(
+            '-created_at')
+
+
+def set_to_prepared_pedido(request, id_ponto):
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuario precisa estar logado para esta operacao")
+        raise PermissionDenied("Usuario precisa estar logado para esta operacao")
+    else:
+        ponto = Ponto.objects.get(id=id_ponto)
+        pedido = ponto.pedido
+        ponto.is_prepared = True
+        pedido.status_cozinha = True
+        pedido.save()
+        ponto.save()
+        return HttpResponseRedirect('/app/cozinha/')
+
+
 class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/order_view.html'
@@ -212,11 +238,11 @@ class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
         context = self.get_context_data()
         pontoset = context['pontoset']
         with transaction.atomic():
-            self.object = form.save()
             print(pontoset.errors)
             if pontoset.is_valid():
                 pontoset.instance = self.object
                 pontoset.save()
+            self.object = form.save()
         print('>>>>>>>> Pedido editado pela loja ' + self.request.user.first_name)
         pedido = self.object
         if not pedido.is_draft:

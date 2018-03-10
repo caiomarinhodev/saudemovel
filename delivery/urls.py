@@ -19,7 +19,8 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
-    PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView
+    PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
+    set_to_prepared_pedido
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 
 __author__ = "Caio Marinho"
@@ -68,6 +69,9 @@ urlpatterns = [
     url(r'^app/chat/motorista/$', ChatMotoristaPedidoView.as_view(), name='chat_motorista_view'),
     url(r'^app/pedidos/motorista/premium/$', PedidosMotoristaPremiumListView.as_view(),
         name='pedidos_motorista_premium'),
+
+    url(r'^app/cozinha/$', CozinhaListView.as_view(), name='cozinha_view'),
+    url(r'^app/cozinha/prepared/(?P<id_ponto>[0-9]+)/$', set_to_prepared_pedido, name='set_prepared_entrega'),
 
     url(r'^app/motorista/timeline/$', TimelineView.as_view(), name='timeline_motorista'),
 

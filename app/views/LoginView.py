@@ -5,8 +5,10 @@ from base64 import b64encode
 import pyimgur
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
+from django.views.generic import TemplateView
 
 from app.forms import FormLogin, FormRegister, FormEditPerfil, FormMotoristaRegister
 from app.models import *
@@ -16,24 +18,24 @@ __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
 
 
-class AppView(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        if self.request.user:
+class AppView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        if request.user:
             try:
-                motorista = Motorista.objects.get(user=self.request.user)
+                motorista = Motorista.objects.get(user=request.user)
                 if motorista:
                     print ('--------- motorista is logged')
-                    return '/app/pedidos/motorista'
+                    return redirect('/app/pedidos/motorista')
             except:
                 try:
-                    loja = Estabelecimento.objects.get(user=self.request.user)
+                    loja = Estabelecimento.objects.get(user=request.user)
                     if loja:
                         print ('--------- estabelecimento is logged')
-                        return '/app/pedidos/loja'
+                        return redirect('/app/pedidos/loja')
                 except:
-                    return '/login'
+                    return redirect('/login')
         else:
-            return '/login'
+            return redirect('/login')
 
 
 class LoginView(FormView):

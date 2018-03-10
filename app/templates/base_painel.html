@@ -437,6 +437,13 @@
                             <i class="fa fa-location-arrow"></i> <span>Acompanhar</span>
                         </a>
                     </li>
+                    {% if user.estabelecimento.configuration.has_cozinha %}
+                        <li id="cozinha">
+                            <a href="{% url 'cozinha_view' %}">
+                                <i class="fa fa-refresh"></i> <span>Cozinha</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if user.estabelecimento.configuration.plano == 'PREMIUM' %}
                         <li id="relatorios">
                             <a href="{% url 'relatorios' %}">
