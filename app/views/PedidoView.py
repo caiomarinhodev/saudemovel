@@ -441,9 +441,13 @@ def finalizar_pedido(request, pk_pedido):
         n.save()
         message = 'Voce concluiu a Rota, se voce estiver com algum material (maquineta ou bag) da Loja ' + pedido.estabelecimento.user.first_name + ',  favor devolver. Obrigado!'
         messages.success(request, message)
+        if motorista.configuration.plano == 'PREMIUM':
+            return HttpResponseRedirect('/app/pedidos/motorista/premium/')
         return HttpResponseRedirect('/app/pedidos/motorista/')
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
+        if motorista.configuration.plano == 'PREMIUM':
+            return HttpResponseRedirect('/app/pedidos/motorista/premium/')
         return HttpResponseRedirect('/app/pedidos/motorista/')
 
 
