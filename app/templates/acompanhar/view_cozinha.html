@@ -1,5 +1,6 @@
 {% extends 'admin/../base_painel.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 
 {% block content %}
@@ -64,7 +65,16 @@
                                 >Aguardando Motorista ...</label>
                             {% else %}
                                 <a href="{% url 'liberar_corrida_cozinha' entrega.pedido.pk %}"
-                                   class="btn btn-success btn-lg btn-block"
+                                   class="btn btn-success btn-lg btn-block
+                                   {% if not entrega|is_pedido_prepared %}
+                                       disabled"
+                                   {% else %}
+                                       "
+                                   {% endif %}
+
+                                {% if not entrega|is_pedido_prepared %}
+                                    disabled="disabled"
+                                {% endif %}
                                 >Entregar</a>
                             {% endif %}
 
@@ -120,6 +130,11 @@
             $('#cozinha').addClass('active');
             $('#body').addClass('sidebar-collapse');
         });
+
+        window.setInterval(function () {
+            $('#loading').show();
+            window.location.href = window.location.href;
+        }, 20000);
     </script>
 
     <script src="{% static 'js/jquery.formset.js' %}"></script>
