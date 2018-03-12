@@ -8,6 +8,19 @@ from app.views.geocoding import calculate_matrix_distance
 register = template.Library()
 
 
+
+@register.filter
+def is_pedido_prepared(value):
+    try:
+        pedido = value.pedido
+        for entrega in pedido.ponto_set.all():
+            if not entrega.is_prepared:
+                return False
+        return True
+    except (Exception,):
+        return True
+
+
 @register.filter
 def divide(value, arg):
     try:
