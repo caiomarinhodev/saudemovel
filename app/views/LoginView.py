@@ -44,7 +44,7 @@ class LoginView(FormView):
     """
     Displays the login form.
     """
-    template_name = 'page/login.html'
+    template_name = 'entrega/page/login.html'
     form_class = FormLogin
     success_url = '/'
 
@@ -154,7 +154,7 @@ class LogoutView(RedirectView):
 
 
 class RegisterView(FormView):
-    template_name = 'page/register.html'
+    template_name = 'entrega/page/register.html'
     form_class = FormRegister
     success_url = '/login'
 
@@ -212,7 +212,7 @@ class RegisterView(FormView):
 
 
 class RegisterMotoristaView(FormView):
-    template_name = 'page/register-driver.html'
+    template_name = 'entrega/page/register-driver.html'
     form_class = FormMotoristaRegister
     success_url = '/login'
 
@@ -273,7 +273,7 @@ class RegisterMotoristaView(FormView):
 
 
 class EditarPerfilView(FormView):
-    template_name = 'pedidos/editar_perfil_loja.html'
+    template_name = 'entrega/pedidos/editar_perfil_loja.html'
     form_class = FormEditPerfil
     success_url = '/app/perfil/edit'
 

@@ -1,0 +1,81 @@
+{% extends 'admin/../base_painel.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    {% include 'loading.html' %}
+
+    <div class="box box-primary" style="margin-top: 30px;">
+        <div class="box-header">
+            <h3 class="box-title">
+                <center style="font-size: 20px;">Cliente</center>
+            </h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form action="" method="post">{% csrf_token %}
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <label>Cliente:</label>
+                        {{ form.cliente }}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Telefone:</label>
+                        {{ form.telefone }}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Endereco:</label>
+                        {{ form.endereco }}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Numero:</label>
+                        {{ form.numero }}
+                    </div>
+                     <div class="col-xs-12 col-md-6">
+                        <label>Bairro:</label>
+                        {{ form.bairro }}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Complemento:</label>
+                        {{ form.complemento }}
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class=" box-footer ">
+                <a href="#" id="btn_cancelar" class="btn btn-default pull-left">Voltar</a>
+                <button type="submit" id="btn_salvar" class="btn btn-primary pull-right">Salvar Cliente
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('input').on('change keyup paste', function () {
+                $(this).val($(this).val().toUpperCase());
+            });
+
+            $(":input").inputmask();
+            $('#clientes').addClass('active');
+            $('#btn_cancelar').click(function () {
+                return window.history.back();
+            });
+            $('.numero').inputmask('99999');
+            $('.telefone').inputmask('(99) [9]99999999');
+            $('.add-row').click(function () {
+                $('.numero').inputmask('99999');
+                $('.telefone').inputmask('(99) [9]99999999');
+            });
+
+        });
+    </script>
+
+    <script>
+        $('.add-row').addClass('btn btn-primary');
+    </script>
+
+    {% include 'entrega/includes/script_message_notify.html' %}
+
+{% endblock %}

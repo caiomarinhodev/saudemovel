@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
 
-from app.models import Pedido, Ponto, Estabelecimento, Motorista
+from app.models import *
 
 
 class BaseForm(forms.Form):
@@ -219,3 +219,130 @@ class FormPontoCliente(ModelForm, BaseForm):
     class Meta:
         model = Ponto
         fields = ['cliente', 'telefone', 'endereco', 'numero', 'bairro', 'complemento']
+
+
+# -------------------------------------
+
+class FormCategoria(ModelForm, BaseForm):
+    class Meta:
+        model = Categoria
+        fields = ['nome', 'estabelecimento', ]
+
+    def __init__(self, *args, **kwargs):
+        super(FormCategoria, self).__init__(*args, **kwargs)
+        self.fields['estabelecimento'].widget.attrs['class'] = 'hidden'
+        self.fields['estabelecimento'].label = ''
+
+
+class FormEndereco(ModelForm, BaseForm):
+    class Meta:
+        model = Endereco
+        fields = ['endereco', 'numero', 'bairro', 'complemento', 'cliente']
+
+    def __init__(self, *args, **kwargs):
+        super(FormEndereco, self).__init__(*args, **kwargs)
+        self.fields['cliente'].widget.attrs['class'] = 'hidden'
+        self.fields['cliente'].label = ''
+
+
+class FormGrupo(ModelForm, BaseForm):
+    class Meta:
+        model = Grupo
+        fields = ['identificador', 'titulo', 'produto', 'limitador', 'obrigatoriedade']
+
+    def __init__(self, *args, **kwargs):
+        super(FormGrupo, self).__init__(*args, **kwargs)
+        self.fields['produto'].widget.attrs['class'] = 'hidden'
+        self.fields['produto'].label = ''
+
+
+class FormGrupoInline(ModelForm, BaseForm):
+    class Meta:
+        model = Grupo
+        fields = ['identificador', 'titulo', 'limitador', 'obrigatoriedade']
+
+
+class FormProduto(ModelForm, BaseForm):
+    class Meta:
+        model = Produto
+        fields = ['nome', 'descricao', 'preco_base', 'categoria']
+
+
+class FormFotoProdutoInline(ModelForm, BaseForm):
+    class Meta:
+        model = FotoProduto
+        fields = ['url', ]
+
+
+class FormFotoProduto(ModelForm, BaseForm):
+    class Meta:
+        model = FotoProduto
+        fields = ['url', 'produto', ]
+
+
+class FormOpcionalInline(ModelForm, BaseForm):
+    class Meta:
+        model = Opcional
+        fields = ['nome', 'valor', ]
+
+
+class FormOpcional(ModelForm, BaseForm):
+    class Meta:
+        model = Opcional
+        fields = ['nome', 'valor', 'grupo', ]
+
+
+FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)
+FotoProdutoUpdateFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)
+GrupoFormSet = inlineformset_factory(Produto, Grupo, form=FormGrupoInline, extra=1)
+GrupoUpdateFormSet = inlineformset_factory(Produto, Grupo, form=FormGrupoInline, extra=1)
+OpcionalFormSet = inlineformset_factory(Grupo, Opcional, form=FormOpcionalInline, extra=1)
+OpcionalUpdateFormSet = inlineformset_factory(Grupo, Opcional, form=FormOpcionalInline, extra=1)
+
+
+class FormFormaPagamento(ModelForm, BaseForm):
+    class Meta:
+        model = FormaPagamento
+        fields = ['forma', 'cartao', 'estabelecimento']
+
+    def __init__(self, *args, **kwargs):
+        super(FormFormaPagamento, self).__init__(*args, **kwargs)
+        self.fields['estabelecimento'].widget.attrs['class'] = 'hidden'
+        self.fields['estabelecimento'].label = ''
+
+
+class FormFormaEntrega(ModelForm, BaseForm):
+    class Meta:
+        model = FormaEntrega
+        fields = ['forma', 'estabelecimento', ]
+
+    def __init__(self, *args, **kwargs):
+        super(FormFormaEntrega, self).__init__(*args, **kwargs)
+        self.fields['estabelecimento'].widget.attrs['class'] = 'hidden'
+        self.fields['estabelecimento'].label = ''
+
+
+class FormRegisterCliente(BaseForm):
+    nome = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                         'maxlength': 100,
+                                                         'placeholder': 'Nome'}))
+    sobrenome = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                              'maxlength': 100,
+                                                              'placeholder': 'Sobrenome'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
+                                                                 'placeholder': 'Senha'}))
+    telefone = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                             'maxlength': 15,
+                                                             'placeholder': 'Telefone'}))
+
+    cpf = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                        'maxlength': 12,
+                                                        'placeholder': 'CPF'}))
+
+
+class FormLoginCliente(BaseForm):
+    cpf = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                        'maxlength': 12,
+                                                        'placeholder': 'CPF'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': True,
+                                                                 'placeholder': 'Senha'}))

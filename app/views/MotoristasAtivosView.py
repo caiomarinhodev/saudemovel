@@ -11,7 +11,7 @@ class MotoristasAtivosView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'pedidos/list_motoristas_ativos.html'
+    template_name = 'entrega/pedidos/list_motoristas_ativos.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(estabelecimento__user=self.request.user, is_complete=False).order_by('-created_at')

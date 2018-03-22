@@ -1,0 +1,66 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    {#    {% include 'carrossel.html' %}#}
+    <div class="bar background-pentagon no-mb text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <div class="form-group">
+                        <h2><i class="fa fa-map-marker"></i> Onde você está?</h2>
+                        <select class="form-control input-lg">
+                            <option value="Campina Grande">Campina Grande</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <section class="bar background-white no-mb">
+        <div class="container">
+            <div class="heading text-center">
+                <h2>Peça Comida Online!</h2>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        {% for loja in lojas %}
+                            <a href="{% url 'view_loja' loja.pk %}">
+                                <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                                    <div class="thumbnail text-center" style="height: 180px; width: 180px;">
+
+                                        <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
+                                             src="{{ loja.photo }}" style="height: 170px; width: 170px;"/>
+                                        {% if loja.is_online %}
+                                            <label class="label label-success">
+                                                Online
+                                            </label>
+                                        {% else %}
+                                            <center>
+                                                <label class="label label-danger">
+                                                    Offline
+                                                </label>
+                                            </center>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script type=" text/javascript">
+        $(document).ready(function () {
+            $('#inicio').addClass('active');
+        });
+    </script>
+
+{% endblock %}

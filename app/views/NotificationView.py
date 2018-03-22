@@ -15,7 +15,7 @@ class NotificacoesListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Notification
     context_object_name = 'notificacoes'
-    template_name = 'notificacoes/list_notificacoes.html'
+    template_name = 'entrega/notificacoes/list_notificacoes.html'
 
     def get_queryset(self):
         for n in Notification.objects.filter(to=self.request.user):
@@ -28,7 +28,7 @@ class NotificacoesListView(LoginRequiredMixin, ListView, CustomContextMixin):
 def notificar_novo_pedido_motorista(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='NOVO_PEDIDO', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -39,7 +39,7 @@ def notificar_novo_pedido_motorista(request):
 def notificar_delete_loja_motorista(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='DELETE_LOJA', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -50,7 +50,7 @@ def notificar_delete_loja_motorista(request):
 def notificar_accept_order_loja(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ACCEPT_ORDER', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -61,7 +61,7 @@ def notificar_accept_order_loja(request):
 def notificar_all_delivered_loja(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ALL_DELIVERED', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -72,7 +72,7 @@ def notificar_all_delivered_loja(request):
 def notificar_order_delivered_loja(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ORDER_DELIVERED', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -83,7 +83,7 @@ def notificar_order_delivered_loja(request):
 def notificar_enable_rota_motorista(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ENABLE_ROTA', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -94,7 +94,7 @@ def notificar_enable_rota_motorista(request):
 def notify_new_message_for_motorista(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='LOJA_MESSAGE', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -105,7 +105,7 @@ def notify_new_message_for_motorista(request):
 def notify_new_message_for_loja(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='MOTORISTA_MESSAGE', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -116,7 +116,7 @@ def notify_new_message_for_loja(request):
 def notificar_admin_message(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='ADMIN_MESSAGE', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()
@@ -127,7 +127,7 @@ def notificar_admin_message(request):
 def notificar_cozinha_message(request):
     notificacao = Notification.objects.filter(to=request.user, type_message='NOTIFICACAO_COZINHA', is_read=False).last()
     context = Context({'notificacao': notificacao, 'user': request.user})
-    return_str = render_block_to_string('includes/notificacao.html', context)
+    return_str = render_block_to_string('entrega/includes/notificacao.html', context)
     if notificacao:
         notificacao.is_read = True
         notificacao.save()

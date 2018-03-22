@@ -1,0 +1,262 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% load filters %}
+
+{% block content %}
+    <style>
+        .bg-red {
+            color: red;
+        {#background-color: red;#}
+        }
+
+        .bg-green {
+            color: green;
+        {#background-color: green;#}
+        }
+    </style>
+    {#    {% include 'carrossel.html' %}#}
+    <section class="bar background-white no-mb">
+        <div class="container">
+            <div class="heading text-center">
+                <h3>Finalizando Pedido em {{ pedido_obj.estabelecimento }}</h3>
+            </div>
+            <form method="post" action="{% url 'submit_pedido' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">Forma de Entrega</h4>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% for endereco in user.cliente.endereco_set.all %}
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio"
+                                                           name="endereco"
+                                                           value="{{ endereco.id }}"
+                                                           data-valor="{% if user|is_madrugada %}{{ endereco.bairro.valor_madrugada|floatformat:2 }}{% else %}{{ endereco.bairro.valor|floatformat:2 }}{% endif %}"/>
+                                                    Entrega (R$ {% if user|is_madrugada %}{{ endereco.bairro.valor_madrugada|floatformat:2 }}){% else %}{{ endereco.bairro.valor|floatformat:2 }}){% endif %}
+
+                                                    {{ endereco.endereco_completo }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="checkbox"
+                                                       name="novo"
+                                                       value="{{ endereco.id }}"/>
+                                                Cadastrar um novo endereço
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none;" id="novo-div">
+                                    <div class="col-md-12">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="street">Endereço:</label>
+                                                <input class="form-control" name="rua" id="rua"
+                                                       placeholder="Rua Aprigio Nepomuceno"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="street">Número:</label>
+                                                <input class="form-control numero" id="id_numero" maxlength="6"
+                                                       name="numero" placeholder="Número" type="text">
+                                            </div>
+                                        </div>
+                                        <!-- /.row -->
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="city">Bairro:</label>
+                                                <select class="form-control" id="id_bairro" name="bairro">
+                                                    {% for bairro in bairros %}
+                                                        <option value="{{ bairro.id }}" data-valor="{% if user|is_madrugada %}{{ bairro.valor_madrugada|floatformat:2 }}{% else %}{{ bairro.valor|floatformat:2 }}{% endif %}">
+                                                            {{ bairro.nome }}  (R$ {% if user|is_madrugada %}{{ bairro.valor_madrugada|floatformat:2 }}){% else %}{{ bairro.valor|floatformat:2 }}){% endif %}
+                                                        </option>
+                                                    {% endfor %}
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="street">Complemento:</label>
+                                                <input class="form-control" id="complemento" maxlength="300"
+                                                       name="complemento" placeholder="Complemento" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('[name=novo]').change(function () {
+                                            if ($(this).is(':checked')) {
+                                                $('[name=endereco]').prop('checked', false);
+                                                $('#novo-div').show();
+
+                                                $('#valor_entrega').text('');
+                                                $('#total').text('');
+                                            } else {
+                                                $('#novo-div').hide();
+                                            }
+                                        });
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">Forma de Pagamento</h4>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% for pgto in pedido_obj.estabelecimento.formapagamento_set.all %}
+                                            {% if pgto.forma == 'DINHEIRO' %}
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio"
+                                                                       name="pgto"
+                                                                       value="{{ pgto.id }}"/>
+                                                                {{ pgto.forma }} {% if pgto.cartao %}
+                                                                {{ pgto.cartao }}  {% endif %}
+                                                            </label>
+                                                        </div>
+                                                        <p> Precisa de troco? Para quanto? <input class="form-control"
+                                                                                                  name="troco"
+                                                                                                  id="troco"
+                                                                                                  placeholder="0.00"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                            {% else %}
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               name="pgto"
+                                                               value="{{ pgto.id }}"/>
+                                                        {{ pgto.forma }} {% if pgto.cartao %}
+                                                        {{ pgto.cartao }}  {% endif %}
+                                                    </label>
+                                                </div>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">Meu pedido</h4>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Produto</th>
+                                                    <th>Preço</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for itempedido in pedido_obj.itempedido_set.all %}
+                                                    <tr>
+                                                        <td>{{ itempedido.produto.nome }}</td>
+                                                        <td>R$ {{ itempedido.valor_total|floatformat:2 }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                <tr class="subtotal">
+                                                    <th>Subtotal</th>
+                                                    {% if pedido_obj %}
+                                                        <th>R$ {{ pedido_obj.subtotal|floatformat:2 }}</th>
+                                                    {% endif %}
+                                                </tr>
+                                                <tr class="valor_entrega">
+                                                    <td>Valor da entrega</td>
+                                                    {% if pedido_obj %}
+                                                        <td id="valor_entrega">
+                                                            R$ {{ pedido_obj.endereco_entrega.valor_entrega|floatformat:2 }}</td>
+                                                    {% endif %}
+                                                </tr>
+                                                <tr class="total">
+                                                    <th>Total</th>
+                                                    {% if pedido_obj %}
+                                                        <th id="total"></th>
+                                                    {% endif %}
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $('[name=endereco]').change(function () {
+                                                                if ($(this).is(':checked')) {
+                                                                    var valor_endereco = parseFloat($(this).data('valor'));
+                                                                    var valor_subtotal = parseFloat('{{ pedido_obj.subtotal }}');
+                                                                    $('#valor_entrega').text(valor_endereco.toFixed(2));
+                                                                    $('#total').text(parseFloat(valor_endereco + valor_subtotal).toFixed(2));
+                                                                }
+                                                            });
+
+                                                            $('[name=bairro]').change(function () {
+                                                                var valor_endereco = parseFloat($('[name=bairro] option:selected').data('valor'));
+                                                                var valor_subtotal = parseFloat('{{ pedido_obj.subtotal }}');
+                                                                $('#valor_entrega').text(valor_endereco.toFixed(2));
+                                                                $('#total').text(parseFloat(valor_endereco + valor_subtotal).toFixed(2));
+                                                            });
+                                                        });
+                                                    </script>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" class="btn btn-danger
+                                                {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
+                                                disabled
+                                                {% endif %}
+                                                "
+                                                    {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
+                                               disabled="disabled"
+                                                    {% endif %}
+                                            >Finalizar Pedido</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#inicio').addClass('active');
+        });
+    </script>
+
+{% endblock %}

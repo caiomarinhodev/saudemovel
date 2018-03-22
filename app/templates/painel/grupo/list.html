@@ -1,0 +1,92 @@
+{% extends 'base_painel.html' %}
+{#{% load filters %}#}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <a href="{% url 'add_grupo' %}" class="btn btn-primary">Adicionar</a>
+                </div>
+                <!-- form start -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>PRODUTO</th>
+                                        <th>IDENTIFICADOR</th>
+                                        <th>TITULO</th>
+                                        <th>LIMITADOR</th>
+                                        <th>TIPO</th>
+                                        <th>OPCIONAIS</th>
+                                        <th>CRIADO EM</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for grupo in grupos %}
+                                        <tr>
+                                            <td>
+                                                {{ grupo.id }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.produto }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.identificador }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.titulo }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.limitador }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.tipo }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.opcional_set.all|length }}
+                                            </td>
+                                            <td>
+                                                {{ grupo.created_at|date:"d/m/Y G:i" }}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'edit_grupo' grupo.pk %}"> <i
+                                                        class="fa fa-eye"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'delete_grupo' grupo.pk %}"> <i
+                                                        class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table').DataTable({
+                responsive: true,
+                order: [[0, "desc"]]
+            });
+            $('#grupo').addClass('active');
+        });
+
+    </script>
+
+{% endblock %}

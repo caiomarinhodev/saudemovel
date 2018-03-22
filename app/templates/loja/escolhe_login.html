@@ -1,0 +1,34 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="bar background-white no-mb">
+        <div class="container">
+            <div class="heading text-center">
+                <h2>Peça Comida Online!</h2>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-2 col-xs-12">
+                    <a href="{% url 'login' %}" class="btn btn-default btn-lg btn-block" style="margin-bottom: 30px;">
+                        Login como Loja
+                    </a>
+                </div>
+
+                <div class="col-sm-4 col-xs-12">
+                    <a href="{% url 'login_cliente' %}" class="btn btn-default btn-lg btn-block">
+                        Login como Cliente
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#inicio').addClass('active');
+        });
+    </script>
+
+{% endblock %}

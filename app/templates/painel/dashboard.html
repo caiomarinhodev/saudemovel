@@ -1,0 +1,122 @@
+{% extends 'base_painel.html' %}
+{#{% load filters %}#}
+{% load staticfiles %}
+
+{% block content %}
+
+    <style>
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .message-item {
+            margin-bottom: 25px;
+            margin-left: 40px;
+            position: relative;
+        }
+
+        .post-meta > div {
+            color: #777;
+            font-size: 12px;
+            line-height: 22px;
+        }
+    </style>
+
+{##}
+{#    <div class="row">#}
+{#        <div class="col-md-6 col-xs-6">#}
+{#            <div class="small-box bg-green">#}
+{#                <div class="inner">#}
+{#                    <h3>R$ 5500,00</h3>#}
+{##}
+{#                    <p>Renda Gerada no Mes</p>#}
+{#                </div>#}
+{#                <div class="icon">#}
+{#                    <i class="fa fa-line-chart"></i>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-md-6 col-xs-6">#}
+{#            <!-- small box -->#}
+{#            <div class="small-box bg-yellow">#}
+{#                <div class="inner">#}
+{#                    <h3>528</h3>#}
+{##}
+{#                    <p>Entregas no Mes</p>#}
+{#                </div>#}
+{#                <div class="icon">#}
+{#                    <i class="ion ion-navigate"></i>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{##}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Pedidos</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>CLIENTE</th>
+                                        <th>ENDERECO</th>
+                                        <th>FORMA PAGAMENTO</th>
+                                        <th>SUBTOTAL</th>
+                                        <th>VALOR TOTAL</th>
+                                        <th>TROCO</th>
+                                        <th>CRIADO EM</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for pedido in pedidos %}
+                                        <tr>
+                                            <td>{{ pedido.id }}</td>
+                                            <td>{{ pedido.cliente }}</td>
+                                            <td>{{ pedido.endereco_entrega }}</td>
+                                            <td>{{ pedido.forma_pagamento }}</td>
+                                            <td>{{ pedido.subtotal }}</td>
+                                            <td>{{ pedido.valor_total }}</td>
+                                            <td>{% if pedido.troco %}{{ pedido.troco }}{% endif %}</td>
+                                            <td>{{ pedido.created_at|date:"d/m/Y" }}</td>
+                                            <td>{{ pedido.status_pedido }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table').DataTable({
+                responsive: true,
+                order: [[0, "desc"]]
+            });
+            $('#loja').addClass('active');
+        });
+
+    </script>
+
+{% endblock %}

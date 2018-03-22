@@ -10,7 +10,7 @@ from app.views.snippet_template import render_block_to_string
 
 
 class ListChatView(LoginRequiredMixin, TemplateView):
-    template_name = 'pedidos/list_all_chats.html'
+    template_name = 'entrega/pedidos/list_all_chats.html'
     login_url = '/login'
 
     def get_context_data(self, **kwargs):
@@ -21,12 +21,12 @@ class ListChatView(LoginRequiredMixin, TemplateView):
 
 class ChatPedidoView(LoginRequiredMixin, DetailView):
     model = Pedido
-    template_name = 'pedidos/chat.html'
+    template_name = 'entrega/pedidos/chat.html'
     login_url = '/login'
 
 
 class ChatMotoristaPedidoView(LoginRequiredMixin, TemplateView):
-    template_name = 'pedidos/chat.html'
+    template_name = 'entrega/pedidos/chat.html'
     login_url = '/login'
 
     def get_context_data(self, **kwargs):

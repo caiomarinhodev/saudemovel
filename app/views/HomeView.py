@@ -14,15 +14,15 @@ __copyright__ = "Copyright 2017"
 
 
 class AppView(TemplateView):
-    template_name = 'page/index.html'
+    template_name = 'entrega/page/index.html'
 
 
 class CollectView(TemplateView):
-    template_name = 'page/collect.html'
+    template_name = 'entrega/page/collect.html'
 
 
 class ContributeView(TemplateView):
-    template_name = 'page/contribute.html'
+    template_name = 'entrega/page/contribute.html'
 
 
 class DashboardListPedidosView(LoginRequiredMixin, TemplateView, DashboardListMixin):

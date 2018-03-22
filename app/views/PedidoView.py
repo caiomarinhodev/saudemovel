@@ -28,7 +28,7 @@ from app.views.snippet_template import render_block_to_string
 class CozinhaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
     login_url = '/login/'
     context_object_name = 'rotas'
-    template_name = 'acompanhar/view_cozinha.html'
+    template_name = 'entrega/acompanhar/view_cozinha.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(coletado=False,
@@ -66,7 +66,7 @@ def liberar_corrida_cozinha(request, pk_pedido):
 
 class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'pedidos/../../templates/acompanhar/order_view.html'
+    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/order_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -81,7 +81,7 @@ class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
 
 class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'pedidos/../../templates/acompanhar/route_view.html'
+    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/route_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -96,7 +96,7 @@ class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
 
 class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'pedidos/../../templates/acompanhar/map_view.html'
+    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/map_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -114,7 +114,7 @@ class PedidosLojaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     model = Pedido
     # permission_required = ('app.view_dashboard_1', 'app.view_dashboard_2', 'app.view_dashboard_3', )
     context_object_name = 'pedidos'
-    template_name = 'pedidos/list_pedidos_loja.html'
+    template_name = 'entrega/pedidos/list_pedidos_loja.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(estabelecimento__user=self.request.user).order_by('-created_at')
@@ -124,7 +124,7 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'pedidos/list_pedidos_motorista.html'
+    template_name = 'entrega/pedidos/list_pedidos_motorista.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
@@ -135,7 +135,7 @@ class PedidosMotoristaPremiumListView(LoginRequiredMixin, RedirectMotoristaOcupa
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'pedidos/list_pedidos_premium.html'
+    template_name = 'entrega/pedidos/list_pedidos_premium.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
@@ -146,7 +146,7 @@ class EntregasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'pedidos/list_entregas_motorista.html'
+    template_name = 'entrega/pedidos/list_entregas_motorista.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(motorista=self.request.user).order_by('-published_at')
@@ -177,7 +177,7 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Pedido
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento', 'is_draft']
-    template_name = 'pedidos/add_pedido.html'
+    template_name = 'entrega/pedidos/add_pedido.html'
     login_url = '/login/'
 
     # def get_success_url(self):
@@ -260,7 +260,7 @@ def create_pedido_json(request):
 class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     login_url = '/login/'
-    template_name = 'pedidos/../../templates/acompanhar/view_pedido.html'
+    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/view_pedido.html'
 
     def get_context_data(self, **kwargs):
         data = super(PedidoDetailView, self).get_context_data(**kwargs)
@@ -276,7 +276,7 @@ class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
     login_url = '/login/'
     success_url = '/app/pedidos/loja/'
     fields = ['estabelecimento', 'is_draft']
-    template_name = 'pedidos/edit_pedido.html'
+    template_name = 'entrega/pedidos/edit_pedido.html'
 
     def get_initial(self):
         return {

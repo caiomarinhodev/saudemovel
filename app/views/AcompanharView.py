@@ -10,7 +10,7 @@ class AcompanharListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'acompanhar/list_acompanhar_loja.html'
+    template_name = 'entrega/acompanhar/list_acompanhar_loja.html'
 
     def get_queryset(self):
         return Pedido.objects.filter(estabelecimento__user=self.request.user, status=False).order_by('-created_at')
@@ -18,7 +18,7 @@ class AcompanharListView(LoginRequiredMixin, ListView, CustomContextMixin):
 
 class AcompanharDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'pedidos/../../templates/acompanhar/acompanhar_view.html'
+    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/acompanhar_view.html'
     context_object_name = 'pedido'
 
 
@@ -26,7 +26,7 @@ class LojasMotoristaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Estabelecimento
     context_object_name = 'lojas'
-    template_name = 'pedidos/list_all_lojas_motorista.html'
+    template_name = 'entrega/pedidos/list_all_lojas_motorista.html'
 
     def get_queryset(self):
         return Estabelecimento.objects.all()

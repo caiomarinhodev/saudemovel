@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 from django import template
 
@@ -7,6 +7,32 @@ from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
 
+
+@register.filter
+def is_madrugada(user):
+    try:
+        now_time = datetime.now().time()
+        if time(22, 59) <= now_time <= time(23, 59):
+            return True
+        elif time(0, 00) <= now_time <= time(5, 59):
+            return True
+        return False
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0
+
+
+@register.filter
+def get_itens(pedido):
+    try:
+        message = u''
+        for it in pedido.itempedido_set.all():
+            message += u' ' + unicode(it.produto.nome) + u'('
+            for opc in it.opcionalchoice_set.all():
+                message += unicode(opc.opcional.nome) + u','
+            message += u') '
+        return message
+    except (Exception,):
+        return u''
 
 
 @register.filter
@@ -150,6 +176,7 @@ def ganhos_totais(motorista):
         return ganho
     except (Motorista.DoesNotExist, Exception):
         return 0.0
+
 
 @register.filter
 def calculate_distance(pedido):
