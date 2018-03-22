@@ -77,7 +77,7 @@ def add_cart(request, id_loja):
         print('loja: ' + str(id_loja))
         return redirect('/loja/' + str(pedido.estabelecimento.id))
     messages.error(request, u'Para fazer um pedido você deve estar logado')
-    return redirect('/define/login')
+    return redirect('/define/login/')
 
 
 def remove_cart(request, pk):
@@ -110,7 +110,7 @@ def check_loja_is_online(request):
 
 class FinalizaRequest(LoginRequiredMixin, TemplateView, LojaFocusMixin):
     template_name = 'loja/finaliza_pedido.html'
-    login_url = '/define/login'
+    login_url = '/define/login/'
 
     def get(self, request, *args, **kwargs):
         if not check_loja_is_online(self.request):
@@ -147,7 +147,7 @@ def submit_pedido(request):
             if forma_pagamento.forma == 'DINHEIRO':
                 if 'troco' in data:
                     if data['troco'] != u'':
-                        troco = data['troco']
+                        pedido.troco = data['troco']
                     else:
                         messages.error(request, u'Insira o valor do Troco')
                         return redirect('/finaliza-pedido/')
@@ -162,6 +162,9 @@ def submit_pedido(request):
     # else:
     #     messages.error(request, u'Defina uma forma de entrega')
     #     return redirect('/finaliza-pedido/')
+    if 'troco' in data:
+        if data['troco'] != u'':
+            pedido.troco = data['troco']
     pedido.forma_pagamento = forma_pagamento
     # pedido.forma_entrega = forma_entrega
     if endereco:
@@ -191,6 +194,7 @@ def make_message(pedido):
 
 class AcompanharRequest(LoginRequiredMixin, DetailView):
     template_name = 'loja/acompanha_pedido.html'
+    login_url = '/define/login/'
     model = Request
     context_object_name = 'pedido_obj'
 
@@ -202,3 +206,4 @@ class AcompanharRequest(LoginRequiredMixin, DetailView):
 
 class MeusRequests(LoginRequiredMixin, TemplateView, LojaFocusMixin):
     template_name = 'loja/meus_pedidos.html'
+    login_url = '/define/login/'

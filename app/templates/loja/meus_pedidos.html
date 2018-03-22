@@ -36,7 +36,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for pedido in user.cliente.pedido_set.all %}
+                            {% for pedido in user.cliente.request_set.all %}
                                 <tr>
                                     <td>{{ pedido.id }}</td>
                                     <td>{{ pedido.estabelecimento }}</td>

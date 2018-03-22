@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic import RedirectView
 
-from app.models import Estabelecimento, Bairro
+from app.models import Estabelecimento, Bairro, Motorista
 from app.views.mixins.Mixin import LojaFocusMixin
 
 
@@ -32,7 +32,7 @@ class SetOnlineView(RedirectView):
             loja.save()
             return '/dashboard'
         else:
-            return '/define/login'
+            return '/define/login/'
 
 
 def script(request):
@@ -125,18 +125,25 @@ def script(request):
 # Implementar tela de Meus Pedidos (1h) OK
 # Implementar tela de Ver Pedido Realizado (30min) OK
 
-# Bug: Pode Alterar valor do bairro por JS na compra.
-# Bug: SEM CONTROLE SE PERMANECER NESSA GAMBIARRA.
-
-# Implementar Aceitar, Rejeitar Pedido com set na tela de acompanhar pedido (2h)
-# Implementar Configuracao de Loja (1h)
-# Implementar Check de enviar pedido se e sommente se loja ONLINE. (10min)
-# Implementar Random na vitrine de lojas Online (1h)
-# Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (45min)
-# Implementar Lançamento de Pedido para Focus Geral (3h30)
+# Bug: Pode Alterar valor do bairro por JS na compra. OK
+# Bug: SEM CONTROLE SE PERMANECER NESSA GAMBIARRA. OK
+# Implementar Lançamento de Pedido para Focus Geral (3h30) OK
 # Implementar Alerta na Cozinha da Focus Geral (2h) OK
+# Implementar Check de enviar pedido se e sommente se loja ONLINE. (10min) OK
+# Implementar Aceitar, Rejeitar Pedido com set na tela de acompanhar pedido (2h) OK
+# Implementar Online/Offline do motoboy(1h) OK
+# Implementar CRUD de Pedido (30min)
+# Mostrar nome da loja estilo popup ao passar mouse sobre a foto da loja na HOME (30min)
+# Mostrar motoboy estilo perfil na tela de acompanhar entrega (45min)
+# Texto Page Sobre Nós (menu link) (50min)
+# Aplicativo (menu link) (45 min)
+# Implementar Configuracao de Loja (1h)
+# Menu Pagamentos com tabela de Pagamentos e Opcao de Pagar (btn pagseguro ou api)
 
-# Implementar API (20h)
+# Implementar Random na vitrine de lojas Online (1h)
+# Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (1h45min)
+
+
 
 # ---------------------------------------
 # Apos as sucessivas adicoes no carrinho, o cliente vai para a tela de inserir dados de entrega,

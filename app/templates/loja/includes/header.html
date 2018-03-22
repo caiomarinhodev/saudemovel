@@ -81,23 +81,27 @@ _________________________________________________________ -->
                         {#                            <li id="menu_instituicoes" class="">#}
                         {#                                <a id="instituicoes_link" href="{% url 'menu_institutes' %}">Instituições</a>#}
                         {#                            </li>#}
-                        <li id="menu_contribua" class="">
-                            <a id="contribua_link" href="#">Sobre Nós</a>
-                        </li>
-                        <li id="menu_arrecade" class="">
-                            <a id="arrecade_link" href="#">Aplicativo</a>
-                        </li>
+{#                        <li id="menu_contribua" class="">#}
+{#                            <a id="contribua_link" href="#">Sobre Nós</a>#}
+{#                        </li>#}
+{#                        <li id="menu_arrecade" class="">#}
+{#                            <a id="arrecade_link" href="#">Aplicativo</a>#}
+{#                        </li>#}
                         <li class="dropdown">
                             <a id="inscrevase_link" class="dropdown-toggle"
                                data-toggle="dropdown">Registre-se<b
                                     class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a id="register_user_link" href="#">Cliente</a></a>
+                                    <a id="register_user_link" href="{% url 'registro_cliente' %}">Cliente</a></a>
                                 </li>
                                 <li>
                                     <a id="register_instituicao_link"
-                                       href="#">Estabelecimento</a>
+                                       href="{% url 'registro' %}">Estabelecimento</a>
+                                </li>
+                                <li>
+                                    <a id="register_instituicao_link"
+                                       href="{% url 'register-driver' %}">Motoboy</a>
                                 </li>
                             </ul>
                         </li>

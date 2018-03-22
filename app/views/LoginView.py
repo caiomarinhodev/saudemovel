@@ -35,9 +35,9 @@ class AppView(TemplateView):
                         print ('--------- estabelecimento is logged')
                         return redirect('/app/pedidos/loja')
                 except:
-                    return redirect('/login')
+                    return redirect('/loja/')
         else:
-            return redirect('/login')
+            return redirect('/loja')
 
 
 class LoginView(FormView):
@@ -156,7 +156,7 @@ class LogoutView(RedirectView):
 class RegisterView(FormView):
     template_name = 'entrega/page/register.html'
     form_class = FormRegister
-    success_url = '/login'
+    success_url = '/login/'
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -214,7 +214,7 @@ class RegisterView(FormView):
 class RegisterMotoristaView(FormView):
     template_name = 'entrega/page/register-driver.html'
     form_class = FormMotoristaRegister
-    success_url = '/login'
+    success_url = '/login/'
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -325,3 +325,16 @@ class EditarPerfilView(FormView):
         print(form.errors)
         messages.error(self.request, 'Não foi possível alterar os dados.')
         return super(EditarPerfilView, self).form_invalid(form)
+
+
+class SetOnlineMotoboyView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        if self.request.user:
+            motorista = Motorista.objects.get(user=self.request.user)
+            motorista.is_online = not motorista.is_online
+            motorista.save()
+            if motorista.configuration.plano == 'PREMIUM':
+                return '/app/pedidos/motorista/premium/'
+            return '/app/pedidos/motorista'
+        else:
+            return '/login/'

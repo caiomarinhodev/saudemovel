@@ -23,7 +23,7 @@ class MotoristaAdmin(admin.ModelAdmin):
 
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'id', 'full_address', 'photo', 'is_online', 'created_at')
+    list_display = ('user', 'phone', 'cnpj', 'id', 'full_address', 'photo', 'is_online', 'created_at')
 
 
 class PontoAdmin(admin.ModelAdmin):

@@ -32,7 +32,7 @@
                 <div class="col-xs-12 col-sm-4">
                     <div class="box-simple box-white same-height">
                         <div class="icon"><i class="fa fa-clock-o"></i></div>
-                        <h1>60 min</h1>
+                        <h1>{{ pedido_obj.estabelecimento.configuration.tempo_de_entrega }} min</h1>
                         <h3>Tempo de Entrega</h3>
                     </div>
                 </div>
@@ -120,6 +120,10 @@
                                         <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                         {% if pedido_obj.status_pedido == 'AGUARDANDO' %}
                                             <h3>Aguarde enquanto a loja processa seu pedido.</h3>
+                                        {% elif pedido_obj.status_pedido == 'ACEITO' %}
+                                            <h3>Seu pedido foi aceito pela loja, aguarde o preparo.</h3>
+                                        {% elif pedido_obj.status_pedido == 'REJEITADO' %}
+                                            <h3>Seu pedido foi rejeitado pela loja.</h3>
                                         {% elif pedido_obj.status_pedido == 'PREPARANDO' %}
                                             <h3>Seu pedido já está sendo preparado.</h3>
                                         {% elif pedido_obj.status_pedido == 'ENTREGANDO' %}
@@ -134,7 +138,7 @@
                             <hr/>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <h1>{{ pedido_obj.estabelecimento.telefone }}</h1>
+                                    <h1>{{ pedido_obj.estabelecimento.phone }}</h1>
                                     <p>Telefone da empresa</p>
                                 </div>
                             </div>

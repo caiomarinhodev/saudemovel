@@ -27,20 +27,37 @@ def mark_read(request):
         notificacao.save()
 
 
+def get_or_create_rota(req):
+    rotas = Pedido.objects.filter(coletado=False, status_cozinha=False)
+    if rotas:
+        print(unicode(rotas))
+        return rotas.last()
+    else:
+        rota = Pedido(estabelecimento=req.estabelecimento, valor_total=req.endereco_entrega.bairro.valor)
+        rota.save()
+        return rota
+
+
 def aceitar_pedido(request, pk):
     mark_read(request)
     req = Request.objects.get(id=pk)
     req.status_pedido = 'ACEITO'
     req.save()
-    pedido = Pedido(estabelecimento=req.estabelecimento, valor_total=req.endereco_entrega.bairro.valor)
+    pedido = get_or_create_rota(req)
     pedido.save()
-    ponto = Ponto(pedido=pedido,
-                  cliente=unicode(req.cliente.usuario.first_name) + u" " + unicode(req.cliente.usuario.last_name),
-                  telefone=req.cliente.telefone, observacoes=" ", itens=" *** ")
-    ponto.save()
-    a = func()
-    no = Notification(type_message='NOTIFICACAO_COZINHA', to=request.user, message='NOVO PEDIDO REALIZADO')
-    no.save()
+    if request.user.estabelecimento.configuration.chamar_motoboy:
+        req.pedido = pedido
+        ponto = Ponto(pedido=pedido, bairro=req.endereco_entrega.bairro, endereco=req.endereco_entrega.endereco,
+                      numero=req.endereco_entrega.numero, complemento=req.endereco_entrega.complemento,
+                      cliente=unicode(req.cliente.usuario.first_name) + u" " + unicode(req.cliente.usuario.last_name),
+                      telefone=req.cliente.telefone, observacoes=" ", itens=" *** ")
+        req.save()
+        ponto.save()
+        pedido.save()
+        a = func()
+    if request.user.estabelecimento.configuration.has_cozinha:
+        no = Notification(type_message='NOTIFICACAO_COZINHA', to=request.user, message='NOVO PEDIDO REALIZADO')
+        no.save()
     return redirect('/dashboard')
 
 

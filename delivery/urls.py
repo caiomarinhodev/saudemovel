@@ -7,7 +7,8 @@ from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, L
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.HomeView import DashboardDataView, set_feriado_admin, ListMotoristasView, DashboardListPedidosView
 from app.views.LocationView import get_position_motorista, send_position_motorista
-from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView
+from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView, \
+    SetOnlineMotoboyView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
 from app.views.ClientesView import *
 from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
@@ -80,15 +81,15 @@ Including another URLconf
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/login/$', auth_views.login),
-    url(r'^app/$', AppView.as_view(), name='home'),
+    url(r'^$', AppView.as_view(), name='home'),
     url(r'^app/dashboard/data/$', DashboardDataView.as_view(), name='dashboard-data'),
     url(r'^app/dashboard/$', DashboardListPedidosView.as_view(), name='dashboard'),
 
-    # url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^app/registro/$', RegisterView.as_view(), name='registro'),
     url(r'^app/register-driver/$', RegisterMotoristaView.as_view(), name='register-driver'),
 
-    # url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout'),
+    url(r'^account/logout/$', LogoutView.as_view(), name='auth_logout_motorista'),
 
     url(r'^app/pedidos/motorista/$', PedidosMotoristaListView.as_view(), name='pedidos_motorista'),
     url(r'^app/pedidos/loja/$', PedidosLojaListView.as_view(), name='pedidos_estabelecimento'),
@@ -109,7 +110,8 @@ urlpatterns = [
 
     url(r'^app/cozinha/$', CozinhaListView.as_view(), name='cozinha_view'),
     url(r'^app/cozinha/prepared/(?P<id_ponto>[0-9]+)/$', set_to_prepared_pedido, name='set_prepared_entrega'),
-    url(r'^app/liberar-corrida-cozinha/(?P<pk_pedido>[0-9]+)/', liberar_corrida_cozinha, name='liberar_corrida_cozinha'),
+    url(r'^app/liberar-corrida-cozinha/(?P<pk_pedido>[0-9]+)/', liberar_corrida_cozinha,
+        name='liberar_corrida_cozinha'),
 
     url(r'^app/motorista/timeline/$', TimelineView.as_view(), name='timeline_motorista'),
 
@@ -175,11 +177,11 @@ urlpatterns = [
 
     url(r'^notificacao/cozinha/loja/$', notificar_cozinha_message, name="notificacao_cozinha"),
 
-    url(r'^create-pedido/$', create_pedido_json, name='create_pedido_json'),
+    url(r'^set-motoboy-online/$', SetOnlineMotoboyView.as_view(), name='set_online_motoboy'),
 
     # ---------------------------------------------------------------------------------------------------
 
-    url(r'^login/$', LojaLoginView.as_view(), name='login'),
+    url(r'^loja/login/$', LojaLoginView.as_view(), name='loja_login'),
     url(r'^logout/$', LojaLogoutView.as_view(), name='auth_logout'),
     url(r'^dashboard/$', DashboardPedidosListView.as_view(), name='dashboard'),
 
@@ -225,7 +227,7 @@ urlpatterns = [
     url(r'^aceitar-pedido/(?P<pk>[0-9]+)/$', aceitar_pedido, name='aceitar_pedido'),
     url(r'^rejeitar-pedido/(?P<pk>[0-9]+)/$', rejeitar_pedido, name='rejeitar_pedido'),
 
-    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^loja/$', HomeView.as_view(), name='home'),
 
     url(r'^loja/(?P<pk>[0-9]+)/$', LojaProdutosListView.as_view(), name='view_loja'),
 

@@ -43,6 +43,13 @@ def set_to_prepared_pedido(request, id_ponto):
     else:
         ponto = Ponto.objects.get(id=id_ponto)
         pedido = ponto.pedido
+        try:
+            if pedido.request:
+                req = pedido.request
+                req.status_pedido = 'PREPARANDO'
+                req.save()
+        except (Exception,):
+            pass
         ponto.is_prepared = True
         pedido.save()
         ponto.save()
@@ -55,6 +62,14 @@ def liberar_corrida_cozinha(request, pk_pedido):
     pedido.coletado = True
     pedido.status_cozinha = True
     pedido.save()
+    try:
+        if pedido.request:
+            reqs = pedido.request_set.all()
+            for req in reqs:
+                req.status_pedido = 'ENTREGANDO'
+                req.save()
+    except (Exception,):
+        pass
     if Motorista.objects.get(user=pedido.motorista).is_online:
         print(
             '>>>>>>>> Motorista ' + pedido.motorista.first_name + ' foi liberado pela loja ' + pedido.estabelecimento.user.first_name)
@@ -66,7 +81,7 @@ def liberar_corrida_cozinha(request, pk_pedido):
 
 class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/order_view.html'
+    template_name = 'entrega/acompanhar/order_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -81,7 +96,7 @@ class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
 
 class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/route_view.html'
+    template_name = 'entrega/acompanhar/route_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -96,7 +111,7 @@ class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
 
 class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/map_view.html'
+    template_name = 'entrega/acompanhar/map_view.html'
     context_object_name = 'pedido'
     login_url = '/login/'
 
@@ -260,7 +275,7 @@ def create_pedido_json(request):
 class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     login_url = '/login/'
-    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/view_pedido.html'
+    template_name = 'entrega/acompanhar/view_pedido.html'
 
     def get_context_data(self, **kwargs):
         data = super(PedidoDetailView, self).get_context_data(**kwargs)
@@ -381,7 +396,7 @@ def get_pedidos_motorista(request):
 def get_entregas_motorista(request):
     pedidos = Pedido.objects.filter(motorista=request.user).order_by('-published_at')
     context = Context({'pedidos': pedidos, 'user': request.user})
-    return_str = render_block_to_string('includes/table_entregas_motorista.html', context)
+    return_str = render_block_to_string('entrega/includes/table_entregas_motorista.html', context)
     return HttpResponse(return_str)
 
 
@@ -425,6 +440,14 @@ def liberar_corrida(request, pk_pedido):
     pedido = Pedido.objects.get(id=pk_pedido)
     pedido.coletado = True
     pedido.save()
+    try:
+        if pedido.request:
+            reqs = pedido.request_set.all()
+            for req in reqs:
+                req.status_pedido = 'ENTREGANDO'
+                req.save()
+    except (Exception,):
+        pass
     if Motorista.objects.get(user=pedido.motorista).is_online:
         print(
             '>>>>>>>> Motorista ' + pedido.motorista.first_name + ' foi liberado pela loja ' + pedido.estabelecimento.user.first_name)
@@ -453,6 +476,14 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
         pedido = Pedido.objects.get(id=pk_pedido)
         ponto.status = True
         ponto.save()
+        try:
+            if pedido.request:
+                reqs = pedido.request_set.all()
+                for req in reqs:
+                    req.status_pedido = 'ENTREGUE'
+                    req.save()
+        except (Exception,):
+            pass
         pto_entregues = len(pedido.ponto_set.filter(status=True))
         print(len(pedido.ponto_set.all()) == pto_entregues)
         if len(pedido.ponto_set.all()) == pto_entregues:

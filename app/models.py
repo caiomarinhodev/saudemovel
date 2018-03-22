@@ -67,7 +67,9 @@ PLANS = (
 class Configuration(TimeStamped):
     tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
     plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
-    has_cozinha = models.BooleanField(default=False)
+    chamar_motoboy = models.BooleanField(default=True)
+    tempo_de_entrega = models.CharField(max_length=2, default=50)
+    has_cozinha = models.BooleanField(default=True)
 
     def __str__(self):
         return "%s" % self.plano
@@ -492,6 +494,7 @@ class Request(TimeStamped):
     forma_pagamento = models.ForeignKey(FormaPagamento, blank=True, null=True, on_delete=models.CASCADE)
     forma_entrega = models.ForeignKey(FormaEntrega, blank=True, null=True, on_delete=models.CASCADE)
     endereco_entrega = models.ForeignKey(Endereco, blank=True, null=True)
+    pedido = models.ForeignKey(Pedido, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s - %s - %s - %s' % (self.id, self.cliente, self.estabelecimento, self.valor_total)
