@@ -13,14 +13,14 @@ from app.views.ClientesView import *
 from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
     notificar_admin_message, notificar_order_delivered_loja, notify_new_message_for_motorista, \
-    notify_new_message_for_loja
+    notify_new_message_for_loja, notificar_cozinha_message
 from app.views.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
-    set_to_prepared_pedido, liberar_corrida_cozinha
+    set_to_prepared_pedido, liberar_corrida_cozinha, create_pedido_json
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 
 __author__ = "Caio Marinho"
@@ -137,5 +137,9 @@ urlpatterns = [
     url(r'^notificacao/nova-mensagem/motorista/$', notify_new_message_for_motorista,
         name="notify_new_message_for_motorista"),
     url(r'^notificacao/nova-mensagem/loja/$', notify_new_message_for_loja, name="notify_new_message_for_loja"),
+
+    url(r'^notificacao/cozinha/loja/$', notificar_cozinha_message, name="notificacao_cozinha"),
+
+    url(r'^create-pedido/$', create_pedido_json, name='create_pedido_json'),
 
 ]

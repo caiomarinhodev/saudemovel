@@ -12,13 +12,13 @@ register = template.Library()
 @register.filter
 def is_pedido_prepared(value):
     try:
-        pedido = value.pedido
+        pedido = value
         for entrega in pedido.ponto_set.all():
             if not entrega.is_prepared:
                 return False
         return True
     except (Exception,):
-        return True
+        return False
 
 
 @register.filter

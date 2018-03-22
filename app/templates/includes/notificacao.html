@@ -27,6 +27,20 @@
                     window.location.href = '{% url 'pedidos_motorista' %}'
                 }, 2000);
             });
+
+        {% elif notificacao.type_message == 'NOTIFICACAO_COZINHA' %}
+            play('alert');
+            swal({
+                title: "ALERTA!",
+                text: '{{ notificacao.message }}',
+                type: 'warning',
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                setTimeout(function () {
+                    window.location.href = '{% url 'cozinha_view' %}'
+                }, 1000);
+            });
         {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
             play('alert');
             swal({

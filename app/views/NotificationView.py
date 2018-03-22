@@ -121,3 +121,14 @@ def notificar_admin_message(request):
         notificacao.is_read = True
         notificacao.save()
     return HttpResponse(return_str)
+
+
+@require_http_methods(["GET"])
+def notificar_cozinha_message(request):
+    notificacao = Notification.objects.filter(to=request.user, type_message='NOTIFICACAO_COZINHA', is_read=False).last()
+    context = Context({'notificacao': notificacao, 'user': request.user})
+    return_str = render_block_to_string('includes/notificacao.html', context)
+    if notificacao:
+        notificacao.is_read = True
+        notificacao.save()
+    return HttpResponse(return_str)

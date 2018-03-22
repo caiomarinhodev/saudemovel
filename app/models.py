@@ -227,6 +227,7 @@ class Ponto(BaseAddress, TimeStamped):
 
 
 type_notification = (
+    ('NOTIFICACAO_COZINHA', 'NOTIFICACAO_COZINHA'),
     ('NOVO_PEDIDO', 'NOVO_PEDIDO'),
     ('DELETE_LOJA', 'DELETE_LOJA'),
     ('ACCEPT_ORDER', 'ACCEPT_ORDER'),

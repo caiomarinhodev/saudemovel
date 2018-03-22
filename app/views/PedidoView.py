@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -9,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.template import Context
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView
 from django.views.generic import DetailView
@@ -17,20 +20,19 @@ from django.views.generic import UpdateView
 
 from app.forms import PontoFormSet, PontoFormUpdateSet
 from app.mixins.CustomContextMixin import RedirectMotoristaOcupadoView, CustomContextMixin
-from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto, Classification
+from app.models import Pedido, Estabelecimento, Motorista, Notification, Ponto, Classification, Bairro
 from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 
 
 class CozinhaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
     login_url = '/login/'
-    model = Ponto
-    context_object_name = 'entregas'
+    context_object_name = 'rotas'
     template_name = 'acompanhar/view_cozinha.html'
 
     def get_queryset(self):
-        return Ponto.objects.filter(pedido__coletado=False, status=False,
-                                    pedido__btn_finalizado=False).order_by(
+        return Pedido.objects.filter(coletado=False,
+                                     btn_finalizado=False).order_by(
             '-created_at')
 
 
@@ -42,15 +44,16 @@ def set_to_prepared_pedido(request, id_ponto):
         ponto = Ponto.objects.get(id=id_ponto)
         pedido = ponto.pedido
         ponto.is_prepared = True
-        pedido.status_cozinha = True
         pedido.save()
         ponto.save()
         return HttpResponseRedirect('/app/cozinha/')
+
 
 @require_http_methods(["GET"])
 def liberar_corrida_cozinha(request, pk_pedido):
     pedido = Pedido.objects.get(id=pk_pedido)
     pedido.coletado = True
+    pedido.status_cozinha = True
     pedido.save()
     if Motorista.objects.get(user=pedido.motorista).is_online:
         print(
@@ -60,11 +63,12 @@ def liberar_corrida_cozinha(request, pk_pedido):
         n.save()
     return redirect('/app/cozinha')
 
+
 class OrderMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/order_view.html'
     context_object_name = 'pedido'
-    login_url='/login/'
+    login_url = '/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -79,7 +83,7 @@ class RouteMotoristaDetailView(LoginRequiredMixin, DetailView, CustomContextMixi
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/route_view.html'
     context_object_name = 'pedido'
-    login_url='/login/'
+    login_url = '/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -94,7 +98,7 @@ class MapRouteMotoristaView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
     template_name = 'pedidos/../../templates/acompanhar/map_view.html'
     context_object_name = 'pedido'
-    login_url='/login/'
+    login_url = '/login/'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -205,11 +209,52 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
         pedido = self.object
         if not pedido.is_draft:
             a = func()
+            no = Notification(type_message='NOTIFICACAO_COZINHA', to=self.request.user, message='NOVO PEDIDO REALIZADO')
+            no.save()
             for m in Motorista.objects.all():
                 if m.is_online and not m.ocupado:
                     n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
                     n.save()
         return super(PedidoCreateView, self).form_valid(form)
+
+
+def get_or_create_rota(request, loja, bairro):
+    rotas = Pedido.objects.filter(coletado=False, status_cozinha=False)
+    if rotas:
+        print(unicode(rotas))
+        return rotas.last()
+    else:
+        rota = Pedido(estabelecimento=loja, valor_total='6')
+        rota.save()
+        return rota
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_pedido_json(request):
+    data = request.POST
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    print(body)
+    content = body
+    print(content['bairro'])
+    try:
+        bairro = Bairro.objects.get(nome=content['bairro'])
+        loja = Estabelecimento.objects.get(user__username=content['username'])
+        rota = get_or_create_rota(request, loja, bairro)
+        ponto = Ponto(pedido=rota, cliente=content['cliente'], observacoes=content['observacoes'],
+                      telefone=content['telefone'],
+                      bairro=bairro,
+                      endereco=content['endereco'], numero=content['numero'], complemento=content['complemento'],
+                      itens=content['itens'])
+        ponto.save()
+        rota.save()
+        a = func()
+        n = Notification(type_message='NOTIFICACAO_COZINHA', to=loja.user, message='NOVO PEDIDO REALIZADO')
+        n.save()
+        return JsonResponse({'result': '1'})
+    except (Exception,):
+        return JsonResponse({'result': '0'})
 
 
 class PedidoDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
