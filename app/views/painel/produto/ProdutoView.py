@@ -8,6 +8,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from app.forms import FormProduto, GrupoFormSet, FotoProdutoFormSet, GrupoUpdateFormSet, FotoProdutoUpdateFormSet
 from app.models import Produto, Estabelecimento, FotoProduto
 from app.views.mixins.Mixin import FocusMixin
+from app.views.script_tools import logger
 
 
 class ProdutoListView(LoginRequiredMixin, ListView, FocusMixin):
@@ -41,6 +42,7 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
         return data
 
     def form_valid(self, form):
+        logger(self.request.user, "Criou o produto " + str(self.object))
         context = self.get_context_data()
         print(context)
         gruposet = context['gruposet']
@@ -88,6 +90,7 @@ class ProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
         return data
 
     def form_valid(self, form):
+        logger(self.request.user, "Alterou o produto " + str(self.object))
         context = self.get_context_data()
         print(context)
         gruposet = context['gruposet']

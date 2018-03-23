@@ -5,6 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from app.forms import FormGrupo, OpcionalFormSet, OpcionalUpdateFormSet
 from app.models import Grupo
 from app.views.mixins.Mixin import FocusMixin
+from app.views.script_tools import logger
 
 
 class GrupoListView(LoginRequiredMixin, ListView, FocusMixin):
@@ -36,6 +37,7 @@ class GrupoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
         return data
 
     def form_valid(self, form):
+        logger(self.request.user, "Criou o grupo " + str(self.object))
         context = self.get_context_data()
         print(context)
         opcionalset = context['opcionalset']
@@ -77,6 +79,7 @@ class GrupoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
         return data
 
     def form_valid(self, form):
+        logger(self.request.user, "Alterou o grupo " + str(self.object))
         context = self.get_context_data()
         print(context)
         opcionalset = context['opcionalset']
@@ -107,3 +110,7 @@ class GrupoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
     model = Grupo
     success_url = '/grupo/list'
     template_name = 'painel/grupo/delete.html'
+
+    def post(self, request, *args, **kwargs):
+        logger(self.request.user, "Deletou o grupo " + str(self.object))
+        return super(GrupoDeleteView, self).post(request, *args, **kwargs)

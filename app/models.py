@@ -688,3 +688,8 @@ class PagamentoMotorista(TimeStamped):
     motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, blank=True, null=True)
     link_pagamento = models.URLField(default="#")
     status_pagamento = models.BooleanField(default=False)
+
+
+class Logger(TimeStamped):
+    user = models.ForeignKey(User)
+    what = models.CharField(max_length=300)

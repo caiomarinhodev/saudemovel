@@ -9,6 +9,7 @@ from django.views.generic import RedirectView
 
 from app.forms import FormLogin
 from app.models import *
+from app.views.script_tools import logger
 
 __author__ = "Caio Marinho"
 __copyright__ = "Copyright 2017"
@@ -51,6 +52,7 @@ class LojaLoginView(FormView):
         print(user)
         if user is not None:
             if user.estabelecimento.is_approved:
+                logger(self.request.user, "Realizou login no sistema")
                 login(self.request, user)
             else:
                 messages.error(self.request, 'Sua conta ainda está para ser aprovada')
@@ -99,5 +101,6 @@ class LojaLogoutView(RedirectView):
             if cliente:
                 cliente.is_online = False
                 cliente.save()
+        logger(self.request.user, "Fez logout no sistema")
         logout(self.request)
         return super(LojaLogoutView, self).get(request, *args, **kwargs)

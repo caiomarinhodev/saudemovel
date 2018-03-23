@@ -50,6 +50,10 @@ class PagamentoMotoristaAdmin(admin.ModelAdmin):
     list_display = ('id', 'valor_total', 'motorista', 'link_pagamento', 'created_at')
 
 
+class LoggerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'what', 'id', 'created_at')
+
+
 class PedidoAdmin(admin.ModelAdmin):
     inlines = [
         PontoInline,
@@ -102,6 +106,7 @@ admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(FolhaPagamento, FolhaPagamentoAdmin)
 admin.site.register(ItemPagamento, ItemPagamentoAdmin)
 admin.site.register(PagamentoMotorista, PagamentoMotoristaAdmin)
+admin.site.register(Logger, LoggerAdmin)
 
 
 class ItemPedidoInline(admin.TabularInline):
