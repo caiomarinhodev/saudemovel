@@ -94,6 +94,7 @@ class Motorista(TimeStamped, BaseAddress):
     is_online = models.BooleanField(default=False)
     placa = models.CharField(max_length=30, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
+    creditos_expirados = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         try:

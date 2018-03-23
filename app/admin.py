@@ -15,7 +15,7 @@ class PontoInline(admin.TabularInline):
 
 class MotoristaAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo',
+        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados', 'ocupado', 'photo',
         'created_at')
 
     def view_birth_date(self, obj):

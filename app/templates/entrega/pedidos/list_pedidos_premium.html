@@ -110,10 +110,51 @@
                                     </div>
                                     <!-- /.box-header -->
                                     <div class="box-body">
-                                        <a href="{% url 'accept_corrida' pedido.pk %}" class="btn btn-primary"><i
-                                                class="fa fa-share"></i>
-                                            Aceitar Corrida
-                                        </a>
+                                        {% if user.motorista.creditos_expirados %}
+                                            <a href="#" class="btn btn-primary aceitar_corrida_{{ pedido.pk }}"><i
+                                                    class="fa fa-share" onclick="return btn_{{ pedido.pk }}();"></i>
+                                                Aceitar Corrida
+                                            </a>
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $('.aceitar_corrida_{{ pedido.pk }}').click(function () {
+                                                        swal({
+                                                                title: "Deseja fazer a corrida ?",
+                                                                text: "",
+                                                                type: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonClass: "btn-danger",
+                                                                confirmButtonText: "Confirmar Corrida",
+                                                                cancelButtonText: "Cancelar",
+                                                                closeOnConfirm: false
+                                                            },
+                                                            function (isConfirm) {
+                                                                {% if user.motorista.creditos_expirados %}
+                                                                    if (isConfirm) {
+                                                                        swal({
+                                                                                title: "Creditos Expirados!",
+                                                                                text: "Seus créditos expiraram, faça sua recarga semanal para pegar novas corridas",
+                                                                                type: "error",
+                                                                                confirmButtonClass: "btn-success",
+                                                                                confirmButtonText: "OK"
+                                                                            },
+                                                                            function () {
+                                                                                window.location.href = "";
+                                                                            });
+                                                                    }
+                                                                {% endif %}
+
+                                                            });
+                                                    });
+
+                                                });
+                                            </script>
+                                        {% else %}
+                                            <a href="{% url 'accept_corrida' pedido.pk %}" class="btn btn-primary"><i
+                                                    class="fa fa-share"></i>
+                                                Aceitar Corrida
+                                            </a>
+                                        {% endif %}
                                         {% if pedido.is_draft %}
                                             <span class="pull-right text-muted"> RASCUNHO </span>
                                         {% else %}

@@ -388,7 +388,7 @@ def get_pedidos_motorista(request):
     pedidos = Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
         '-created_at')
     context = Context({'pedidos': pedidos, 'user': request.user})
-    return_str = render_block_to_string('includes/table_pedidos_motorista.html', context)
+    return_str = render_block_to_string('entrega/includes/table_pedidos_motorista.html', context)
     return HttpResponse(return_str)
 
 
