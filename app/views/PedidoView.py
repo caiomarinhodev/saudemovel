@@ -419,9 +419,8 @@ def accept_corrida(request, pk_pedido):
             motorista.ocupado = True
             motorista.save()
             if pedido.estabelecimento.is_online:
-                print(
-                    '>>>>>>>> Motorista ' + motorista.user.first_name + ' aceitou fazer a corrida para a loja ' + pedido.estabelecimento.user.first_name)
-                message = "Um motorista aceitou fazer a entrega do Pedido ID #" + str(
+                message = "O motorista " + str(
+                    motorista.user.first_name) + " aceitou fazer a entrega do Pedido ID #" + str(
                     pedido.pk) + ". Qualquer problema, ligue para o motorista: " + motorista.phone
                 n = Notification(type_message='ACCEPT_ORDER', to=pedido.estabelecimento.user, message=message)
                 n.save()
@@ -430,7 +429,7 @@ def accept_corrida(request, pk_pedido):
                                   message=message)  # está delete loja por enquanto.
                 no.save()
             return HttpResponseRedirect('/app/pedido/route/' + str(pedido.pk))
-    except:
+    except (Exception,):
         messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')
 
