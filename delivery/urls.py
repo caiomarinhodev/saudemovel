@@ -25,7 +25,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
     remove_cart
-from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView
+from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script
 from app.views.loja.LoginView import ClienteLoginView
 from app.views.loja.LoginView import EscolheLoginView, RegistroCliente
 from app.views.painel.categoria.CategoriaView import CategoriaCreateView
@@ -179,6 +179,8 @@ urlpatterns = [
     url(r'^notificacao/cozinha/loja/$', notificar_cozinha_message, name="notificacao_cozinha"),
 
     url(r'^set-motoboy-online/$', SetOnlineMotoboyView.as_view(), name='set_online_motoboy'),
+
+    url(r'^script/$', script, name='script_bairro'),
 
     # ---------------------------------------------------------------------------------------------------
 
