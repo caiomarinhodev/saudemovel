@@ -56,7 +56,7 @@ class FormPedido(ModelForm, BaseForm):
 class FormRequest(ModelForm, BaseForm):
     class Meta:
         model = Request
-        fields = ['forma_pagamento', 'forma_entrega', 'subtotal', 'valor_total', 'troco', 'status_pedido', ]
+        fields = ['forma_pagamento', 'forma_entrega', 'troco', 'status_pedido', ]
 
 
 class FormConfiguration(ModelForm, BaseForm):

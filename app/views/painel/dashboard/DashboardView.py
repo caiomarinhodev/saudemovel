@@ -19,4 +19,4 @@ class DashboardPedidosListView(LoginRequiredMixin, ListView, FocusMixin):
     context_object_name = 'pedidos'
 
     def get_queryset(self):
-        return Request.objects.filter(estabelecimento=self.request.user.estabelecimento).order_by('-created_at')
+        return Request.objects.filter(estabelecimento=self.request.user.estabelecimento, endereco_entrega__isnull=False).order_by('-created_at')

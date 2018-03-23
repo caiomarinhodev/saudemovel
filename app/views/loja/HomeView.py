@@ -16,11 +16,11 @@ class HomeView(ListView, LojaFocusMixin):
     model = Estabelecimento
 
     def get_context_data(self, **kwargs):
-        kwargs['lojas_off'] = Estabelecimento.objects.filter(is_online=False).order_by('?')
+        kwargs['lojas_off'] = Estabelecimento.objects.filter(is_online=False, is_approved=True).order_by('?')
         return super(HomeView, self).get_context_data(**kwargs)
 
     def get_queryset(self):
-        est = Estabelecimento.objects.filter(is_online=True).order_by('?')
+        est = Estabelecimento.objects.filter(is_online=True, is_approved=True).order_by('?')
         return est
 
 

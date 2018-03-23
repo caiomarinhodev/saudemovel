@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import FormView, TemplateView
 from django.views.generic import RedirectView
+from pycpfcnpj import cpfcnpj
 
 from app.forms import FormLogin, FormRegisterCliente, FormLoginCliente
 from app.models import *
@@ -88,6 +89,12 @@ class RegistroCliente(FormView):
         data = form.cleaned_data
         try:
             user_data = {}
+            if not str(data['cpf']).isdigit():
+                messages.error(self.request, 'Insira apenas numeros no CPF')
+                return self.form_invalid(form)
+            if not cpfcnpj.validate(str(data['cpf'])):
+                messages.error(self.request, 'CPF invalido')
+                return self.form_invalid(form)
             user_data['username'] = data['cpf']
             user_data['first_name'] = data['nome']
             user_data['last_name'] = data['sobrenome']
@@ -103,9 +110,9 @@ class RegistroCliente(FormView):
             messages.success(self.request, 'Registrado com Sucesso')
             return HttpResponseRedirect(self.get_success_url())
         except (Exception,):
+            messages.error(self.request, 'Houve algum erro, tente novamente')
             return self.form_invalid(form)
 
     def form_invalid(self, form):
         print(form.errors)
-        messages.error(self.request, 'Houve algum erro, tente novamente')
         return super(RegistroCliente, self).form_invalid(form)

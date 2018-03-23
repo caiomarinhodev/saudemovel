@@ -172,35 +172,42 @@ class RegisterView(FormView):
         data = form.cleaned_data
         aux_obj = User.objects.filter(username=data['username'])
         if len(aux_obj) > 0:
+            messages.error(self.request, 'Este Login já existe. Tente novamente!')
             return self.form_invalid(form)
         user_data = {}
         common_data = {}
-        CLIENT_ID = "cdadf801dc167ab"
-        bencode = b64encode(self.request.FILES['file'].read())
-        client = pyimgur.Imgur(CLIENT_ID)
-        r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
-        file = r['link']
-        print(file)
-        user_data['first_name'] = data['first_name']
-        user_data['username'] = data['username']
-        user_data['password'] = data['password']
-        common_data['endereco'] = data['endereco']
-        common_data['phone'] = data['phone']
-        common_data['numero'] = data['numero']
-        common_data['bairro'] = data['bairro']
-        common_data['photo'] = file
-        if data['username'] and data['password']:
-            new_user = User.objects.create_user(**user_data)
-            new_common_user = Estabelecimento(user=new_user, **common_data)
-            new_common_user.save()
-            messages.success(self.request, 'Sua conta será analisada pelos nossos administradores. Aguarde o contato!')
-        else:
-            return self.form_invalid(form)
+        try:
+            CLIENT_ID = "cdadf801dc167ab"
+            bencode = b64encode(self.request.FILES['file'].read())
+            client = pyimgur.Imgur(CLIENT_ID)
+            r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+            file = r['link']
+            print(file)
+        except (Exception,):
+            file = "http://placehold.it/150x150"
+        try:
+            user_data['first_name'] = data['first_name']
+            user_data['username'] = data['username']
+            user_data['password'] = data['password']
+            common_data['endereco'] = data['endereco']
+            common_data['phone'] = data['phone']
+            common_data['numero'] = data['numero']
+            common_data['bairro'] = data['bairro']
+            common_data['photo'] = file
+            if data['username'] and data['password']:
+                new_user = User.objects.create_user(**user_data)
+                new_common_user = Estabelecimento(user=new_user, **common_data)
+                new_common_user.save()
+                messages.success(self.request, 'Sua conta será analisada pelos nossos administradores. Aguarde o contato!')
+            else:
+                messages.error(self.request, "Houve algum erro. Tente Novamente")
+                return self.form_invalid(form)
+        except (Exception,):
+            messages.error(self.request, "Houve algum erro. Tente Novamente")
         return super(RegisterView, self).form_valid(form)
 
     def form_invalid(self, form):
         print(form.errors)
-        messages.error(self.request, 'Não foi possível cadastrar.')
         return super(RegisterView, self).form_invalid(form)
 
     def str_to_bool(self, s):
@@ -230,38 +237,45 @@ class RegisterMotoristaView(FormView):
         data = form.cleaned_data
         aux_obj = User.objects.filter(username=data['username'])
         if len(aux_obj) > 0:
+            messages.error(self.request, 'Este Login já existe. Tente novamente!')
             return self.form_invalid(form)
         user_data = {}
         common_data = {}
-        if self.request.FILES:
-            CLIENT_ID = "cdadf801dc167ab"
-            bencode = b64encode(self.request.FILES['file'].read())
-            client = pyimgur.Imgur(CLIENT_ID)
-            r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
-            file = r['link']
-        else:
+        try:
+            if self.request.FILES:
+                CLIENT_ID = "cdadf801dc167ab"
+                bencode = b64encode(self.request.FILES['file'].read())
+                client = pyimgur.Imgur(CLIENT_ID)
+                r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+                file = r['link']
+            else:
+                file = "http://placehold.it/300x300"
+        except (Exception,):
             file = "http://placehold.it/300x300"
-        user_data['first_name'] = data['first_name']
-        user_data['username'] = data['username']
-        user_data['password'] = data['password']
-        common_data['placa'] = str(data['placa']).upper()
-        common_data['phone'] = data['phone']
-        common_data['cpf'] = data['cpf']
-        common_data['endereco'] = data['endereco']
-        common_data['numero'] = data['numero']
-        common_data['photo'] = file
-        if data['username'] and data['password']:
-            new_user = User.objects.create_user(**user_data)
-            new_common_user = Motorista(user=new_user, **common_data)
-            new_common_user.save()
-            messages.success(self.request, 'Sua conta será analisada pelos nossos administradores. Aguarde o contato!')
-        else:
-            return self.form_invalid(form)
+
+        try:
+            user_data['first_name'] = data['first_name']
+            user_data['username'] = data['username']
+            user_data['password'] = data['password']
+            common_data['placa'] = str(data['placa']).upper()
+            common_data['phone'] = data['phone']
+            common_data['cpf'] = data['cpf']
+            common_data['endereco'] = data['endereco']
+            common_data['numero'] = data['numero']
+            common_data['photo'] = file
+            if data['username'] and data['password']:
+                new_user = User.objects.create_user(**user_data)
+                new_common_user = Motorista(user=new_user, **common_data)
+                new_common_user.save()
+                messages.success(self.request, 'Sua conta será analisada pelos nossos administradores. Aguarde o contato!')
+            else:
+                return self.form_invalid(form)
+        except (Exception,):
+            messages.error(self.request, "Houve algum erro. Tente Novamente.")
         return super(RegisterMotoristaView, self).form_valid(form)
 
     def form_invalid(self, form):
         print(form.errors)
-        messages.error(self.request, 'Este Login já existe. Tente novamente!')
         return super(RegisterMotoristaView, self).form_invalid(form)
 
     def str_to_bool(self, s):
