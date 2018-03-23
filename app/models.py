@@ -21,7 +21,7 @@ class TimeStamped(models.Model):
 
 class Bairro(TimeStamped):
     nome = models.CharField(max_length=100, blank=True)
-    valor = models.CharField(max_length=3, blank=True, null=True)
+    valor = models.CharField(max_length=3, blank=True, null=True, default='6')
     valor_madrugada = models.CharField(max_length=3, default='8')
     valor_madrugada_feriado = models.CharField(max_length=3, default='11')
     valor_feriado = models.CharField(max_length=3, default='9')
