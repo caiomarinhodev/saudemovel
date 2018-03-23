@@ -190,7 +190,7 @@ class BairroAdmin(admin.ModelAdmin):
 
 class GrupoAdmin(admin.ModelAdmin):
     list_display = (
-        'identificador', 'id', 'titulo', 'produto', 'limitador', 'estabelecimento', 'created_at', 'obrigatoriedade')
+        'identificador', 'id', 'titulo', 'produto', 'limitador', 'estabelecimento', 'created_at', 'obrigatoriedade', 'disponivel')
     inlines = [OpcionalInline, ]
 
     def estabelecimento(self, obj):
@@ -209,7 +209,7 @@ class ProdutoAdmin(admin.ModelAdmin):
         FotoProdutoInline,
         GrupoInline,
     ]
-    list_display = ('nome', 'id', 'preco_base', 'categoria', 'created_at', 'estabelecimento')
+    list_display = ('nome', 'id', 'preco_base', 'categoria', 'created_at', 'estabelecimento', 'disponivel')
 
     def estabelecimento(self, obj):
         return obj.categoria.estabelecimento
@@ -234,7 +234,7 @@ class FormaEntregaAdmin(admin.ModelAdmin):
 
 
 class OpcionalAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'id', 'produto', 'valor', 'estabelecimento', 'created_at',)
+    list_display = ('nome', 'id', 'produto', 'valor', 'estabelecimento', 'created_at', 'disponivel')
 
     def estabelecimento(self, obj):
         return obj.grupo.produto.categoria.estabelecimento

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from base64 import b64encode
+
+import pyimgur
 from django import forms
 from django.forms import ModelForm, inlineformset_factory, formset_factory
 
@@ -275,7 +278,7 @@ class FormEndereco(ModelForm, BaseForm):
 class FormGrupo(ModelForm, BaseForm):
     class Meta:
         model = Grupo
-        fields = ['identificador', 'titulo', 'produto', 'limitador', 'obrigatoriedade']
+        fields = ['identificador', 'titulo', 'produto', 'limitador', 'obrigatoriedade', 'disponivel']
 
     def __init__(self, *args, **kwargs):
         super(FormGrupo, self).__init__(*args, **kwargs)
@@ -286,37 +289,50 @@ class FormGrupo(ModelForm, BaseForm):
 class FormGrupoInline(ModelForm, BaseForm):
     class Meta:
         model = Grupo
-        fields = ['identificador', 'titulo', 'limitador', 'obrigatoriedade']
+        fields = ['identificador', 'titulo', 'limitador', 'obrigatoriedade', 'disponivel']
 
 
 class FormProduto(ModelForm, BaseForm):
     class Meta:
         model = Produto
-        fields = ['nome', 'descricao', 'preco_base', 'categoria']
+        fields = ['nome', 'descricao', 'preco_base', 'categoria', 'disponivel']
 
 
 class FormFotoProdutoInline(ModelForm, BaseForm):
+    file = forms.FileField(required=False,
+                           widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Foto do Produto'
+                                                         }))
+
     class Meta:
         model = FotoProduto
-        fields = ['url', ]
+        fields = ['url', 'file']
+
+    def __init__(self, *args, **kwargs):
+        super(FormFotoProdutoInline, self).__init__(*args, **kwargs)
+        self.fields['url'].widget.attrs['class'] = 'hidden'
+        self.fields['url'].label = ''
 
 
 class FormFotoProduto(ModelForm, BaseForm):
+    file = forms.FileField(required=False,
+                           widget=forms.FileInput(attrs={'required': True, 'placeholder': 'Logotipo do Estabelecimento'
+                                                         }))
+
     class Meta:
         model = FotoProduto
-        fields = ['url', 'produto', ]
+        fields = ['produto', 'file']
 
 
 class FormOpcionalInline(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', ]
+        fields = ['nome', 'valor', 'disponivel' ]
 
 
 class FormOpcional(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', 'grupo', ]
+        fields = ['nome', 'valor', 'grupo', 'disponivel' ]
 
 
 FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)

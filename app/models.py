@@ -1,8 +1,10 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+from base64 import b64encode
 from datetime import datetime, time
 
+import pyimgur
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -376,6 +378,7 @@ class Produto(TimeStamped):
     descricao = models.TextField(default="")
     preco_base = models.CharField(max_length=10)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    disponivel = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u'%s' % self.nome
@@ -391,6 +394,7 @@ class Grupo(TimeStamped):
     limitador = models.CharField(max_length=2, default='1')
     obrigatoriedade = models.BooleanField(default=False)
     tipo = models.CharField(max_length=100, default='radio')
+    disponivel = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u'%s' % self.identificador
@@ -417,12 +421,17 @@ class Opcional(TimeStamped):
     nome = models.CharField(max_length=100)
     grupo = models.ForeignKey(Grupo, blank=True, null=True, on_delete=models.CASCADE)
     valor = models.CharField(max_length=10)
+    disponivel = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u'%s' % self.nome
 
     def __str__(self):
         return u'%s' % self.nome
+
+    def save(self, *args, **kwargs):
+        self.valor = float(str(self.valor).replace(',', '.'))
+        super(Opcional, self).save(*args, **kwargs)
 
 
 class FotoProduto(TimeStamped):
@@ -432,12 +441,26 @@ class FotoProduto(TimeStamped):
 
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     url = models.URLField(blank=True, null=True)
+    file = models.FileField(blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.url
 
     def __str__(self):
         return u'%s' % self.url
+
+    def save(self, *args, **kwargs):
+        try:
+            CLIENT_ID = "cdadf801dc167ab"
+            bencode = b64encode(self.file.read())
+            client = pyimgur.Imgur(CLIENT_ID)
+            r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+            file = r['link']
+            print(file)
+            self.url = file
+        except (Exception,):
+            pass
+        return super(FotoProduto, self).save(*args, **kwargs)
 
 
 TIPOS_PAGAMENTO = (
@@ -515,6 +538,7 @@ class Request(TimeStamped):
     subtotal = models.CharField(max_length=10, blank=True, null=True)
     valor_total = models.CharField(max_length=10, blank=True, null=True)
     troco = models.CharField(max_length=10, blank=True, null=True)
+    resultado_troco = models.CharField(max_length=10, blank=True, null=True)
     forma_pagamento = models.ForeignKey(FormaPagamento, blank=True, null=True, on_delete=models.CASCADE)
     forma_entrega = models.ForeignKey(FormaEntrega, blank=True, null=True, on_delete=models.CASCADE)
     endereco_entrega = models.ForeignKey(Endereco, blank=True, null=True)
@@ -529,13 +553,17 @@ class Request(TimeStamped):
     def save(self, *args, **kwargs):
         subtotal = 0.0
         for item in self.itempedido_set.all():
-            subtotal = float(subtotal) + float(item.valor_total)
+            subtotal = float(subtotal) + float(str(item.valor_total).replace(',', '.'))
         self.subtotal = float(subtotal)
         if self.endereco_entrega:
-            total = float(self.subtotal) + float(self.endereco_entrega.valor_entrega)
+            total = float(self.subtotal) + float(str(self.endereco_entrega.valor_entrega).replace(',', '.'))
             self.valor_total = total
         else:
             self.valor_total = subtotal
+        if self.troco and (self.troco != u'' or self.troco != ""):
+            self.troco = str(self.troco.replace(',', '.'))
+            self.resultado_troco = float(
+                float(self.troco) - float(str(self.valor_total).replace(',', '.')))
         super(Request, self).save(*args, **kwargs)
 
 
@@ -551,11 +579,11 @@ class ItemPedido(TimeStamped):
     valor_total = models.CharField(max_length=10, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        valor_base = float(self.produto.preco_base)
+        valor_base = float(str(self.produto.preco_base).replace(',', '.'))
         valor_opcionais = 0.0
         if self.opcionalchoice_set.first():
             for opc in self.opcionalchoice_set.all():
-                valor_opcionais = float(valor_opcionais) + float(opc.opcional.valor)
+                valor_opcionais = float(valor_opcionais) + float(str(opc.opcional.valor).replace(',', '.'))
         valor_unitario = float(valor_base) + float(valor_opcionais)
         self.valor_total = float(float(valor_unitario) * float(self.quantidade))
         super(ItemPedido, self).save(*args, **kwargs)

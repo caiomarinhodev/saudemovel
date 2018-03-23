@@ -57,8 +57,9 @@ def make_itens(req):
 
 def make_obs(req):
     message = u'<p><ul>'
-    for it in req.itempedido_set.all():
-        message += u'<li>' + unicode(it.observacoes) + u' </li>'
+    message += u'<li>Forma de Pagamento: ' + unicode(req.forma_pagamento) + u' </li>'
+    message += u'<li>Valor Total: ' + unicode(req.valor_total) + u' </li>'
+    message += u'<li>Troco para: ' + unicode(req.forma_pagamento) + u' (' + unicode(req.resultado_troco) + u')</li>'
     message += u'</ul></p>'
     return message
 

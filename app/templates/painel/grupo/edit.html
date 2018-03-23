@@ -84,8 +84,12 @@
                 }
             });
 
+            $('.add-row').click(function (evt) {
+                $('input[type=checkbox]').removeClass('form-control');
+            });
+
             $('#grupo').addClass('active');
-            $('[name=obrigatoriedade]').removeClass('form-control');
+            $('input[type=checkbox]').removeClass('form-control');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });

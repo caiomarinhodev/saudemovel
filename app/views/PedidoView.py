@@ -63,7 +63,7 @@ def liberar_corrida_cozinha(request, pk_pedido):
     pedido.status_cozinha = True
     pedido.save()
     try:
-        if pedido.request:
+        if pedido.request_set.first():
             reqs = pedido.request_set.all()
             for req in reqs:
                 req.status_pedido = 'ENTREGANDO'
@@ -441,7 +441,7 @@ def liberar_corrida(request, pk_pedido):
     pedido.coletado = True
     pedido.save()
     try:
-        if pedido.request:
+        if pedido.request_set.first():
             reqs = pedido.request_set.all()
             for req in reqs:
                 req.status_pedido = 'ENTREGANDO'
@@ -477,7 +477,7 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
         ponto.status = True
         ponto.save()
         try:
-            if pedido.request:
+            if pedido.request_set.first():
                 reqs = pedido.request_set.all()
                 for req in reqs:
                     req.status_pedido = 'ENTREGUE'

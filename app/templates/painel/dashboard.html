@@ -77,6 +77,7 @@
                                         <th>FORMA PAGAMENTO</th>
                                         <th>SUBTOTAL</th>
                                         <th>VALOR TOTAL</th>
+                                        <th>TROCO PARA</th>
                                         <th>TROCO</th>
                                         <th>CRIADO EM</th>
                                         <th>STATUS</th>
@@ -90,9 +91,10 @@
                                             <td>{{ pedido.cliente }}</td>
                                             <td>{{ pedido.endereco_entrega }}</td>
                                             <td>{{ pedido.forma_pagamento }}</td>
-                                            <td>{{ pedido.subtotal }}</td>
-                                            <td>{{ pedido.valor_total }}</td>
-                                            <td>{% if pedido.troco %}{{ pedido.troco }}{% endif %}</td>
+                                            <td>{{ pedido.subtotal|floatformat:2 }}</td>
+                                            <td>{{ pedido.valor_total|floatformat:2 }}</td>
+                                            <td>{% if pedido.troco %}{{ pedido.troco|floatformat:2 }}{% endif %}</td>
+                                            <td>{% if pedido.troco %}{{ pedido.resultado_troco|floatformat:2 }}{% endif %}</td>
                                             <td>{{ pedido.created_at|date:"d/m/Y" }}</td>
                                             <td>{{ pedido.status_pedido }}</td>
                                             <td>

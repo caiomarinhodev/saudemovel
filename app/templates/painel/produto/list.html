@@ -25,6 +25,7 @@
                                         <th>Nº GRUPOS</th>
                                         <th>FOTOS</th>
                                         <th>CRIADO EM</th>
+                                        <th>DISPONIVEL</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -52,6 +53,15 @@
                                             </th>
                                             <td>
                                                 {{ produto.created_at|date:"d/m/Y G:i" }}
+                                            </td>
+                                            <td>
+                                                {% if produto.disponivel %}
+                                                    <label class="label label-success "><i
+                                                            class="fa fa-check"></i></label>
+                                                {% else %}
+                                                    <label class="label label-danger "><i
+                                                            class="fa fa-close"></i></label>
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 <a href="{% url 'edit_produto' produto.pk %}"> <i

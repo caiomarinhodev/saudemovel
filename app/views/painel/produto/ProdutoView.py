@@ -1,9 +1,12 @@
+from base64 import b64encode
+
+import pyimgur
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from app.forms import FormProduto, GrupoFormSet, FotoProdutoFormSet, GrupoUpdateFormSet, FotoProdutoUpdateFormSet
-from app.models import Produto, Estabelecimento
+from app.models import Produto, Estabelecimento, FotoProduto
 from app.views.mixins.Mixin import FocusMixin
 
 
@@ -95,6 +98,9 @@ class ProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
                 gruposet.instance = self.object
                 gruposet.save()
             if fotoset.is_valid():
+                # for form in fotoset.cleaned_data:
+                #     if 'file' in form:
+                #         if form['file']:
                 fotoset.instance = self.object
                 fotoset.save()
         # message = "Um novo pedido foi feito pela " + self.request.user.first_name

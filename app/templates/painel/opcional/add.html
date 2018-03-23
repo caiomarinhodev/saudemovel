@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-{#    {% include 'loading.html' %}#}
+    {#    {% include 'loading.html' %}#}
 
     <div class="box box-primary" style="margin-top: 30px;">
         <div class="box-header">
@@ -41,7 +41,7 @@
                     swal('Preencha todos os campos', 'Verifique se preencheu todos os campos', 'error');
                 }
             });
-
+            $('input[type=checkbox]').removeClass('form-control');
             $('#opcional').addClass('active');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
