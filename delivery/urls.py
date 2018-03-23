@@ -52,7 +52,8 @@ from app.views.painel.login.LoginView import LojaLogoutView
 from app.views.painel.notificacao.NotificacaoView import NotificacaoListView
 from app.views.painel.opcional.OpcionalView import OpcionalCreateView, OpcionalListView, OpcionalDeleteView
 from app.views.painel.opcional.OpcionalView import OpcionalUpdateView
-from app.views.painel.pedido.PedidoView import aceitar_pedido, notificacao_pedido
+from app.views.painel.pagamento.PagamentoView import PagamentoListView
+from app.views.painel.pedido.PedidoView import aceitar_pedido, notificacao_pedido, RequestUpdateView
 from app.views.painel.pedido.PedidoView import rejeitar_pedido
 from app.views.painel.produto.ProdutoView import ProdutoCreateView
 from app.views.painel.produto.ProdutoView import ProdutoDeleteView
@@ -244,5 +245,8 @@ urlpatterns = [
     url(r'meus-pedidos/$', MeusRequests.as_view(), name='meus_pedidos'),
 
     url(r'set-online/$', SetOnlineView.as_view(), name='set_online'),
+
+    url(r'request/(?P<pk>[0-9]+)/$', RequestUpdateView.as_view(), name='edit_request'),
+    url(r'folhapagamento/list/$', PagamentoListView.as_view(), name='list_folhapagamento'),
 
 ]

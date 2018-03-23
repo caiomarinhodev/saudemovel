@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory, formset_factory
 
 from app.models import *
 
@@ -48,6 +48,33 @@ class FormPedido(ModelForm, BaseForm):
     class Meta:
         model = Pedido
         fields = ['estabelecimento', 'is_draft']
+
+
+class FormRequest(ModelForm, BaseForm):
+    class Meta:
+        model = Request
+        fields = ['forma_pagamento', 'forma_entrega', 'subtotal', 'valor_total', 'troco', 'status_pedido', ]
+
+
+class FormConfiguration(ModelForm, BaseForm):
+    class Meta:
+        model = Configuration
+        fields = ['chamar_motoboy', 'tempo_de_entrega', ]
+
+
+class FormItemPedido(ModelForm, BaseForm):
+    class Meta:
+        model = ItemPedido
+        fields = ['produto', 'quantidade', 'observacoes', 'valor_total']
+
+    def __init__(self, *args, **kwargs):
+        super(FormItemPedido, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['disabled'] = 'true'
+            field.widget.attrs['class'] += ' disabled'
+
+
+ItemPedidoFormSet = inlineformset_factory(Request, ItemPedido, form=FormItemPedido, extra=1)
 
 
 class FormPonto(ModelForm, BaseForm):
@@ -170,7 +197,7 @@ class FormEditPerfil(ModelForm, BaseForm):
 
     class Meta:
         model = Estabelecimento
-        fields = ['bairro', ]
+        fields = ['bairro', 'cnpj', ]
 
 
 class FormMotoristaRegister(ModelForm, BaseForm):

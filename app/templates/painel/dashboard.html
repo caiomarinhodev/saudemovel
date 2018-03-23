@@ -26,36 +26,36 @@
         }
     </style>
 
-{##}
-{#    <div class="row">#}
-{#        <div class="col-md-6 col-xs-6">#}
-{#            <div class="small-box bg-green">#}
-{#                <div class="inner">#}
-{#                    <h3>R$ 5500,00</h3>#}
-{##}
-{#                    <p>Renda Gerada no Mes</p>#}
-{#                </div>#}
-{#                <div class="icon">#}
-{#                    <i class="fa fa-line-chart"></i>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-md-6 col-xs-6">#}
-{#            <!-- small box -->#}
-{#            <div class="small-box bg-yellow">#}
-{#                <div class="inner">#}
-{#                    <h3>528</h3>#}
-{##}
-{#                    <p>Entregas no Mes</p>#}
-{#                </div>#}
-{#                <div class="icon">#}
-{#                    <i class="ion ion-navigate"></i>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#    </div>#}
-{##}
+    {##}
+    {#    <div class="row">#}
+    {#        <div class="col-md-6 col-xs-6">#}
+    {#            <div class="small-box bg-green">#}
+    {#                <div class="inner">#}
+    {#                    <h3>R$ 5500,00</h3>#}
+    {##}
+    {#                    <p>Renda Gerada no Mes</p>#}
+    {#                </div>#}
+    {#                <div class="icon">#}
+    {#                    <i class="fa fa-line-chart"></i>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="col-md-6 col-xs-6">#}
+    {#            <!-- small box -->#}
+    {#            <div class="small-box bg-yellow">#}
+    {#                <div class="inner">#}
+    {#                    <h3>528</h3>#}
+    {##}
+    {#                    <p>Entregas no Mes</p>#}
+    {#                </div>#}
+    {#                <div class="icon">#}
+    {#                    <i class="ion ion-navigate"></i>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#    </div>#}
+    {##}
 
     <div class="row">
         <div class="col-md-12">
@@ -80,6 +80,7 @@
                                         <th>TROCO</th>
                                         <th>CRIADO EM</th>
                                         <th>STATUS</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -94,6 +95,11 @@
                                             <td>{% if pedido.troco %}{{ pedido.troco }}{% endif %}</td>
                                             <td>{{ pedido.created_at|date:"d/m/Y" }}</td>
                                             <td>{{ pedido.status_pedido }}</td>
+                                            <td>
+                                                <a href="{% url 'edit_request' pedido.pk %}" class="btn btn-primary">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

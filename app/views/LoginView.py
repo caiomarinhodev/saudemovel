@@ -5,12 +5,13 @@ from base64 import b64encode
 import pyimgur
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.db import transaction
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 
-from app.forms import FormLogin, FormRegister, FormEditPerfil, FormMotoristaRegister
+from app.forms import FormLogin, FormRegister, FormEditPerfil, FormMotoristaRegister, FormConfiguration
 from app.models import *
 from app.views.fcm import func
 
@@ -282,6 +283,14 @@ class EditarPerfilView(FormView):
         z.update(y)  # modifies z with y's keys and values & returns None
         return z
 
+    def get_context_data(self, **kwargs):
+        data = super(EditarPerfilView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['configurationform'] = FormConfiguration(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['configurationform'] = FormConfiguration(instance=self.request.user.estabelecimento.configuration)
+        return data
+
     def get_initial(self):
         estabel = Estabelecimento.objects.get(user=self.request.user)
         data = self.merge_two_dicts(estabel.__dict__, self.request.user.__dict__)
@@ -301,6 +310,13 @@ class EditarPerfilView(FormView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        context = self.get_context_data()
+        configuration_set = context['configurationform']
+        with transaction.atomic():
+            self.object = form.save()
+            if configuration_set.is_valid():
+                configuration_set.instance = self.object
+                configuration_set.save()
         data = form.cleaned_data
         user = self.request.user
         estabel = Estabelecimento.objects.get(user=user)
@@ -315,6 +331,7 @@ class EditarPerfilView(FormView):
         estabel.phone = data['phone']
         estabel.numero = data['numero']
         estabel.bairro = data['bairro']
+        estabel.cnpj = data['cnpj']
         estabel.photo = file
         user.save()
         estabel.save()

@@ -65,6 +65,10 @@ PLANS = (
 
 
 class Configuration(TimeStamped):
+    class Meta:
+        verbose_name = u'Configuração'
+        verbose_name_plural = u'Configurações'
+
     tema = models.CharField(max_length=100, blank=True, null=True, choices=THEMES, default='skin-black')
     plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
     chamar_motoboy = models.BooleanField(default=True)
@@ -162,6 +166,10 @@ class Estabelecimento(TimeStamped, BaseAddress):
 
 
 class Pedido(TimeStamped):
+    class Meta:
+        verbose_name = u'Rota'
+        verbose_name_plural = u'Rotas'
+
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     status = models.BooleanField(default=True)
     coletado = models.BooleanField(default=False)
@@ -207,6 +215,10 @@ class Pedido(TimeStamped):
 
 
 class Ponto(BaseAddress, TimeStamped):
+    class Meta:
+        verbose_name = u'Ponto de Entrega'
+        verbose_name_plural = u'Pontos de Entrega'
+
     cliente = models.CharField(max_length=100, blank=True, null=True)
     telefone = models.CharField(max_length=100, blank=True, null=True)
     observacoes = models.TextField(blank=True, null=True)
@@ -276,6 +288,10 @@ class Location(TimeStamped):
 
 
 class Classification(TimeStamped):
+    class Meta:
+        verbose_name = u'Avaliação Motorista'
+        verbose_name_plural = u'Avaliações Motorista'
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     nota = models.CharField(max_length=2)
@@ -299,6 +315,10 @@ class Cliente(TimeStamped, ):
 
 
 class Endereco(TimeStamped, BaseAddress):
+    class Meta:
+        verbose_name = u'Endereço de Cliente'
+        verbose_name_plural = u'Endereços de Cliente'
+
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     endereco_completo = models.CharField(max_length=300, blank=True, null=True)
     valor_entrega = models.CharField(max_length=3, blank=True, null=True, default='6')
@@ -485,6 +505,10 @@ STATUS = (
 
 
 class Request(TimeStamped):
+    class Meta:
+        verbose_name = u'Pedido Loja'
+        verbose_name_plural = u'Pedidos Loja'
+
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     status_pedido = models.CharField(max_length=100, choices=STATUS, blank=True, null=True, default='AGUARDANDO')
@@ -595,3 +619,30 @@ class Avaliacao(TimeStamped):
 
     def __str__(self):
         return u'Pedido:%s Nota:%s' % (self.pedido, self.nota)
+
+
+class FolhaPagamento(TimeStamped):
+    class Meta:
+        verbose_name = u'Pagamentos'
+        verbose_name_plural = u'Pagamentos'
+
+    valor_total = models.CharField(max_length=50)
+    valor_cobrar = models.CharField(max_length=50, blank=True, null=True)
+    estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        valor = 0.0
+        for it in self.itempagamento_set.all():
+            valor = float(valor) + float(it.request.subtotal)
+        self.valor_total = valor
+        self.valor_cobrar = float(0.07 * valor)
+        return super(FolhaPagamento, self).save(*args, **kwargs)
+
+
+class ItemPagamento(TimeStamped):
+    class Meta:
+        verbose_name = u'Item de Pagamento'
+        verbose_name_plural = u'Itens de Pagamento'
+
+    request = models.ForeignKey(Request, on_delete=models.CASCADE)
+    folha = models.ForeignKey(FolhaPagamento, on_delete=models.CASCADE)

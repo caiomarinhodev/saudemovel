@@ -22,6 +22,11 @@
                                 <span class="glyphicon glyphicon-phone form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
+                                <label>CNPJ:</label>
+                                {{ form.cnpj }}
+                                <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
                                 <label>Endereço:</label>
                                 {{ form.endereco }}
                                 <span class="glyphicon glyphicon-sort form-control-feedback"></span>
@@ -41,9 +46,20 @@
                                 {{ form.file }}
                                 <span class="glyphicon glyphicon-picture form-control-feedback"></span>
                             </div>
+                            <div class="form-group has-feedback">
+                                <label>Tempo de Entrega:</label>
+                                {{ configurationform.tempo_de_entrega }}
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>Chamar Motoboy ao receber pedido? </label>
+                                {{ configurationform.chamar_motoboy }}
+                            </div>
                             <div class="row">
                                 <div class="col-xs-4 col-xs-offset-4">
-                                    <button id="alterar" type="submit" class="btn btn-primary btn-block btn-flat">Alterar</button>
+                                    <button id="alterar" type="submit" class="btn btn-primary btn-block btn-flat">
+                                        Alterar
+                                    </button>
                                 </div>
                                 <!-- /.col -->
                             </div>
@@ -56,8 +72,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#editar_perfil').addClass('active');
-            $('input').attr('required','true');
-            $('select').attr('required','true');
+            $('input').attr('required', 'true');
+            $('select').attr('required', 'true');
+
+            $('input[type=checkbox]').removeClass('form-control');
 
         });
 

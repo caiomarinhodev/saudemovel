@@ -44,9 +44,9 @@ def set_to_prepared_pedido(request, id_ponto):
         ponto = Ponto.objects.get(id=id_ponto)
         pedido = ponto.pedido
         try:
-            if pedido.request:
-                req = pedido.request
-                req.status_pedido = 'PREPARANDO'
+            reqs = pedido.request_set.all()
+            for req in reqs:
+                req.status_pedido = 'ENTREGANDO'
                 req.save()
         except (Exception,):
             pass

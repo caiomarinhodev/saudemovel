@@ -30,11 +30,41 @@
                     <div class="row">
                         {% for loja in lojas %}
                             <a href="{% url 'view_loja' loja.pk %}">
-                                <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                                <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2" style="margin-bottom: 35px;">
                                     <div class="thumbnail text-center" style="height: 180px; width: 180px;">
 
                                         <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
                                              src="{{ loja.photo }}" style="height: 170px; width: 170px;"/>
+                                        <label class="label label-default">{{ loja.user.first_name }}</label>
+                                        {% if loja.is_online %}
+                                            <label class="label label-success">
+                                                Online
+                                            </label>
+                                        {% else %}
+                                            <center>
+                                                <label class="label label-danger">
+                                                    Offline
+                                                </label>
+                                            </center>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        {% for loja in lojas_off %}
+                            <a href="{% url 'view_loja' loja.pk %}">
+                                <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2" style="margin-bottom: 35px;">
+                                    <div class="thumbnail text-center" style="height: 180px; width: 180px;">
+
+                                        <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
+                                             src="{{ loja.photo }}" style="height: 170px; width: 170px;"/>
+                                        <label class="label label-default">{{ loja.user.first_name }}</label>
                                         {% if loja.is_online %}
                                             <label class="label label-success">
                                                 Online

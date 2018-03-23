@@ -131,11 +131,52 @@
                                         {% else %}
 
                                         {% endif %}
-
                                     </div>
                                 </div>
                             </div>
                             <hr/>
+                            {% if pedido_obj.pedido.motorista %}
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="span3 well">
+                                            <center>
+                                                <h2><u>Motoboy</u></h2>
+                                                <a href="#">
+                                                    {% if motorista.photo %}
+                                                        <img src="{{ pedido_obj.pedido.motorista.motorista.photo }}"
+                                                             name="aboutme" width="140" height="140" class="img-circle">
+                                                    {% else %}
+                                                        <img src="{{ pedido_obj.pedido.motorista.motorista.photo }}"
+                                                             name="aboutme" width="140" height="140" class="img-circle">
+
+                                                    {% endif %}
+                                                </a>
+                                                <h3>{{ pedido_obj.pedido.motorista.first_name }}</h3>
+                                                <h3>Placa: {{ pedido_obj.pedido.motorista.motorista.placa }}</h3>
+                                                <h4>
+                                                    <span><strong>Rotas Realizadas: {{ pedido_obj.pedido.motorista.pedido_set.all|length }}</strong></span>
+                                                </h4>
+                                                <p class="text-center">
+                                                    <span><strong>Media Avaliacao: {{ pedido_obj.pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
+                                                </p>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="span3 well">
+                                            <center>
+                                                <h2><u>Aguardando Motoboy...</u></h2>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            {% endif %}
+
                             <div class="row">
                                 <div class="col-xs-12">
                                     <h1>{{ pedido_obj.estabelecimento.phone }}</h1>
@@ -154,6 +195,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#pedidos').addClass('active');
+            setTimeout(function () {
+                window.location.href = ''
+            }, 15000);
         });
     </script>
 

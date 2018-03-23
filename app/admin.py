@@ -15,8 +15,8 @@ class PontoInline(admin.TabularInline):
 
 class MotoristaAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo',
-    'created_at')
+        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'ocupado', 'photo',
+        'created_at')
 
     def view_birth_date(self, obj):
         return obj.user.first_name
@@ -28,7 +28,21 @@ class EstabelecimentoAdmin(admin.ModelAdmin):
 
 class PontoAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'cliente', 'telefone', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
+        'id', 'cliente', 'telefone', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
+
+
+class FolhaPagamentoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'loja', 'valor_total', 'created_at',)
+
+    def loja(self, obj):
+        return unicode(obj.estabelecimento)
+
+
+class ItemPagamentoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'loja', 'request', 'folha', 'created_at',)
+
+    def loja(self, obj):
+        return unicode(obj.request.estabelecimento)
 
 
 class PedidoAdmin(admin.ModelAdmin):
@@ -79,6 +93,9 @@ admin.site.register(Classification, ClassificationAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(ConfigAdmin, ConfigAdminAdmin)
 admin.site.register(Configuration, ConfigurationAdmin)
+
+admin.site.register(FolhaPagamento, FolhaPagamentoAdmin)
+admin.site.register(ItemPagamento, ItemPagamentoAdmin)
 
 
 class ItemPedidoInline(admin.TabularInline):
@@ -159,8 +176,8 @@ class RequestAdmin(admin.ModelAdmin):
         ItemPedidoInline,
     ]
     list_display = (
-    'cliente', 'estabelecimento', 'status_pedido', 'subtotal', 'valor_total', 'troco', 'id', 'endereco_entrega',
-    'forma_pagamento', 'forma_entrega', 'created_at')
+        'cliente', 'estabelecimento', 'status_pedido', 'subtotal', 'valor_total', 'troco', 'id', 'endereco_entrega',
+        'forma_pagamento', 'forma_entrega', 'created_at')
 
 
 class NotificacaoAdmin(admin.ModelAdmin):
