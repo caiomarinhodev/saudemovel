@@ -65,7 +65,8 @@ def make_obs(req):
 
 
 def get_or_create_folha(now, est):
-    qs = FolhaPagamento.objects.filter(created_at__month=now.month, created_at__year=now.year, estabelecimento=est)
+    qs = FolhaPagamento.objects.filter(created_at__month=now.month, created_at__year=now.year, estabelecimento=est,
+                                       status_pagamento=False)
     if qs:
         return qs.first()
     else:

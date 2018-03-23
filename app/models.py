@@ -652,12 +652,14 @@ class Avaliacao(TimeStamped):
 
 class FolhaPagamento(TimeStamped):
     class Meta:
-        verbose_name = u'Pagamentos'
+        verbose_name = u'Pagamento'
         verbose_name_plural = u'Pagamentos'
 
     valor_total = models.CharField(max_length=50)
     valor_cobrar = models.CharField(max_length=50, blank=True, null=True)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE, blank=True, null=True)
+    link_pagamento = models.URLField(blank=True, null=True, default="#")
+    status_pagamento = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         valor = 0.0
@@ -675,3 +677,14 @@ class ItemPagamento(TimeStamped):
 
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     folha = models.ForeignKey(FolhaPagamento, on_delete=models.CASCADE)
+
+
+class PagamentoMotorista(TimeStamped):
+    class Meta:
+        verbose_name = u'Pagamento de Motoboy'
+        verbose_name_plural = u'Pagamentos de Motoboys'
+
+    valor_total = models.CharField(max_length=50, default="15.00")
+    motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, blank=True, null=True)
+    link_pagamento = models.URLField(default="#")
+    status_pagamento = models.BooleanField(default=False)

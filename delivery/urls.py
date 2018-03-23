@@ -15,6 +15,7 @@ from app.views.NotificationView import notificar_novo_pedido_motorista, notifica
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
     notificar_admin_message, notificar_order_delivered_loja, notify_new_message_for_motorista, \
     notify_new_message_for_loja, notificar_cozinha_message
+from app.views.PagamentoMotoboyView import PagamentoMotoboyListView
 from app.views.PedidoView import PedidosMotoristaListView, \
     PedidosLojaListView, PedidoCreateView, get_pedidos_motorista, accept_corrida, \
     EntregasMotoristaListView, get_entregas_motorista, delete_pedido, liberar_corrida, OrderMotoristaDetailView, \
@@ -180,6 +181,7 @@ urlpatterns = [
 
     url(r'^set-motoboy-online/$', SetOnlineMotoboyView.as_view(), name='set_online_motoboy'),
 
+    url(r'^pagamentos/motoboy/$', PagamentoMotoboyListView.as_view(), name='pagamento_motoboy'),
     url(r'^script/$', script, name='script_bairro'),
 
     # ---------------------------------------------------------------------------------------------------

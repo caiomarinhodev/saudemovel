@@ -480,6 +480,12 @@
                             <i class="fa fa-warning"></i> <span>Notificações</span>
                         </a>
                     </li>
+                     <li id="pagamento" class="motorista">
+                        <a href="{% url "pagamento_motoboy" %}">
+                            <i class="fa fa-line-chart"></i> <span>Pagamentos</span>
+                        </a>
+                    </li>
+
                 {% else %}
                     {% if user.estabelecimento.configuration.chamar_motoboy %}
                         <li class="treeview" id="loja">

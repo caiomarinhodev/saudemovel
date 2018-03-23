@@ -15,7 +15,8 @@ class PontoInline(admin.TabularInline):
 
 class MotoristaAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados', 'ocupado', 'photo',
+        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados',
+        'ocupado', 'photo',
         'created_at')
 
     def view_birth_date(self, obj):
@@ -32,7 +33,7 @@ class PontoAdmin(admin.ModelAdmin):
 
 
 class FolhaPagamentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'loja', 'valor_total', 'created_at',)
+    list_display = ('id', 'loja', 'valor_total', 'link_pagamento', 'status_pagamento', 'created_at',)
 
     def loja(self, obj):
         return unicode(obj.estabelecimento)
@@ -43,6 +44,10 @@ class ItemPagamentoAdmin(admin.ModelAdmin):
 
     def loja(self, obj):
         return unicode(obj.request.estabelecimento)
+
+
+class PagamentoMotoristaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'valor_total', 'motorista', 'link_pagamento', 'created_at')
 
 
 class PedidoAdmin(admin.ModelAdmin):
@@ -96,6 +101,7 @@ admin.site.register(Configuration, ConfigurationAdmin)
 
 admin.site.register(FolhaPagamento, FolhaPagamentoAdmin)
 admin.site.register(ItemPagamento, ItemPagamentoAdmin)
+admin.site.register(PagamentoMotorista, PagamentoMotoristaAdmin)
 
 
 class ItemPedidoInline(admin.TabularInline):
@@ -190,7 +196,8 @@ class BairroAdmin(admin.ModelAdmin):
 
 class GrupoAdmin(admin.ModelAdmin):
     list_display = (
-        'identificador', 'id', 'titulo', 'produto', 'limitador', 'estabelecimento', 'created_at', 'obrigatoriedade', 'disponivel')
+        'identificador', 'id', 'titulo', 'produto', 'limitador', 'estabelecimento', 'created_at', 'obrigatoriedade',
+        'disponivel')
     inlines = [OpcionalInline, ]
 
     def estabelecimento(self, obj):

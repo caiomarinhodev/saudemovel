@@ -19,9 +19,7 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>MES</th>
-                                        <th>VALOR EM VENDAS</th>
-                                        <th>VALOR A COBRAR</th>
+                                        <th>VALOR</th>
                                         <th>CRIADO EM</th>
                                         <th>STATUS</th>
                                         <th></th>
@@ -34,13 +32,7 @@
                                                 {{ pgto.id }}
                                             </td>
                                             <td>
-                                                {{ pgto.created_at|date:"F" }}
-                                            </td>
-                                            <td>
                                                 {{ pgto.valor_total|floatformat:2 }}
-                                            </td>
-                                            <td>
-                                                {{ pgto.valor_cobrar|floatformat:2 }}
                                             </td>
                                             <td>
                                                 {{ pgto.created_at|date:"d/m/Y G:i" }}
