@@ -85,7 +85,7 @@ urlpatterns = [
     url(r'^admin/login/$', auth_views.login),
     url(r'^$', AppView.as_view(), name='home'),
     url(r'^app/dashboard/data/$', DashboardDataView.as_view(), name='dashboard-data'),
-    url(r'^app/dashboard/$', DashboardListPedidosView.as_view(), name='dashboard'),
+    url(r'^app/dashboard/$', DashboardListPedidosView.as_view(), name='dashboard-admin'),
 
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^app/registro/$', RegisterView.as_view(), name='registro'),
