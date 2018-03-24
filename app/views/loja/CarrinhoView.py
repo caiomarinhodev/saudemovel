@@ -103,16 +103,14 @@ def remove_cart(request, pk):
 
 
 def check_required_selected(checks, list):
+    count = 0
     for group in list:
         if group:
             for check in checks:
                 opc = Opcional.objects.filter(id=check).first()
                 if opc.grupo.id == group.id:
-                    return True
-            return False
-        else:
-            return True
-
+                    count += 1
+    return (int(count) == int(list.count()))
 
 def check_loja_is_online(request):
     loja = Request.objects.get(id=request.session['pedido']).estabelecimento
