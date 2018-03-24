@@ -147,8 +147,8 @@
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             {% endfor %}
-                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                            <script type="text/javascript">
+                                                                                                function KeepCount_ {{ grupo.pk }}() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
                                                                                                     console.log(inputTags_{{ grupo.pk }});
@@ -159,7 +159,12 @@
                                                                                                         }
 
                                                                                                         if (total_{{ grupo.pk }} > parseInt({{ grupo.limitador }})) {
-                                                                                                            swal('Escolha apenas {{ grupo.limitador }} opcionais', '', 'warning');
+                                                                                                            {% if grupo.limitador == '1' %}
+                                                                                                                swal('Escolha apenas {{ grupo.limitador }} item', '', 'warning');
+                                                                                                            {% else %}
+                                                                                                                swal('Escolha apenas {{ grupo.limitador }} opcionais', '', 'warning');
+                                                                                                            {% endif %}
+
                                                                                                             inputTags_{{ grupo.pk }}[i].checked = false;
                                                                                                             return false;
                                                                                                         }
@@ -184,7 +189,7 @@
                                                                                                 {% endif %}
                                                                                             {% endfor %}
                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                function KeepCount_ {{ grupo.pk }}() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
                                                                                                     console.log(inputTags_{{ grupo.pk }});
