@@ -46,7 +46,7 @@ def set_to_prepared_pedido(request, id_ponto):
         try:
             reqs = pedido.request_set.all()
             for req in reqs:
-                req.status_pedido = 'ENTREGANDO'
+                req.status_pedido = 'PREPARANDO'
                 req.save()
         except (Exception,):
             pass
