@@ -147,6 +147,25 @@
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             {% endfor %}
+                                                                                             <script type="text/javascript">
+                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                    var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
+                                                                                                    var total_{{ grupo.pk }} = 0;
+                                                                                                    console.log(inputTags_{{ grupo.pk }});
+                                                                                                    for (var i = 0; i < inputTags_{{ grupo.pk }}.length; i++) {
+
+                                                                                                        if (inputTags_{{ grupo.pk }}[i].checked) {
+                                                                                                            total_{{ grupo.pk }} = total_{{ grupo.pk }} + 1;
+                                                                                                        }
+
+                                                                                                        if (total_{{ grupo.pk }} > parseInt({{ grupo.limitador }})) {
+                                                                                                            swal('Escolha apenas {{ grupo.limitador }} opcionais', '', 'warning');
+                                                                                                            inputTags_{{ grupo.pk }}[i].checked = false;
+                                                                                                            return false;
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            </script>
                                                                                         {% else %}
                                                                                             {% for opc in grupo.opcional_set.all %}
                                                                                                 {% if opc.disponivel %}
