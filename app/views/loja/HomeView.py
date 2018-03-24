@@ -157,7 +157,8 @@ def script(request):
     # Cozinha nao pode receber notificacoes do pedido do cliente nem sair da tela. OK
     # Refresh na cozinha com notificacao de que o motoboy esta a caminho OK
 
-    # Nao vai chamar automatico, Chamar motoboy sempre disponivel na cozinha e btn de liberar para entrega apos ele ter aceito
+    # Nao vai chamar automatico, Chamar motoboy sempre disponivel na cozinha e btn de liberar para entrega OKK
+    # apos ele ter aceito OKK
 
     # Implementar Entrega Gratis
     # Implementar Avaliação Loja

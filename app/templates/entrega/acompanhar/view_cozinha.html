@@ -61,7 +61,7 @@
                                                 ...</a>
                                         {% else %}
                                             <a href="{% url 'set_prepared_entrega' entrega.id %}"
-                                               class="btn btn-info btn-lg btn-block">Preparar</a>
+                                               class="btn btn-info btn-lg">Preparar</a>
 
                                         {% endif %}
                                     </div>
@@ -74,7 +74,14 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-2">
                             {% if not rota.motorista %}
-                                <label class="btn btn-success btn-lg btn-block">Aguardando Motorista ...</label>
+                                {% if rota.chamar_motoboy %}
+                                    <a class="btn btn-info btn-block"
+                                       href="{% url 'chamar_motoboy_cozinha' rota.id %}">
+                                        Chamar Motoboy
+                                    </a>
+                                {% else %}
+                                    <h4> Aguardando Motoboy ...</h4>
+                                {% endif %}
                             {% else %}
                                 {% if rota|is_pedido_prepared %}
                                     <a href="{% url 'liberar_corrida_cozinha' rota.pk %}"
@@ -88,7 +95,8 @@
                         <div class="col-md-4 pull-right">
                             {% if rota.motorista %}
                                 <div class="col-xs-2">
-                                    <img src="{{ rota.motorista.motorista.photo|removehttp }}" style="width: 50px;height: 50px;"/>
+                                    <img src="{{ rota.motorista.motorista.photo|removehttp }}"
+                                         style="width: 50px;height: 50px;"/>
                                 </div>
                                 <div class="col-xs-10">
                                     <p>Motorista: {{ rota.motorista.first_name }} </p>
@@ -117,9 +125,9 @@
             $('#body').addClass('sidebar-collapse');
             $('.sidebar-toggle').hide();
 
-             setTimeout(function () {
+            setTimeout(function () {
                 window.location.href = ''
-            }, 50000);
+            }, 25000);
         });
 
         window.setInterval(function () {
@@ -137,6 +145,22 @@
                 }
             });
         }, 10000);
+
+        window.setInterval(function () {
+            $.ajax({
+                url: "{% url 'notify_accept_order_loja' %}",
+                type: "GET", // http method
+                success: function (data) {
+                    $('#notify').html(data);
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }, 8000);
     </script>
 
     <script src="{% static 'js/jquery.formset.js' %}"></script>

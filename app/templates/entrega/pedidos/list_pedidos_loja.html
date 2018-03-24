@@ -304,6 +304,13 @@
                                                 {% else %}
                                                     <div class="row">
                                                         <div class="col-xs-12">
+                                                            <a class="btn btn-info btn-block"
+                                                               href="{% url 'chamar_motoboy' pedido.id %}">
+                                                                Chamar Motoboy
+                                                            </a>
+                                                        </div>
+                                                        <hr/>
+                                                        <div class="col-xs-12">
                                                             <a class="btn btn-primary btn-block"
                                                                href="{% url 'view_pedido_view' pedido.id %}">
                                                                 Ver Rota

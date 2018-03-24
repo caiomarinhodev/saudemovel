@@ -185,6 +185,7 @@ class Pedido(TimeStamped):
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     duration = models.CharField(max_length=100, blank=True, null=True)
     distance = models.CharField(max_length=100, blank=True, null=True)
+    chamar_motoboy = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u'%s - %s' % (self.estabelecimento, self.valor_total)

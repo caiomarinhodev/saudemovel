@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from app.models import Notificacao, Pedido, Request, Ponto, Notification, FolhaP
 from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 from app.views.script_tools import logger
+
 
 @require_http_methods(["GET"])
 def notificacao_pedido(request):
@@ -45,21 +47,36 @@ def get_or_create_rota(req):
 
 def make_itens(req):
     message = '<p><ul>'
-    for it in req.itempedido_set.all():
-        message += '<li>' + str(it.produto.nome) + '  ('
-        for opc in it.opcionalchoice_set.all():
-            message += str(opc.opcional.nome) + ','
-        message += ') </li>'
-    message += '</ul></p>'
+    try:
+        for it in req.itempedido_set.all():
+            message += '<li>' + str(it.produto.nome) + '  ('
+            for opc in it.opcionalchoice_set.all():
+                message += str(opc.opcional.nome) + ','
+            message += ') </li>'
+        message += '</ul></p>'
+    except (Exception,):
+        for it in req.itempedido_set.all():
+            message += '<li>' + unicode(it.produto.nome) + '  ('
+            for opc in it.opcionalchoice_set.all():
+                message += unicode(opc.opcional.nome) + ','
+            message += ') </li>'
+        message += '</ul></p>'
     return message
 
 
 def make_obs(req):
     message = '<p><ul>'
-    message += '<li>Forma de Pagamento: ' + str(req.forma_pagamento) + ' </li>'
-    message += '<li>Valor Total: ' + str(req.valor_total) + ' </li>'
-    message += '<li>Troco para: ' + str(req.forma_pagamento) + ' (' + str(req.resultado_troco) + ')</li>'
-    message += '</ul></p>'
+    try:
+        message += '<li>Forma de Pagamento: ' + str(req.forma_pagamento) + ' </li>'
+        message += '<li>Valor Total: ' + str(req.valor_total) + ' </li>'
+        message += '<li>Troco para: ' + str(req.forma_pagamento) + ' (' + str(req.resultado_troco) + ')</li>'
+        message += '</ul></p>'
+    except (Exception,):
+        message += '<li>Forma de Pagamento: ' + unicode(req.forma_pagamento) + ' </li>'
+        message += '<li>Valor Total: ' + unicode(req.valor_total) + ' </li>'
+        message += '<li>Troco para: ' + unicode(req.forma_pagamento) + ' (' + unicode(req.resultado_troco) + ')</li>'
+        message += '</ul></p>'
+
     return message
 
 
@@ -97,11 +114,29 @@ def aceitar_pedido(request, pk):
         req.save()
         ponto.save()
         pedido.save()
-        a = func()
+        # a = func()
     if request.user.estabelecimento.configuration.has_cozinha:
         no = Notification(type_message='NOTIFICACAO_COZINHA', to=request.user, message='NOVO PEDIDO REALIZADO')
         no.save()
     return redirect('/dashboard')
+
+
+def chamar_motoboy(request, pk):
+    pedido = Pedido.objects.get(id=pk)
+    a = func()
+    pedido.chamar_motoboy = False
+    pedido.save()
+    messages.success(request, 'Enviamos um chamado para o motoboy mais proximo')
+    return redirect('/app/pedidos/loja/')
+
+
+def chamar_motoboy_cozinha(request, pk):
+    pedido = Pedido.objects.get(id=pk)
+    a = func()
+    pedido.chamar_motoboy = False
+    pedido.save()
+    messages.success(request, 'Enviamos um chamado para o motoboy mais proximo')
+    return redirect('/app/cozinha/')
 
 
 def rejeitar_pedido(request, pk):

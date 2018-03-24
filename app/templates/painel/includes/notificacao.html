@@ -16,18 +16,9 @@
                     closeOnCancel: false
                 }, function (isConfirm) {
                     if (isConfirm) {
-                        swal({
-                            title: 'Confirmado',
-                            text: "Vamos chamar um motoboy e alertar a cozinha",
-                            type: 'success',
-                            confirmButtonText: "OK",
-                            closeOnConfirm: false,
-                            showLoaderOnConfirm: true
-                        }, function () {
-                            setTimeout(function () {
-                                window.location.href = '{% url 'aceitar_pedido' notificacao.pedido.id %}'
-                            }, 1000);
-                        });
+                        setTimeout(function () {
+                            window.location.href = '{% url 'aceitar_pedido' notificacao.pedido.id %}'
+                        }, 1000);
                     } else {
                         swal({
                             title: 'Pedido Cancelado',

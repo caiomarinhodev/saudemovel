@@ -142,7 +142,8 @@ class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView,
     template_name = 'entrega/pedidos/list_pedidos_motorista.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False,
+                                     chamar_motoboy=False).order_by(
             '-created_at')
 
 
@@ -153,7 +154,8 @@ class PedidosMotoristaPremiumListView(LoginRequiredMixin, RedirectMotoristaOcupa
     template_name = 'entrega/pedidos/list_pedidos_premium.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
+        return Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False,
+                                     chamar_motoboy=False).order_by(
             '-created_at')
 
 
@@ -385,7 +387,7 @@ def cancel_pedido(request, pk):
 
 @require_http_methods(["GET"])
 def get_pedidos_motorista(request):
-    pedidos = Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False).order_by(
+    pedidos = Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False, chamar_motoboy=False).order_by(
         '-created_at')
     context = Context({'pedidos': pedidos, 'user': request.user})
     return_str = render_block_to_string('entrega/includes/table_pedidos_motorista.html', context)

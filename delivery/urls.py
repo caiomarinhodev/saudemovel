@@ -54,7 +54,8 @@ from app.views.painel.notificacao.NotificacaoView import NotificacaoListView
 from app.views.painel.opcional.OpcionalView import OpcionalCreateView, OpcionalListView, OpcionalDeleteView
 from app.views.painel.opcional.OpcionalView import OpcionalUpdateView
 from app.views.painel.pagamento.PagamentoView import PagamentoListView
-from app.views.painel.pedido.PedidoView import aceitar_pedido, notificacao_pedido, RequestUpdateView
+from app.views.painel.pedido.PedidoView import aceitar_pedido, notificacao_pedido, RequestUpdateView, chamar_motoboy, \
+    chamar_motoboy_cozinha
 from app.views.painel.pedido.PedidoView import rejeitar_pedido
 from app.views.painel.produto.ProdutoView import ProdutoCreateView
 from app.views.painel.produto.ProdutoView import ProdutoDeleteView
@@ -184,6 +185,9 @@ urlpatterns = [
     url(r'^pagamentos/motoboy/$', PagamentoMotoboyListView.as_view(), name='pagamento_motoboy'),
     url(r'^script/$', script, name='script_bairro'),
 
+    url(r'^chamar-motoboy/(?P<pk>[0-9]+)/$', chamar_motoboy, name='chamar_motoboy'),
+    url(r'^chamar-motoboy-cozinha/(?P<pk>[0-9]+)/$', chamar_motoboy_cozinha, name='chamar_motoboy_cozinha'),
+
     # ---------------------------------------------------------------------------------------------------
 
     url(r'^loja/login/$', LojaLoginView.as_view(), name='loja_login'),
@@ -245,7 +249,7 @@ urlpatterns = [
     url(r'acompanhar-pedido/(?P<pk>[0-9]+)/$', AcompanharRequest.as_view(), name='acompanhar_pedido'),
     url(r'submit-pedido/$', submit_pedido, name='submit_pedido'),
     url(r'^notificacao/pedido/$', notificacao_pedido, name="notificacao_pedido"),
-    url(r'^delete-pedido/(?P<pk>[0-9]+)/$', remove_cart, name='delete_pedido'),
+    url(r'^delete-pedido/(?P<pk>[0-9]+)/$', remove_cart, name='delete_request'),
     url(r'meus-pedidos/$', MeusRequests.as_view(), name='meus_pedidos'),
 
     url(r'set-online/$', SetOnlineView.as_view(), name='set_online'),

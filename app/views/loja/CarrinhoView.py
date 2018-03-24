@@ -181,15 +181,26 @@ def submit_pedido(request):
 
 
 def make_message(pedido):
-    message = 'Cliente: ' + str(pedido.cliente.usuario.first_name) + u' ' + str(
-        pedido.cliente.usuario.last_name) + ' ' + 'Telefone: ' + str(
-        pedido.cliente.telefone) + ' ' + 'Pedido:' + ' '
-    for it in pedido.itempedido_set.all():
-        message += ' ' + str(it.produto.nome) + '('
-        for opc in it.opcionalchoice_set.all():
-            message += str(opc.opcional.nome) + ','
-        message += ') '
-    return message
+    try:
+        message = 'Cliente: ' + str(pedido.cliente.usuario.first_name) + u' ' + str(
+            pedido.cliente.usuario.last_name) + ' ' + 'Telefone: ' + str(
+            pedido.cliente.telefone) + ' ' + 'Pedido:' + ' '
+        for it in pedido.itempedido_set.all():
+            message += ' ' + str(it.produto.nome) + '('
+            for opc in it.opcionalchoice_set.all():
+                message += str(opc.opcional.nome) + ','
+            message += ') '
+        return message
+    except (Exception,):
+        message = 'Cliente: ' + unicode(pedido.cliente.usuario.first_name) + u' ' + unicode(
+            pedido.cliente.usuario.last_name) + ' ' + 'Telefone: ' + str(
+            pedido.cliente.telefone) + ' ' + 'Pedido:' + ' '
+        for it in pedido.itempedido_set.all():
+            message += ' ' + unicode(it.produto.nome) + '('
+            for opc in it.opcionalchoice_set.all():
+                message += unicode(opc.opcional.nome) + ','
+            message += ') '
+        return message
 
 
 class AcompanharRequest(LoginRequiredMixin, DetailView):
