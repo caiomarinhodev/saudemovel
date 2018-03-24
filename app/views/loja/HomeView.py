@@ -149,3 +149,9 @@ def script(request):
     # Texto Page Sobre Nós (menu link) (50min)
     # Aplicativo (menu link) (45 min)
     # Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (1h45min)
+
+ # btn salvar
+ # as cores dos status do cliente
+ # Colocar Menu fonte style pequena
+ # Cozinha nao pode receber notificacoes do pedido do cliente nem sair da tela.
+ #

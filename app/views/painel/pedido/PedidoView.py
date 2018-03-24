@@ -36,7 +36,6 @@ def mark_read(request):
 def get_or_create_rota(req):
     rotas = Pedido.objects.filter(coletado=False, status_cozinha=False)
     if rotas:
-        print(unicode(rotas))
         return rotas.last()
     else:
         rota = Pedido(estabelecimento=req.estabelecimento, valor_total=req.endereco_entrega.bairro.valor)
