@@ -181,14 +181,14 @@ def submit_pedido(request):
 
 
 def make_message(pedido):
-    message = u'Cliente: ' + unicode(pedido.cliente.usuario.first_name) + u' ' + unicode(
-        pedido.cliente.usuario.last_name) + u' ' + u'Telefone: ' + unicode(
-        pedido.cliente.telefone) + u' ' + u'Pedido:' + u' '
+    message = 'Cliente: ' + str(pedido.cliente.usuario.first_name) + u' ' + str(
+        pedido.cliente.usuario.last_name) + ' ' + 'Telefone: ' + str(
+        pedido.cliente.telefone) + ' ' + 'Pedido:' + ' '
     for it in pedido.itempedido_set.all():
-        message += u' ' + unicode(it.produto.nome) + u'('
+        message += ' ' + str(it.produto.nome) + '('
         for opc in it.opcionalchoice_set.all():
-            message += unicode(opc.opcional.nome) + u','
-        message += u') '
+            message += str(opc.opcional.nome) + ','
+        message += ') '
     return message
 
 

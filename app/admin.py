@@ -36,14 +36,14 @@ class FolhaPagamentoAdmin(admin.ModelAdmin):
     list_display = ('id', 'loja', 'valor_total', 'link_pagamento', 'status_pagamento', 'created_at',)
 
     def loja(self, obj):
-        return unicode(obj.estabelecimento)
+        return str(obj.estabelecimento)
 
 
 class ItemPagamentoAdmin(admin.ModelAdmin):
     list_display = ('id', 'loja', 'request', 'folha', 'created_at',)
 
     def loja(self, obj):
-        return unicode(obj.request.estabelecimento)
+        return str(obj.request.estabelecimento)
 
 
 class PagamentoMotoristaAdmin(admin.ModelAdmin):

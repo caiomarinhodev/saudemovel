@@ -24,15 +24,15 @@ def is_madrugada(user):
 @register.filter
 def get_itens(pedido):
     try:
-        message = u''
+        message = ''
         for it in pedido.itempedido_set.all():
-            message += u' ' + unicode(it.produto.nome) + u'('
+            message += ' ' + str(it.produto.nome) + u'('
             for opc in it.opcionalchoice_set.all():
-                message += unicode(opc.opcional.nome) + u','
-            message += u') '
+                message += str(opc.opcional.nome) + u','
+            message += ') '
         return message
     except (Exception,):
-        return u''
+        return ''
 
 
 @register.filter

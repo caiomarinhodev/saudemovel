@@ -45,22 +45,22 @@ def get_or_create_rota(req):
 
 
 def make_itens(req):
-    message = u'<p><ul>'
+    message = '<p><ul>'
     for it in req.itempedido_set.all():
-        message += u'<li>' + unicode(it.produto.nome) + u'  ('
+        message += '<li>' + str(it.produto.nome) + '  ('
         for opc in it.opcionalchoice_set.all():
-            message += unicode(opc.opcional.nome) + u','
-        message += u') </li>'
-    message += u'</ul></p>'
+            message += str(opc.opcional.nome) + ','
+        message += ') </li>'
+    message += '</ul></p>'
     return message
 
 
 def make_obs(req):
-    message = u'<p><ul>'
-    message += u'<li>Forma de Pagamento: ' + unicode(req.forma_pagamento) + u' </li>'
-    message += u'<li>Valor Total: ' + unicode(req.valor_total) + u' </li>'
-    message += u'<li>Troco para: ' + unicode(req.forma_pagamento) + u' (' + unicode(req.resultado_troco) + u')</li>'
-    message += u'</ul></p>'
+    message = '<p><ul>'
+    message += '<li>Forma de Pagamento: ' + str(req.forma_pagamento) + ' </li>'
+    message += '<li>Valor Total: ' + str(req.valor_total) + ' </li>'
+    message += '<li>Troco para: ' + str(req.forma_pagamento) + ' (' + str(req.resultado_troco) + ')</li>'
+    message += '</ul></p>'
     return message
 
 
@@ -93,7 +93,7 @@ def aceitar_pedido(request, pk):
         obs = make_obs(req)
         ponto = Ponto(pedido=pedido, bairro=req.endereco_entrega.bairro, endereco=req.endereco_entrega.endereco,
                       numero=req.endereco_entrega.numero, complemento=req.endereco_entrega.complemento,
-                      cliente=unicode(req.cliente.usuario.first_name) + u" " + unicode(req.cliente.usuario.last_name),
+                      cliente=str(req.cliente.usuario.first_name) + " " + str(req.cliente.usuario.last_name),
                       telefone=req.cliente.telefone, observacoes=obs, itens=itens)
         req.save()
         ponto.save()
