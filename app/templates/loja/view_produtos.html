@@ -133,14 +133,16 @@
                                                                                         {% if grupo.tipo == 'radio' %}
                                                                                             {% for opcional in grupo.opcional_set.all %}
                                                                                                 {% if opcional.disponivel %}
-                                                                                                    <div class="radio">
+                                                                                                    <div class="checkbox">
                                                                                                         <label>
-                                                                                                            <input type="radio"
+                                                                                                            <input type="checkbox"
                                                                                                                    name="checks"
-                                                                                                                   value="{{ opcional.id }}"
-                                                                                                                   data-value="{{ opcional.valor }}">
-                                                                                                            {{ opcional.nome }}
-                                                                                                            (+R$ {{ opcional.valor }})
+                                                                                                                   data-limitador-{{ grupo.pk }}="{{ grupo.limitador }}"
+                                                                                                                   data-value="{{ opc.valor }}"
+                                                                                                                   value="{{ opc.id }}"
+                                                                                                                   onclick="return KeepCount_{{ grupo.pk }}();">
+                                                                                                            {{ opc.nome }}
+                                                                                                            (+R$ {{ opc.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
