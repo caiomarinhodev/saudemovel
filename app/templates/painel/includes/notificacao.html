@@ -13,25 +13,15 @@
                     confirmButtonText: "Aceitar",
                     cancelButtonText: "Rejeitar",
                     closeOnConfirm: false,
-                    closeOnCancel: false
+                    closeOnCancel: false,
+                    showLoaderOnConfirm: true
                 }, function (isConfirm) {
                     if (isConfirm) {
                         setTimeout(function () {
                             window.location.href = '{% url 'aceitar_pedido' notificacao.pedido.id %}'
                         }, 1000);
                     } else {
-                        swal({
-                            title: 'Pedido Cancelado',
-                            text: "Vamos notificar o cliente",
-                            type: 'error',
-                            confirmButtonText: "OK",
-                            closeOnConfirm: false,
-                            showLoaderOnConfirm: true
-                        }, function () {
-                            setTimeout(function () {
-                                window.location.href = '{% url 'rejeitar_pedido' notificacao.pedido.id %}'
-                            }, 1000);
-                        });
+                        window.location.href = '{% url 'rejeitar_pedido' notificacao.pedido.id %}'
                     }
                 });
             {% endif %}

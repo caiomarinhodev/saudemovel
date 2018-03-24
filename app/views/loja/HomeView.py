@@ -146,21 +146,19 @@ def script(request):
     # Implementar Random na vitrine de lojas Online (1h) OK
     # Menu Pagamentos com tabela de Pagamentos e Opcao de Pagar (btn pagseguro ou api) OK
 
-    # Texto Page Sobre Nós (menu link) (50min)
-    # Aplicativo (menu link) (45 min)
-    # Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (1h45min)
-
     # btn salvar nos forms OK
-
     # as cores dos status do cliente OK
     # Colocar Menu fonte style pequena OK
     # Cozinha nao pode receber notificacoes do pedido do cliente nem sair da tela. OK
     # Refresh na cozinha com notificacao de que o motoboy esta a caminho OK
-
     # Nao vai chamar automatico, Chamar motoboy sempre disponivel na cozinha e btn de liberar para entrega OKK
     # apos ele ter aceito OKK
+    # Implementar save na sessao do pedido (sem ta logado) OK
 
     # Implementar Entrega Gratis
     # Implementar Avaliação Loja
     # Implementar Canal de Chamados
     # Implementar Vouchers
+    # Texto Page Sobre Nós (menu link) (50min)
+    # Aplicativo (menu link) (45 min)
+    # Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (1h45min)

@@ -200,7 +200,6 @@ class Pedido(TimeStamped):
             # now = datetime.now()
             # now_time = now.time()
             now_time = pto.created_at.time()
-            print(now_time)
             if config.is_feriado:
                 if time(22, 59) <= now_time <= time(23, 59):
                     valor = valor + int(pto.bairro.valor_madrugada_feriado)
@@ -459,7 +458,6 @@ class FotoProduto(TimeStamped):
             client = pyimgur.Imgur(CLIENT_ID)
             r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
             file = r['link']
-            print(file)
             self.url = file
         except (Exception,):
             pass
@@ -535,7 +533,7 @@ class Request(TimeStamped):
         verbose_name = u'Pedido Loja'
         verbose_name_plural = u'Pedidos Loja'
 
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, blank=True, null=True)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     status_pedido = models.CharField(max_length=100, choices=STATUS, blank=True, null=True, default='AGUARDANDO')
     subtotal = models.CharField(max_length=10, blank=True, null=True)

@@ -3,37 +3,38 @@
     <div id="top">
         <div class="container">
             <div class="row">
-                <div class="col-xs-5 contact">
-                    <p class="hidden-sm hidden-xs"></p>
+{#                <div class="col-xs-4 contact">#}
+{#                    <p class="hidden-sm hidden-xs"></p>#}
+{##}
+{#                    <p class="hidden-md hidden-lg">#}
+{#                        <a href="#" data-animate-hover="pulse"><i#}
+{#                            class="fa fa-phone"></i></a> <a href="#" data-animate-hover="pulse"><i#}
+{#                            class="fa fa-envelope"></i></a>#}
+{#                    </p>#}
+{#                </div>#}
+                <div class="col-xs-10">
+{#                    <div class="social">#}
+{#                        <a href="#" class="external facebook" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-facebook"></i></a>#}
+{#                        <a href="#" class="external gplus" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-google-plus"></i></a>#}
+{#                        <a href="#" class="external twitter" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-twitter"></i></a>#}
+{#                    </div>#}
 
-                    <p class="hidden-md hidden-lg"><a href="#" data-animate-hover="pulse"><i
-                            class="fa fa-phone"></i></a> <a href="#" data-animate-hover="pulse"><i
-                            class="fa fa-envelope"></i></a>
-                    </p>
-                </div>
-                <div class="col-xs-7">
-                    <div class="social">
-                        <a href="#" class="external facebook" data-animate-hover="pulse"><i
-                                class="fa fa-facebook"></i></a>
-                        <a href="#" class="external gplus" data-animate-hover="pulse"><i
-                                class="fa fa-google-plus"></i></a>
-                        <a href="#" class="external twitter" data-animate-hover="pulse"><i
-                                class="fa fa-twitter"></i></a>
-                    </div>
-
-                    <div class="login">
+                    <div class="login" style="padding-right: 100px;">
                         {% if user.is_authenticated %}
                             {% if user.cliente %}
                             {% else %}
-                                <a href="{% url 'dashboard' %}"><i class="fa fa-sign-in"></i>
-                                    <span class="hidden-xs text-uppercase">Painel</span></a>
+                                <a href="{% url 'dashboard' %}" style=""><i class="fa fa-sign-in"></i>
+                                    <span class="text-uppercase">Painel</span></a>
                             {% endif %}
 
-                            <a href="{% url "auth_logout" %}"><i class="fa fa-sign-in"></i>
-                                <span class="hidden-xs text-uppercase">Log out</span></a>
+                            <a href="{% url "auth_logout" %}" style=""><i class="fa fa-sign-in"></i>
+                                <span class="text-uppercase">Log out</span></a>
                         {% else %}
-                            <a href="{% url "choose_login" %}"><i class="fa fa-sign-in"></i>
-                                <span class="hidden-xs text-uppercase">Log in ou Registro</span></a> &nbsp;&nbsp;
+                            <a href="{% url "choose_login" %}" style=""><i class="fa fa-sign-in"></i>
+                                <span class="text-uppercase">Log in ou Registro</span></a> &nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;
                         {% endif %}
                     </div>

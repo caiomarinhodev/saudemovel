@@ -83,7 +83,7 @@
                                                 <select class="form-control" id="id_bairro" name="bairro">
                                                     {% for bairro in bairros %}
                                                         <option value="{{ bairro.id }}" data-valor="{% if user|is_madrugada %}{{ bairro.valor_madrugada|floatformat:2 }}{% else %}{{ bairro.valor|floatformat:2 }}{% endif %}">
-                                                            {{ bairro.nome }}  (R$ {% if user|is_madrugada %}{{ bairro.valor_madrugada|floatformat:2 }}){% else %}{{ bairro.valor|floatformat:2 }}){% endif %}
+                                                            {{ bairro.nome }}
                                                         </option>
                                                     {% endfor %}
 

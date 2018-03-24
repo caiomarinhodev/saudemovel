@@ -21,7 +21,6 @@ def cria_item_pedido(checks, pedido, produto, obs):
     itempedido.save()
     for id in checks:
         opc = Opcional.objects.get(id=id)
-        print(u'%s' % opc)
         opcc = OpcionalChoice(opcional=opc, item_pedido=itempedido)
         opcc.save()
     itempedido.save()
@@ -43,25 +42,30 @@ def is_logged(request):
 
 def get_pedido(request, id_loja):
     try:
-        return Request.objects.get(id=request.session['pedido'])
+        req = Request.objects.get(id=request.session['pedido'])
+        try:
+            cliente = request.user.cliente
+        except:
+            cliente = None
+        req.cliente = cliente
+        req.save()
+        return req
     except (Exception,):
         estabelecimento = Estabelecimento.objects.get(id=id_loja)
-        pedido = Request(cliente=request.user.cliente, estabelecimento=estabelecimento)
+        try:
+            cliente = request.user.cliente
+        except:
+            cliente = None
+        pedido = Request(cliente=cliente, estabelecimento=estabelecimento)
         pedido.save()
         request.session['pedido'] = pedido.id
-        print('SESSION PEDIDO: ' + str(request.session['pedido']))
         return pedido
 
 
 def add_cart(request, id_loja):
-    print('loja: ' + str(id_loja))
+    checks = request.POST.getlist('checks')
     if is_logged(request):
-        checks = request.POST.getlist('checks')
-        print('--------------')
         pedido = get_pedido(request, id_loja)
-        print('teste: ' + str(pedido.estabelecimento.id))
-        print('check: ' + str(check_same_store(id_loja, pedido)))
-        print('produton in : ' + str('produto' in request.POST))
         if check_same_store(id_loja, pedido) and ('produto' in request.POST):
             produto = Produto.objects.get(id=request.POST['produto'])
             obrigatorios = produto.grupo_set.filter(obrigatoriedade=True)
@@ -74,8 +78,17 @@ def add_cart(request, id_loja):
             messages.error(request, u'Você deve comprar produtos no mesmo estabelecimento')
             return redirect('/loja/' + str(pedido.estabelecimento.id))
         pedido.save()
-        print('loja: ' + str(id_loja))
         return redirect('/loja/' + str(pedido.estabelecimento.id))
+    pedido = get_pedido(request, id_loja)
+    if check_same_store(id_loja, pedido) and ('produto' in request.POST):
+        produto = Produto.objects.get(id=request.POST['produto'])
+        obrigatorios = produto.grupo_set.filter(obrigatoriedade=True)
+        if check_required_selected(checks, obrigatorios) or obrigatorios.count() == 0:
+            obs = request.POST['observacoes']
+            cria_item_pedido(checks, pedido, produto, obs)
+        else:
+            messages.error(request, u'Você deve selecionar 1 item das opcoes com *(asterisco)')
+    pedido.save()
     messages.error(request, u'Para fazer um pedido você deve estar logado')
     return redirect('/define/login/')
 
@@ -83,9 +96,7 @@ def add_cart(request, id_loja):
 def remove_cart(request, pk):
     pedido = Request.objects.get(id=request.session['pedido'])
     id_loja = pedido.estabelecimento.id
-    print(request.session)
     del request.session['pedido']
-    print(request.session)
     pedido.delete()
     messages.success(request, 'Pedido deletado com sucesso')
     return redirect('/loja/' + str(id_loja))  # redirecionar para a loja
@@ -123,9 +134,9 @@ def submit_pedido(request):
     data = request.POST
     cliente = request.user.cliente
     pedido = Request.objects.get(id=request.session['pedido'])
+    pedido.cliente = cliente
     troco = None
     endereco = None
-    print(data)
     if 'endereco' in data:
         if data['endereco'] != '':
             endereco = Endereco.objects.get(id=data['endereco'])
@@ -143,7 +154,6 @@ def submit_pedido(request):
     if 'pgto' in data:
         if data['pgto'] != u'':
             forma_pagamento = FormaPagamento.objects.get(id=data['pgto'])
-            print(forma_pagamento)
             if forma_pagamento.forma == 'DINHEIRO':
                 if 'troco' in data:
                     if data['troco'] != u'':

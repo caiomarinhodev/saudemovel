@@ -23,7 +23,6 @@ class LojaRedirectView(RedirectView):
             try:
                 loja = Cliente.objects.get(usuario=self.request.user)
                 if loja:
-                    print ('--------- estabelecimento is logged')
                     return '/'
             except:
                 return '/login/cliente'
@@ -38,14 +37,22 @@ class EscolheLoginView(TemplateView):
 class ClienteLoginView(FormView):
     template_name = 'loja/login_cliente.html'
     form_class = FormLoginCliente
-    success_url = '/'
+
+    def get_success_url(self):
+        session = self.request.session
+        try:
+            if 'pedido' in session:
+                req = Request.objects.get(id=session['pedido'])
+                return '/loja/' + str(req.estabelecimento.id)
+        except (Exception,):
+            return '/'
+        return '/'
 
     def get(self, request, *args, **kwargs):
         if self.request.user:
             try:
                 loja = self.request.user.cliente
                 if loja:
-                    print ('--------- cliente is logged')
                     return redirect('/')
             except (Exception,):
                 return super(ClienteLoginView, self).get(request, *args, **kwargs)
@@ -55,14 +62,11 @@ class ClienteLoginView(FormView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        print(data)
         try:
             user_data = {}
             user_data['username'] = data['cpf']
             user_data['password'] = data['password']
-            print(user_data)
             user = authenticate(**user_data)
-            print(user)
             if user is not None:
                 login(self.request, user)
             else:
@@ -72,7 +76,6 @@ class ClienteLoginView(FormView):
         return super(ClienteLoginView, self).form_valid(form)
 
     def form_invalid(self, form):
-        print(form.errors)
         messages.error(self.request, 'Nenhum usuário encontrado')
         return super(ClienteLoginView, self).form_invalid(form)
 
@@ -99,7 +102,6 @@ class RegistroCliente(FormView):
             user_data['first_name'] = data['nome']
             user_data['last_name'] = data['sobrenome']
             user_data['password'] = data['password']
-            print(user_data)
             user = User.objects.create_user(**user_data)
             cliente = Cliente(
                 cpf=data['cpf'],
@@ -114,5 +116,4 @@ class RegistroCliente(FormView):
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        print(form.errors)
         return super(RegistroCliente, self).form_invalid(form)
