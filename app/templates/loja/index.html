@@ -31,10 +31,10 @@
                         {% for loja in lojas %}
                             <a href="{% url 'view_loja' loja.pk %}">
                                 <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2" style="margin-bottom: 35px;">
-                                    <div class="thumbnail text-center" style="height: 180px; width: 180px;">
+                                    <div class="thumbnail text-center" style="height: 110px; width: 120px;">
 
                                         <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
-                                             src="{{ loja.photo }}" style="height: 170px; width: 170px;"/>
+                                             src="{{ loja.photo }}" style="height: 100px; width: 100px;"/>
                                         <label class="label label-default">{{ loja.user.first_name }}</label>
                                         {% if loja.is_online %}
                                             <label class="label label-success">
