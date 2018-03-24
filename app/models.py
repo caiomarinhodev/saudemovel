@@ -77,6 +77,7 @@ class Configuration(TimeStamped):
     tempo_de_entrega = models.CharField(max_length=2, default=50)
     has_cozinha = models.BooleanField(default=True)
 
+
     def __str__(self):
         return "%s" % self.plano
 

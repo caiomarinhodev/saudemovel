@@ -150,8 +150,16 @@ def script(request):
     # Aplicativo (menu link) (45 min)
     # Implementar Relatorios Simples no Dashboard para a Loja, de Vendas (1h45min)
 
- # btn salvar
- # as cores dos status do cliente
- # Colocar Menu fonte style pequena
- # Cozinha nao pode receber notificacoes do pedido do cliente nem sair da tela.
- #
+    # btn salvar nos forms OK
+
+    # as cores dos status do cliente OK
+    # Colocar Menu fonte style pequena OK
+    # Cozinha nao pode receber notificacoes do pedido do cliente nem sair da tela. OK
+    # Refresh na cozinha com notificacao de que o motoboy esta a caminho OK
+
+    # Nao vai chamar automatico, Chamar motoboy sempre disponivel na cozinha e btn de liberar para entrega apos ele ter aceito
+
+    # Implementar Entrega Gratis
+    # Implementar Avaliação Loja
+    # Implementar Canal de Chamados
+    # Implementar Vouchers

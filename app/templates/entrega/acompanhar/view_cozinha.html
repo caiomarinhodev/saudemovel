@@ -1,4 +1,4 @@
-{% extends 'base_painel.html' %}
+{% extends 'base_cozinha.html' %}
 {% load staticfiles %}
 {% load filters %}
 
@@ -88,7 +88,7 @@
                         <div class="col-md-4 pull-right">
                             {% if rota.motorista %}
                                 <div class="col-xs-2">
-                                    <img src="{{ rota.motorista.motorista.photo }}" style="width: 50px;height: 50px;"/>
+                                    <img src="{{ rota.motorista.motorista.photo|removehttp }}" style="width: 50px;height: 50px;"/>
                                 </div>
                                 <div class="col-xs-10">
                                     <p>Motorista: {{ rota.motorista.first_name }} </p>
@@ -116,6 +116,10 @@
             $('#cozinha').addClass('active');
             $('#body').addClass('sidebar-collapse');
             $('.sidebar-toggle').hide();
+
+             setTimeout(function () {
+                window.location.href = ''
+            }, 50000);
         });
 
         window.setInterval(function () {

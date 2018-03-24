@@ -14,6 +14,11 @@
             color: green;
         {#background-color: green;#}
         }
+
+        .bg-blue {
+            color: dodgerblue;
+        {#background-color: green;#}
+        }
     </style>
     {#    {% include 'carrossel.html' %}#}
     <section class="bar background-white no-mb">
@@ -115,24 +120,44 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <div class="box-simple box-dark same-height">
-                                        <div class="icon"><i class="fa fa-fire"></i></div>
-                                        <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
-                                        {% if pedido_obj.status_pedido == 'AGUARDANDO' %}
+                                    {% if pedido_obj.status_pedido == 'AGUARDANDO' %}
+                                        <div class="box-simple box-dark same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                             <h3>Aguarde enquanto a loja processa seu pedido.</h3>
-                                        {% elif pedido_obj.status_pedido == 'ACEITO' %}
+                                        </div>
+                                    {% elif pedido_obj.status_pedido == 'ACEITO' %}
+                                        <div class="box-simple box-dark bg-blue same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                             <h3>Seu pedido foi aceito pela loja, aguarde o preparo.</h3>
-                                        {% elif pedido_obj.status_pedido == 'REJEITADO' %}
+                                        </div>
+                                    {% elif pedido_obj.status_pedido == 'REJEITADO' %}
+                                        <div class="box-simple box-dark same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                             <h3>Seu pedido foi rejeitado pela loja.</h3>
-                                        {% elif pedido_obj.status_pedido == 'PREPARANDO' %}
+                                        </div>
+                                    {% elif pedido_obj.status_pedido == 'PREPARANDO' %}
+                                        <div class="box-simple box-dark bg-red same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                             <h3>Seu pedido já está sendo preparado.</h3>
-                                        {% elif pedido_obj.status_pedido == 'ENTREGANDO' %}
+                                        </div>
+                                    {% elif pedido_obj.status_pedido == 'ENTREGANDO' %}
+                                        <div class="box-simple box-dark bg-green same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
                                             <h3>Seu pedido saiu para a entrega.</h3>
-                                        {% else %}
-
-                                        {% endif %}
-                                    </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="box-simple box-dark same-height">
+                                            <div class="icon"><i class="fa fa-fire"></i></div>
+                                            <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
+                                        </div>
+                                    {% endif %}
                                 </div>
+
                             </div>
                             <hr/>
                             {% if pedido_obj.pedido.motorista %}

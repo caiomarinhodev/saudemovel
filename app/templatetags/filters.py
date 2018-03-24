@@ -36,6 +36,13 @@ def get_itens(pedido):
 
 
 @register.filter
+def removehttp(photo):
+    try:
+        return photo.replace('https', 'http')
+    except (Exception,):
+        return ''
+
+@register.filter
 def is_pedido_prepared(value):
     try:
         pedido = value
