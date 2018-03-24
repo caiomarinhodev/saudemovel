@@ -138,11 +138,11 @@
                                                                                                             <input type="checkbox"
                                                                                                                    name="checks"
                                                                                                                    data-limitador-{{ grupo.pk }}="{{ grupo.limitador }}"
-                                                                                                                   data-value="{{ opc.valor }}"
-                                                                                                                   value="{{ opc.id }}"
+                                                                                                                   data-value="{{ opcional.valor }}"
+                                                                                                                   value="{{ opcional.id }}"
                                                                                                                    onclick="return KeepCount_{{ grupo.pk }}();">
-                                                                                                            {{ opc.nome }}
-                                                                                                            (+R$ {{ opc.valor }})
+                                                                                                            {{ opcional.nome }}
+                                                                                                            (+R$ {{ opcional.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
