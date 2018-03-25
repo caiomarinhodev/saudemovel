@@ -227,14 +227,8 @@ class ProdutoAdmin(admin.ModelAdmin):
         return obj.categoria.estabelecimento
 
 
-class ClassificacaoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'pedido', 'nota', 'cliente', 'estabelecimento',)
-
-    def cliente(self, obj):
-        return obj.pedido.cliente
-
-    def estabelecimento(self, obj):
-        return obj.pedido.estabelecimento
+class AvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'comentario', 'nota', 'cliente', 'estabelecimento', 'created_at')
 
 
 class FormaPagamentoAdmin(admin.ModelAdmin):
@@ -255,7 +249,7 @@ class OpcionalAdmin(admin.ModelAdmin):
         return obj.grupo.produto
 
 
-admin.site.register(Avaliacao, ClassificacaoAdmin)
+admin.site.register(Avaliacao, AvaliacaoAdmin)
 admin.site.register(ItemPedido, ItemPedidoAdmin)
 admin.site.register(Request, RequestAdmin)
 admin.site.register(Notificacao, NotificacaoAdmin)

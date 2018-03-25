@@ -5,11 +5,13 @@ from base64 import b64encode
 import pyimgur
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
 from app.forms import FormLogin, FormRegister, FormEditPerfil, FormMotoristaRegister, FormConfiguration
 from app.models import *
@@ -287,10 +289,15 @@ class RegisterMotoristaView(FormView):
             raise ValueError
 
 
-class EditarPerfilView(FormView):
+class EditarPerfilView(LoginRequiredMixin, FormView):
     template_name = 'entrega/pedidos/editar_perfil_loja.html'
     form_class = FormEditPerfil
+    model = Estabelecimento
+    login_url = '/login/'
     success_url = '/app/perfil/edit'
+
+    def get_object(self, queryset=None):
+        return self.request.user.estabelecimento
 
     def merge_two_dicts(self, x, y):
         z = x.copy()  # start with x's keys and values
@@ -300,7 +307,7 @@ class EditarPerfilView(FormView):
     def get_context_data(self, **kwargs):
         data = super(EditarPerfilView, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['configurationform'] = FormConfiguration(self.request.POST, self.request.FILES, instance=self.object)
+            data['configurationform'] = FormConfiguration(self.request.POST, self.request.FILES, instance=self.request.user.estabelecimento.configuration)
         else:
             data['configurationform'] = FormConfiguration(instance=self.request.user.estabelecimento.configuration)
         return data
@@ -308,7 +315,6 @@ class EditarPerfilView(FormView):
     def get_initial(self):
         estabel = Estabelecimento.objects.get(user=self.request.user)
         data = self.merge_two_dicts(estabel.__dict__, self.request.user.__dict__)
-        print(data)
         data['first_name'] = self.request.user.first_name
         data['file'] = estabel.photo
         data['photo'] = estabel.photo
@@ -316,8 +322,6 @@ class EditarPerfilView(FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        print(form.errors)
-        print(form.is_valid())
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -326,27 +330,25 @@ class EditarPerfilView(FormView):
     def form_valid(self, form):
         context = self.get_context_data()
         configuration_set = context['configurationform']
-        with transaction.atomic():
-            self.object = form.save()
-            if configuration_set.is_valid():
-                configuration_set.instance = self.object
-                configuration_set.save()
+        if configuration_set.is_valid():
+            configuration_set.save()
         data = form.cleaned_data
         user = self.request.user
         estabel = Estabelecimento.objects.get(user=user)
         CLIENT_ID = "cdadf801dc167ab"
-        bencode = b64encode(self.request.FILES['file'].read())
-        client = pyimgur.Imgur(CLIENT_ID)
-        r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
-        file = r['link']
-        print(file)
+        if 'file' in self.request.FILES:
+            bencode = b64encode(self.request.FILES['file'].read())
+            client = pyimgur.Imgur(CLIENT_ID)
+            r = client._send_request('https://api.imgur.com/3/image', method='POST', params={'image': bencode})
+            file = r['link']
+            print(file)
+            estabel.photo = file
         user.first_name = data['first_name']
         estabel.endereco = data['endereco']
         estabel.phone = data['phone']
         estabel.numero = data['numero']
         estabel.bairro = data['bairro']
         estabel.cnpj = data['cnpj']
-        estabel.photo = file
         user.save()
         estabel.save()
         messages.success(self.request, 'Conta Alterada com sucesso!')

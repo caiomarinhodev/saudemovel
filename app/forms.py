@@ -62,7 +62,7 @@ class FormRequest(ModelForm, BaseForm):
 class FormConfiguration(ModelForm, BaseForm):
     class Meta:
         model = Configuration
-        fields = ['chamar_motoboy', 'tempo_de_entrega', ]
+        fields = ['chamar_motoboy', 'tempo_de_entrega', 'status_entrega_gratis']
 
 
 class FormItemPedido(ModelForm, BaseForm):
@@ -245,6 +245,20 @@ PontoFormSet = inlineformset_factory(Pedido, Ponto, form=FormPonto, extra=1)
 PontoFormUpdateSet = inlineformset_factory(Pedido, Ponto, form=FormEditPonto, extra=0)
 
 
+class FormBairroGratis(ModelForm, BaseForm):
+    class Meta:
+        model = BairroGratis
+        fields = ['bairro', 'estabelecimento']
+
+    def __init__(self, *args, **kwargs):
+        super(FormBairroGratis, self).__init__(*args, **kwargs)
+        self.fields['estabelecimento'].widget.attrs['class'] = 'hidden'
+        self.fields['estabelecimento'].label = ''
+
+
+# BairroGratisFormSet = inlineformset_factory(Estabelecimento, BairroGratis, form=FormBairroGratis, extra=1)
+
+
 class FormPontoCliente(ModelForm, BaseForm):
     class Meta:
         model = Ponto
@@ -326,13 +340,13 @@ class FormFotoProduto(ModelForm, BaseForm):
 class FormOpcionalInline(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', 'disponivel' ]
+        fields = ['nome', 'valor', 'disponivel']
 
 
 class FormOpcional(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', 'grupo', 'disponivel' ]
+        fields = ['nome', 'valor', 'grupo', 'disponivel']
 
 
 FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)

@@ -55,6 +55,10 @@
                                 <label>Chamar Motoboy ao receber pedido? </label>
                                 {{ configurationform.chamar_motoboy }}
                             </div>
+                            <div class="form-group has-feedback">
+                                <label>Entrega Grátis ? </label>
+                                {{ configurationform.status_entrega_gratis }}
+                            </div>
                             <div class="row">
                                 <div class="col-xs-4 col-xs-offset-4">
                                     <button id="alterar" type="submit" class="btn btn-primary btn-block btn-flat">
@@ -72,8 +76,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#editar_perfil').addClass('active');
-            $('input').attr('required', 'true');
-            $('select').attr('required', 'true');
+{#            $('input').attr('required', 'true');#}
+{#            $('select').attr('required', 'true');#}
 
             $('input[type=checkbox]').removeClass('form-control');
 

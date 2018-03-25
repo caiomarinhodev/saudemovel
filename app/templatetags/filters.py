@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, date, time
 
 from django import template
 
-from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin
+from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin, BairroGratis, Avaliacao
 from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
@@ -41,6 +41,31 @@ def removehttp(photo):
         return photo.replace('https', 'http')
     except (Exception,):
         return ''
+
+
+@register.filter
+def is_entrega_gratis(bairro, loja):
+    try:
+        if loja.configuration.status_entrega_gratis:
+            qs = BairroGratis.objects.filter(estabelecimento=loja, bairro=bairro)
+            if qs.count() > 0:
+                return True
+        return False
+    except (Exception,):
+        return False
+
+
+@register.filter
+def calcula_media_aval(loja):
+    try:
+        media = 0
+        avals = Avaliacao.objects.filter(estabelecimento=loja)
+        for aval in avals:
+            media = media + int(aval.nota)
+        return float(float(media) / float(avals.count()))
+    except (Exception,):
+        return 4.0
+
 
 @register.filter
 def is_pedido_prepared(value):

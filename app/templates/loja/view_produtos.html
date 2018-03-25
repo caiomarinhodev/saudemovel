@@ -1,5 +1,6 @@
 {% extends 'loja/base.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 {% block content %}
     <style>
@@ -50,9 +51,17 @@
                                                         class="fa fa-cutlery"></span> {{ loja.configuration.tempo_de_entrega }}
                                                     min</a>
                                             </p>
-                                            {#                                            <p class="pull-right">#}
-                                            {#                                            <h2><span class="fa fa-phone"></span> {{ loja.telefone }}</h2>#}
-                                            {#                                            </p>#}
+                                            <p>
+                                                <a href="#" class="btn btn-xs btn-default">
+                                                    <span class="fa fa-star"></span> {{ loja|calcula_media_aval|floatformat:1 }}
+                                                </a>
+                                            </p>
+                                            <p>
+                                                <a href="#" class="btn btn-xs btn-default">
+                                                    <span class="fa fa-fire"></span> {{ loja.request_set.all|length }}
+                                                    Entregas Realizadas
+                                                </a>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +157,7 @@
                                                                                                 {% endif %}
                                                                                             {% endfor %}
                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                function KeepCount_ {{ grupo.pk }}() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
                                                                                                     console.log(inputTags_{{ grupo.pk }});
@@ -189,7 +198,7 @@
                                                                                                 {% endif %}
                                                                                             {% endfor %}
                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                function KeepCount_ {{ grupo.pk }}() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
                                                                                                     console.log(inputTags_{{ grupo.pk }});

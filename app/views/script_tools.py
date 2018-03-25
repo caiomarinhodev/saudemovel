@@ -7,3 +7,4 @@ def logger(user, what):
         log.save()
     except (Exception,):
         pass
+

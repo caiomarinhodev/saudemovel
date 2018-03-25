@@ -24,11 +24,14 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
     set_to_prepared_pedido, liberar_corrida_cozinha, create_pedido_json
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
+from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
     remove_cart
 from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script
 from app.views.loja.LoginView import ClienteLoginView
 from app.views.loja.LoginView import EscolheLoginView, RegistroCliente
+from app.views.painel.bairro_gratis.BairroGratisView import BairroGratisCreateView, BairroGratisUpdateView, \
+    BairroGratisListView, BairroGratisDeleteView
 from app.views.painel.categoria.CategoriaView import CategoriaCreateView
 from app.views.painel.categoria.CategoriaView import CategoriaDeleteView
 from app.views.painel.categoria.CategoriaView import CategoriaListView
@@ -257,4 +260,11 @@ urlpatterns = [
     url(r'request/(?P<pk>[0-9]+)/$', RequestUpdateView.as_view(), name='edit_request'),
     url(r'folhapagamento/list/$', PagamentoListView.as_view(), name='list_folhapagamento'),
 
+    url(r'^bairro/add/$', BairroGratisCreateView.as_view(), name='add_bairro_gratis'),
+    url(r'^bairro/edit/(?P<pk>[0-9]+)/$', BairroGratisUpdateView.as_view(), name='edit_bairro_gratis'),
+    url(r'^bairro/list/$', BairroGratisListView.as_view(), name='list_bairro_gratis'),
+    url(r'^bairro/delete/(?P<pk>[0-9]+)/$', BairroGratisDeleteView.as_view(), name='delete_bairro_gratis'),
+
+    url(r'^avaliacao/pedido/(?P<pk>[0-9]+)$', AvaliacaoView.as_view(), name='add_avaliacao'),
+    url(r'^add-avaliacao/pedido/$', add_avaliacao, name='add_avaliacao_cliente'),
 ]

@@ -76,7 +76,7 @@ class Configuration(TimeStamped):
     chamar_motoboy = models.BooleanField(default=True)
     tempo_de_entrega = models.CharField(max_length=2, default=50)
     has_cozinha = models.BooleanField(default=True)
-
+    status_entrega_gratis = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % self.plano
@@ -551,14 +551,25 @@ class Request(TimeStamped):
     def __str__(self):
         return u'%s - %s - %s - %s' % (self.id, self.cliente, self.estabelecimento, self.valor_total)
 
+    def is_entrega_gratis(self, bairro, loja):
+        try:
+            if loja.configuration.status_entrega_gratis:
+                qs = BairroGratis.objects.filter(estabelecimento=loja, bairro=bairro)
+                if qs.count() > 0:
+                    return True
+            return False
+        except (Exception,):
+            return False
+
     def save(self, *args, **kwargs):
         subtotal = 0.0
         for item in self.itempedido_set.all():
             subtotal = float(subtotal) + float(str(item.valor_total).replace(',', '.'))
         self.subtotal = float(subtotal)
         if self.endereco_entrega:
-            total = float(self.subtotal) + float(str(self.endereco_entrega.valor_entrega).replace(',', '.'))
-            self.valor_total = total
+            if not self.is_entrega_gratis(self.endereco_entrega.bairro, self.estabelecimento):
+                total = float(self.subtotal) + float(str(self.endereco_entrega.valor_entrega).replace(',', '.'))
+                self.valor_total = total
         else:
             self.valor_total = subtotal
         if self.troco and (self.troco != u'' or self.troco != ""):
@@ -640,14 +651,16 @@ class Avaliacao(TimeStamped):
         verbose_name = u'Avaliação'
         verbose_name_plural = u'Avaliações'
 
-    pedido = models.ForeignKey(Request, on_delete=models.CASCADE)
+    estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE, blank=True, null=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, blank=True, null=True)
+    comentario = models.CharField(max_length=300, blank=True, null=True)
     nota = models.CharField(max_length=2)
 
     def __unicode__(self):
-        return u'Pedido:%s Nota:%s' % (self.pedido, self.nota)
+        return u'Loja:%s Nota:%s' % (self.estabelecimento, self.nota)
 
     def __str__(self):
-        return u'Pedido:%s Nota:%s' % (self.pedido, self.nota)
+        return u'Loja:%s Nota:%s' % (self.estabelecimento, self.nota)
 
 
 class FolhaPagamento(TimeStamped):
@@ -688,6 +701,21 @@ class PagamentoMotorista(TimeStamped):
     motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, blank=True, null=True)
     link_pagamento = models.URLField(default="#")
     status_pagamento = models.BooleanField(default=False)
+
+
+class BairroGratis(TimeStamped):
+    class Meta:
+        verbose_name = u'Bairro Gratis'
+        verbose_name_plural = u'Bairros Gratis'
+
+    estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE, blank=True, null=True)
+    bairro = models.ForeignKey(Bairro, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.bairro.nome)
+
+    def __unicode__(self):
+        return str(self.bairro.nome)
 
 
 class Logger(TimeStamped):

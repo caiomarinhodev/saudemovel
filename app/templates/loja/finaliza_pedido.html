@@ -39,8 +39,20 @@
                                                     <input type="radio"
                                                            name="endereco"
                                                            value="{{ endereco.id }}"
-                                                           data-valor="{% if user|is_madrugada %}{{ endereco.bairro.valor_madrugada|floatformat:2 }}{% else %}{{ endereco.bairro.valor|floatformat:2 }}{% endif %}"/>
-                                                    Entrega (R$ {% if user|is_madrugada %}{{ endereco.bairro.valor_madrugada|floatformat:2 }}){% else %}{{ endereco.bairro.valor|floatformat:2 }}){% endif %}
+                                                            {% if endereco.bairro|is_entrega_gratis:pedido_obj.estabelecimento %}
+                                                                data-valor="0.00"
+                                                            {% else %}
+                                                                {% if user|is_madrugada %}
+                                                                    data-valor="{{ endereco.bairro.valor_madrugada|floatformat:2 }}"
+                                                                {% else %}
+                                                                    data-valor="{{ endereco.bairro.valor|floatformat:2 }}"
+                                                                {% endif %}
+                                                            {% endif %}
+
+                                                    />
+                                                    Entrega (R$ {% if user|is_madrugada %}
+                                                    {{ endereco.bairro.valor_madrugada|floatformat:2 }})
+                                                    {% else %}{{ endereco.bairro.valor|floatformat:2 }}){% endif %}
 
                                                     {{ endereco.endereco_completo }}
                                                 </label>
@@ -82,8 +94,18 @@
                                                 <label for="city">Bairro:</label>
                                                 <select class="form-control" id="id_bairro" name="bairro">
                                                     {% for bairro in bairros %}
-                                                        <option value="{{ bairro.id }}" data-valor="{% if user|is_madrugada %}{{ bairro.valor_madrugada|floatformat:2 }}{% else %}{{ bairro.valor|floatformat:2 }}{% endif %}">
-                                                            {{ bairro.nome }}
+                                                        <option value="{{ bairro.id }}"
+                                                                {% if bairro|is_entrega_gratis:pedido_obj.estabelecimento %}
+                                                                    data-valor="0.00"
+                                                                {% else %}
+                                                                    {% if user|is_madrugada %}
+                                                                        data-valor="{{ bairro.valor_madrugada|floatformat:2 }}"
+                                                                    {% else %}
+                                                                        data-valor="{{ bairro.valor|floatformat:2 }}"
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                        >
+                                                        {{ bairro.nome }}
                                                         </option>
                                                     {% endfor %}
 
@@ -237,9 +259,10 @@
                                                 {% endif %}
                                                 "
                                                     {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
-                                               disabled="disabled"
+                                                    disabled="disabled"
                                                     {% endif %}
-                                            >Finalizar Pedido</button>
+                                            >Finalizar Pedido
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
