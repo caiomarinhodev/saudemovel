@@ -9,7 +9,7 @@ from app.views.script_tools import logger
 
 class OpcionalListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/opcional/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'opcionais'
     model = Opcional
     ordering = '-created_at'
@@ -20,7 +20,7 @@ class OpcionalListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class OpcionalCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'opcional'
     model = Opcional
     success_url = '/opcional/list'
@@ -33,7 +33,7 @@ class OpcionalCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class OpcionalUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'opcional'
     model = Opcional
     success_url = '/opcional/list'
@@ -46,7 +46,7 @@ class OpcionalUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class OpcionalDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'opcional'
     model = Opcional
     success_url = '/opcional/list'

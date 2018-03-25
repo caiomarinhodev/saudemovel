@@ -235,6 +235,10 @@ class FormaPagamentoAdmin(admin.ModelAdmin):
     list_display = ('forma', 'cartao', 'id', 'estabelecimento', 'created_at',)
 
 
+class ChamadoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'estabelecimento', 'titulo', 'texto', 'created_at')
+
+
 class FormaEntregaAdmin(admin.ModelAdmin):
     list_display = ('forma', 'id', 'estabelecimento', 'created_at',)
 
@@ -263,3 +267,5 @@ admin.site.register(OpcionalChoice, OpcionalChoiceAdmin)
 admin.site.register(Opcional, OpcionalAdmin)
 admin.site.register(Grupo, GrupoAdmin)
 admin.site.register(Endereco, EnderecoAdmin)
+
+admin.site.register(Chamado, ChamadoAdmin)

@@ -8,7 +8,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class FormaEntregaListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/forma_entrega/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formas'
     model = FormaEntrega
     ordering = '-created_at'
@@ -19,7 +19,7 @@ class FormaEntregaListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class FormaEntregaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formaentrega'
     model = FormaEntrega
     success_url = '/entrega/list'
@@ -31,7 +31,7 @@ class FormaEntregaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class FormaEntregaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formaentrega'
     model = FormaEntrega
     success_url = '/entrega/list'
@@ -43,7 +43,7 @@ class FormaEntregaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class FormaEntregaDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formaentrega'
     model = FormaEntrega
     success_url = '/entrega/list'

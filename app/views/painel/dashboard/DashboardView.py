@@ -13,7 +13,7 @@ __copyright__ = "Copyright 2017"
 
 
 class DashboardPedidosListView(LoginRequiredMixin, ListView, FocusMixin):
-    login_url = '/login/'
+    login_url = '/loja/login/'
     template_name = 'painel/dashboard.html'
     model = Request
     context_object_name = 'pedidos'

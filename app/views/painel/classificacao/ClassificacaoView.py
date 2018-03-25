@@ -7,7 +7,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class ClassificacaoListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/classificacao/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'classificacoes'
     model = Avaliacao
     ordering = '-created_at'

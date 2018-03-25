@@ -10,7 +10,7 @@ from app.views.script_tools import logger
 
 class GrupoListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/grupo/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'grupos'
     model = Grupo
     ordering = '-created_at'
@@ -21,7 +21,7 @@ class GrupoListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class GrupoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'grupo'
     model = Grupo
     success_url = '/grupo/list'
@@ -63,7 +63,7 @@ class GrupoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class GrupoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'grupo'
     model = Grupo
     success_url = '/grupo/list'
@@ -105,7 +105,7 @@ class GrupoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class GrupoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'grupo'
     model = Grupo
     success_url = '/grupo/list'

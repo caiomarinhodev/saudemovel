@@ -8,7 +8,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class FormaPagamentoListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/forma_pagamento/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formas'
     model = FormaPagamento
     ordering = '-created_at'
@@ -19,7 +19,7 @@ class FormaPagamentoListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class FormaPagamentoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formapagamento'
     model = FormaPagamento
     success_url = '/pagamento/list'
@@ -33,7 +33,7 @@ class FormaPagamentoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class FormaPagamentoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formapagamento'
     model = FormaPagamento
     success_url = '/pagamento/list'
@@ -47,7 +47,7 @@ class FormaPagamentoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class FormaPagamentoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'formapagamento'
     model = FormaPagamento
     success_url = '/pagamento/list'

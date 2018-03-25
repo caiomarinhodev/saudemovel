@@ -59,6 +59,17 @@ class FormRequest(ModelForm, BaseForm):
         fields = ['forma_pagamento', 'forma_entrega', 'troco', 'status_pedido', ]
 
 
+class FormChamado(ModelForm, BaseForm):
+    class Meta:
+        model = Chamado
+        fields = ['estabelecimento', 'titulo', 'texto']
+
+    def __init__(self, *args, **kwargs):
+        super(FormChamado, self).__init__(*args, **kwargs)
+        self.fields['estabelecimento'].widget.attrs['class'] = 'hidden'
+        self.fields['estabelecimento'].label = ''
+
+
 class FormConfiguration(ModelForm, BaseForm):
     class Meta:
         model = Configuration

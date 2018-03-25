@@ -721,3 +721,9 @@ class BairroGratis(TimeStamped):
 class Logger(TimeStamped):
     user = models.ForeignKey(User)
     what = models.CharField(max_length=300)
+
+
+class Chamado(TimeStamped):
+    estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=150)
+    texto = models.TextField()

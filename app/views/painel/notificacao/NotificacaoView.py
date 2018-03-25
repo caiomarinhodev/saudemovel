@@ -7,7 +7,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class NotificacaoListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/notificacao/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'notificacoes'
     model = Notificacao
     ordering = '-created_at'

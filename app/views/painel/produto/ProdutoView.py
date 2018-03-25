@@ -24,7 +24,7 @@ class ProdutoListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class ProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'produto'
     model = Produto
     success_url = '/produto/list'
@@ -72,7 +72,7 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class ProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'produto'
     model = Produto
     success_url = '/produto/list'
@@ -123,7 +123,7 @@ class ProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class ProdutoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'produto'
     model = Produto
     success_url = '/produto/list'

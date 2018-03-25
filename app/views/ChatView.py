@@ -46,7 +46,7 @@ def get_chat(request, pk_pedido):
         n.is_read = True
         n.save()
     context = Context({'pedido': pedido, 'user': request.user, 'messages': messages})
-    return_str = render_block_to_string('includes/messages.html', context)
+    return_str = render_block_to_string('entrega/includes/messages.html', context)
     return HttpResponse(return_str)
 
 
@@ -55,7 +55,7 @@ def return_to_get_chat(request, pk_pedido):
     pedido = Pedido.objects.get(id=pk_pedido)
     messages = pedido.message_set.all().order_by('created_at')
     context = Context({'pedido': pedido, 'user': request.user, 'messages': messages})
-    return_str = render_block_to_string('includes/messages.html', context)
+    return_str = render_block_to_string('entrega/includes/messages.html', context)
     return HttpResponse(return_str)
 
 

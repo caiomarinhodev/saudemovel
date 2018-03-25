@@ -8,7 +8,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class CategoriaListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/categoria/list_categoria.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'categorias'
     model = Categoria
     ordering = '-created_at'
@@ -19,7 +19,7 @@ class CategoriaListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class CategoriaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/login/'
+    login_url = '/loja/login/'
     context_object_name = 'categoria'
     form_class = FormCategoria
     model = Categoria
@@ -33,7 +33,7 @@ class CategoriaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class CategoriaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'categoria'
     model = Categoria
     form_class = FormCategoria
@@ -47,7 +47,7 @@ class CategoriaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class CategoriaDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'categoria'
     model = Categoria
     success_url = '/categoria/list'

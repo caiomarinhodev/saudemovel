@@ -151,7 +151,7 @@ def rejeitar_pedido(request, pk):
 class RequestUpdateView(LoginRequiredMixin, UpdateView):
     model = Request
     context_object_name = 'pedido'
-    login_url = '/login/'
+    login_url = '/loja/login/'
     success_url = '/dashboard/'
     template_name = 'painel/request/edit.html'
     form_class = FormRequest

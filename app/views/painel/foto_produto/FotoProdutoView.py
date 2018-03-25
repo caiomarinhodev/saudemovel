@@ -8,7 +8,7 @@ from app.views.mixins.Mixin import FocusMixin
 
 class FotoProdutoListView(LoginRequiredMixin, ListView, FocusMixin):
     template_name = 'painel/foto_produto/list.html'
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'fotos'
     model = FotoProduto
     ordering = '-created_at'
@@ -19,7 +19,7 @@ class FotoProdutoListView(LoginRequiredMixin, ListView, FocusMixin):
 
 
 class FotoProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'foto'
     model = FotoProduto
     success_url = '/opcional/list'
@@ -28,7 +28,7 @@ class FotoProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
 
 class FotoProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'foto'
     model = FotoProduto
     success_url = '/opcional/list'
@@ -37,7 +37,7 @@ class FotoProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
 
 
 class FotoProdutoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
-    login_url = '/painel/login'
+    login_url = '/loja/login/'
     context_object_name = 'foto'
     model = FotoProduto
     success_url = '/opcional/list'

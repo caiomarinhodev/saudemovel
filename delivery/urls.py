@@ -36,6 +36,10 @@ from app.views.painel.categoria.CategoriaView import CategoriaCreateView
 from app.views.painel.categoria.CategoriaView import CategoriaDeleteView
 from app.views.painel.categoria.CategoriaView import CategoriaListView
 from app.views.painel.categoria.CategoriaView import CategoriaUpdateView
+from app.views.painel.chamado.ChamadoView import ChamadoCreateView
+from app.views.painel.chamado.ChamadoView import ChamadoDeleteView
+from app.views.painel.chamado.ChamadoView import ChamadoListView
+from app.views.painel.chamado.ChamadoView import ChamadoUpdateView
 from app.views.painel.classificacao.ClassificacaoView import ClassificacaoListView
 from app.views.painel.dashboard.DashboardView import DashboardPedidosListView
 from app.views.painel.forma_entrega.FormaEntregaView import FormaEntregaCreateView, FormaEntregaDeleteView
@@ -267,4 +271,9 @@ urlpatterns = [
 
     url(r'^avaliacao/pedido/(?P<pk>[0-9]+)$', AvaliacaoView.as_view(), name='add_avaliacao'),
     url(r'^add-avaliacao/pedido/$', add_avaliacao, name='add_avaliacao_cliente'),
+
+    url(r'^chamado/add/$', ChamadoCreateView.as_view(), name='add_chamado'),
+    url(r'^chamado/edit/(?P<pk>[0-9]+)/$', ChamadoUpdateView.as_view(), name='edit_chamado'),
+    url(r'^chamado/list/$', ChamadoListView.as_view(), name='list_chamados'),
+    url(r'^chamado/delete/(?P<pk>[0-9]+)/$', ChamadoDeleteView.as_view(), name='delete_chamado'),
 ]
