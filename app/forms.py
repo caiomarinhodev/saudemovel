@@ -320,7 +320,7 @@ class FormGrupoInline(ModelForm, BaseForm):
 class FormProduto(ModelForm, BaseForm):
     class Meta:
         model = Produto
-        fields = ['nome', 'descricao', 'preco_base', 'categoria', 'disponivel']
+        fields = ['nome', 'descricao', 'preco_base', 'disponivel']
 
 
 class FormFotoProdutoInline(ModelForm, BaseForm):
@@ -357,9 +357,9 @@ class FormOpcionalInline(ModelForm, BaseForm):
 class FormOpcional(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'descricao', 'valor', 'grupo', 'disponivel']
+        fields = ['nome', 'descricao', 'valor', 'disponivel']
 
-
+ProdutoFormSet = inlineformset_factory(Categoria, Produto, form=FormProduto, extra=1)
 FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)
 FotoProdutoUpdateFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)
 GrupoFormSet = inlineformset_factory(Produto, Grupo, form=FormGrupoInline, extra=1)

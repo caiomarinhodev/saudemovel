@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-{#    {% include 'loading.html' %}#}
+    {#    {% include 'loading.html' %}#}
 
     <div class="box box-primary" style="margin-top: 30px;">
         <div class="box-header">
@@ -17,6 +17,47 @@
                 <div class="row">
                     <div class="col-md-12">
                         {{ form.as_p }}
+                    </div>
+                </div>
+                <h3>Produtos:</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ produtoset.management_form }}
+                        <table class="table">
+                            {% for form in produtoset.forms %}
+                                {% if forloop.first %}
+                                    <thead>
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                            <th>{{ field.label|capfirst }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                {% endif %}
+                                <tr class="produtoset_row">
+                                    {% for field in form.visible_fields %}
+                                        <td>
+                                            {# Include the hidden fields in the form #}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <script src="{% static 'js/jquery.formset.js' %}"></script>
+                        <script type="text/javascript">
+                            $('.produtoset_row').formset({
+                                addText: 'Adicionar',
+                                deleteText: 'Remover',
+                                prefix: 'produtoset'
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -42,11 +83,22 @@
                 }
             });
 
+
+            $('input[type=checkbox]').removeClass('form-control');
+
+            $('.add-row').click(function (evt) {
+                $('input[type=checkbox]').removeClass('form-control');
+            });
+
+
             $('#categoria').addClass('active');
             $('#btn_cancelar').click(function () {
                 return window.history.back();
             });
         });
+    </script>
+    <script>
+        $('.add-row').addClass('btn btn-primary');
     </script>
 
 {% endblock %}

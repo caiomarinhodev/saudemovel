@@ -42,7 +42,10 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
         return data
 
     def form_valid(self, form):
-        logger(self.request.user, "Criou o produto " + str(self.object))
+        try:
+            logger(self.request.user, "Criou o produto " + str(self.object))
+        except (Exception,):
+            pass
         context = self.get_context_data()
         print(context)
         gruposet = context['gruposet']
@@ -90,7 +93,10 @@ class ProdutoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
         return data
 
     def form_valid(self, form):
-        logger(self.request.user, "Alterou o produto " + str(self.object))
+        try:
+            logger(self.request.user, "Alterou o produto " + str(self.object))
+        except (Exception,):
+            pass
         context = self.get_context_data()
         print(context)
         gruposet = context['gruposet']

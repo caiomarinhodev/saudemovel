@@ -68,9 +68,9 @@ def calcula_media_aval(loja):
 
 
 @register.filter
-def order_by(list):
+def order_by(list, filter='-created_at'):
     try:
-       return list.order_by('-created_at')
+       return list.order_by(str(filter))
     except (Exception,):
         return None
 
