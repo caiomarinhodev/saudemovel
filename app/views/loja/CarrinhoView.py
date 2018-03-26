@@ -110,7 +110,8 @@ def check_required_selected(checks, list):
                 opc = Opcional.objects.filter(id=check).first()
                 if opc.grupo.id == group.id:
                     count += 1
-    return (int(count) == int(list.count()))
+    return (int(count) >= int(list.count()))
+
 
 def check_loja_is_online(request):
     loja = Request.objects.get(id=request.session['pedido']).estabelecimento

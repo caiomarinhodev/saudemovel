@@ -149,7 +149,7 @@
                                                                                                                    data-limitador-{{ grupo.pk }}="{{ grupo.limitador }}"
                                                                                                                    data-value="{{ opcional.valor }}"
                                                                                                                    value="{{ opcional.id }}"
-                                                                                                                   onclick="return KeepCount_{{ grupo.pk }}();">
+                                                                                                                   onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opcional.nome }}
                                                                                                             (+R$ {{ opcional.valor }})
                                                                                                         </label>
@@ -157,10 +157,9 @@
                                                                                                 {% endif %}
                                                                                             {% endfor %}
                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                function keepcoun{{ grupo.pk }}t() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
-                                                                                                    console.log(inputTags_{{ grupo.pk }});
                                                                                                     for (var i = 0; i < inputTags_{{ grupo.pk }}.length; i++) {
 
                                                                                                         if (inputTags_{{ grupo.pk }}[i].checked) {
@@ -190,7 +189,7 @@
                                                                                                                    data-limitador-{{ grupo.pk }}="{{ grupo.limitador }}"
                                                                                                                    data-value="{{ opc.valor }}"
                                                                                                                    value="{{ opc.id }}"
-                                                                                                                   onclick="return KeepCount_{{ grupo.pk }}();">
+                                                                                                                   onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opc.nome }}
                                                                                                             (+R$ {{ opc.valor }})
                                                                                                         </label>
@@ -198,10 +197,9 @@
                                                                                                 {% endif %}
                                                                                             {% endfor %}
                                                                                             <script type="text/javascript">
-                                                                                                function KeepCount_{{ grupo.pk }}() {
+                                                                                                function keepcoun{{ grupo.pk }}t() {
                                                                                                     var inputTags_{{ grupo.pk }} = $('input[data-limitador-{{ grupo.pk }}={{ grupo.limitador }}]');
                                                                                                     var total_{{ grupo.pk }} = 0;
-                                                                                                    console.log(inputTags_{{ grupo.pk }});
                                                                                                     for (var i = 0; i < inputTags_{{ grupo.pk }}.length; i++) {
 
                                                                                                         if (inputTags_{{ grupo.pk }}[i].checked) {
@@ -244,9 +242,7 @@
                                                                                         var all_{{ produto.pk }} = $("input:checked").map(function () {
                                                                                             return $(this).data('value');
                                                                                         });
-                                                                                        console.log(all_{{ produto.pk }});
                                                                                         for (i = 0; i < all_{{ produto.pk }}.length; i++) {
-                                                                                            console.log(all_{{ produto.pk }}[i]);
                                                                                             total_calc_{{ produto.pk }} = total_calc_{{ produto.pk }} + parseFloat(all_{{ produto.pk }}[i]);
                                                                                         }
                                                                                         $('#total_item_{{ produto.pk }}').text('' + total_calc_{{ produto.pk }});
@@ -255,19 +251,10 @@
                                                                             </script>
                                                                         </div>
                                                                         <div class="pull-right">
-                                                                            <button type="button"
+                                                                            <button type="button" onclick="return "
                                                                                     class="btn btn-secondary fechar"
                                                                                     data-dismiss="modal">Fechar
                                                                             </button>
-                                                                            <script>
-                                                                                $(document).ready(function () {
-                                                                                    $('.fechar').click(function (evt) {
-                                                                                        $('input').removeAttr('checked');
-                                                                                        $('input').change();
-                                                                                        evt.preventDefault();
-                                                                                    });
-                                                                                })
-                                                                            </script>
                                                                             <button type="submit"
                                                                                     class="btn btn-danger">
                                                                                 Adicionar
@@ -289,6 +276,21 @@
                         </div>
                         <br/><br/>
                         <p>Todas as imagens são meramente ilustrativas.</p>
+                        <script>
+                            $(document).ready(function () {
+                                var arr = [];
+                                $('input').click(function () {
+                                    arr.push($(this));
+                                    console.log(arr);
+                                });
+                                $('.fechar').click(function (evt) {
+                                    arr.forEach(function (el) {
+                                        el.removeAttr('checked');
+                                        el.change();
+                                    });
+                                });
+                            })
+                        </script>
 
                         <script>
                             $(document).ready(function () {

@@ -33,7 +33,7 @@ class PontoAdmin(admin.ModelAdmin):
 
 
 class FolhaPagamentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'loja', 'valor_total', 'link_pagamento', 'status_pagamento', 'created_at',)
+    list_display = ('id', 'loja', 'valor_total', 'valor_cobrar', 'link_pagamento', 'status_pagamento', 'created_at',)
 
     def loja(self, obj):
         return str(obj.estabelecimento)

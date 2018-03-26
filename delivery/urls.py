@@ -27,7 +27,7 @@ from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUs
 from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
     remove_cart
-from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script
+from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script, bootstrap
 from app.views.loja.LoginView import ClienteLoginView
 from app.views.loja.LoginView import EscolheLoginView, RegistroCliente
 from app.views.painel.bairro_gratis.BairroGratisView import BairroGratisCreateView, BairroGratisUpdateView, \
@@ -191,6 +191,7 @@ urlpatterns = [
 
     url(r'^pagamentos/motoboy/$', PagamentoMotoboyListView.as_view(), name='pagamento_motoboy'),
     url(r'^script/$', script, name='script_bairro'),
+    url(r'^bootstrap/$', bootstrap, name='bootstrap'),
 
     url(r'^chamar-motoboy/(?P<pk>[0-9]+)/$', chamar_motoboy, name='chamar_motoboy'),
     url(r'^chamar-motoboy-cozinha/(?P<pk>[0-9]+)/$', chamar_motoboy_cozinha, name='chamar_motoboy_cozinha'),
