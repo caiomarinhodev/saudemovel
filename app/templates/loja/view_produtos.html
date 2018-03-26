@@ -151,7 +151,7 @@
                                                                                                                    value="{{ opcional.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opcional.nome }}
-                                                                                                            (+R$ {{ opcional.valor }})
+                                                                                                            ({{ opcional.descricao }} +R$ {{ opcional.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
@@ -191,7 +191,7 @@
                                                                                                                    value="{{ opc.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opc.nome }}
-                                                                                                            (+R$ {{ opc.valor }})
+                                                                                                            ({{ opcional.descricao }} +R$ {{ opc.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
@@ -307,7 +307,7 @@
                         </div>
                         <p class="text-muted">Verifique abaixo seu itens no pedido</p>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-responsive">
                                 <tbody>
                                 {% for itempedido in pedido_obj.itempedido_set.all %}
                                     <tr>
@@ -351,15 +351,19 @@
 
                                 </tbody>
                             </table>
-                            <a href="{% url 'finaliza_pedido' %}" class="btn btn-danger
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="{% url 'finaliza_pedido' %}" class="btn btn-danger
                                                 {% if not loja.is_online or not pedido_obj.itempedido_set.first %}
                                                 disabled
                                                 {% endif %}
                                                 "
-                                    {% if not loja.is_online or not pedido_obj.itempedido_set.first %}
-                               disabled="disabled"
-                                    {% endif %}
-                            >Finalizar Compra</a>
+                                        {% if not loja.is_online or not pedido_obj.itempedido_set.first %}
+                                   disabled="disabled"
+                                        {% endif %}
+                                >Finalizar Compra</a>
+                            </div>
                         </div>
                     </div>
                     {% if loja.endereco_completo %}

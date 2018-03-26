@@ -14,4 +14,4 @@ class ClassificacaoListView(LoginRequiredMixin, ListView, FocusMixin):
 
     def get_queryset(self):
         est = self.request.user.estabelecimento
-        return Avaliacao.objects.filter(pedido__estabelecimento=est)
+        return Avaliacao.objects.filter(estabelecimento=est)

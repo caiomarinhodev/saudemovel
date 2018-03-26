@@ -487,7 +487,7 @@
                     </li>
 
                 {% else %}
-                    {% if user.estabelecimento.configuration.chamar_motoboy %}
+                    {% if user.estabelecimento.configuration.has_loja_online %}
                         <li class="treeview" id="loja">
                             <a href="#" id="click">
                                 <i class="fa fa-pie-chart"></i>
@@ -510,7 +510,7 @@
                                 </li>
                                 <li id="categoria">
                                     <a href="{% url 'list_categoria' %}">
-                                        <i class="fa fa-check-square-o"></i> <span>Categorias</span>
+                                        <i class="fa fa-list-ol"></i> <span>Abas</span>
                                     </a>
                                 </li>
                                 <li id="produto">
@@ -525,7 +525,7 @@
                                 </li>
                                 <li id="opcional">
                                     <a href="{% url 'list_opcional' %}">
-                                        <i class="fa fa-list-ol"></i> <span>Opcionais</span>
+                                        <i class="fa fa-check-square-o"></i> <span>Opcionais</span>
                                     </a>
                                 </li>
 

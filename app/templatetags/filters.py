@@ -68,6 +68,14 @@ def calcula_media_aval(loja):
 
 
 @register.filter
+def order_by(list):
+    try:
+       return list.order_by('-created_at')
+    except (Exception,):
+        return None
+
+
+@register.filter
 def is_pedido_prepared(value):
     try:
         pedido = value

@@ -75,6 +75,7 @@ class Configuration(TimeStamped):
     plano = models.CharField(max_length=100, choices=PLANS, default='BASIC')
     chamar_motoboy = models.BooleanField(default=True)
     tempo_de_entrega = models.CharField(max_length=2, default=50)
+    has_loja_online = models.BooleanField(default=False)
     has_cozinha = models.BooleanField(default=True)
     status_entrega_gratis = models.BooleanField(default=False)
 
@@ -421,6 +422,7 @@ class Opcional(TimeStamped):
         verbose_name_plural = u'Opcionais'
 
     nome = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=300, blank=True, null=True)
     grupo = models.ForeignKey(Grupo, blank=True, null=True, on_delete=models.CASCADE)
     valor = models.CharField(max_length=10)
     disponivel = models.BooleanField(default=True)

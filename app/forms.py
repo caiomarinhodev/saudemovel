@@ -351,13 +351,13 @@ class FormFotoProduto(ModelForm, BaseForm):
 class FormOpcionalInline(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', 'disponivel']
+        fields = ['nome', 'descricao', 'valor', 'disponivel']
 
 
 class FormOpcional(ModelForm, BaseForm):
     class Meta:
         model = Opcional
-        fields = ['nome', 'valor', 'grupo', 'disponivel']
+        fields = ['nome', 'descricao', 'valor', 'grupo', 'disponivel']
 
 
 FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)

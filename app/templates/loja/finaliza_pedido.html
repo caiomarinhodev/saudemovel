@@ -40,12 +40,12 @@
                                                            name="endereco"
                                                            value="{{ endereco.id }}"
                                                             {% if endereco.bairro|is_entrega_gratis:pedido_obj.estabelecimento %}
-                                                                data-valor="0.00"
+                                                           data-valor="0.00"
                                                             {% else %}
                                                                 {% if user|is_madrugada %}
-                                                                    data-valor="{{ endereco.bairro.valor_madrugada|floatformat:2 }}"
+                                                           data-valor="{{ endereco.bairro.valor_madrugada|floatformat:2 }}"
                                                                 {% else %}
-                                                                    data-valor="{{ endereco.bairro.valor|floatformat:2 }}"
+                                                           data-valor="{{ endereco.bairro.valor|floatformat:2 }}"
                                                                 {% endif %}
                                                             {% endif %}
 
@@ -96,16 +96,16 @@
                                                     {% for bairro in bairros %}
                                                         <option value="{{ bairro.id }}"
                                                                 {% if bairro|is_entrega_gratis:pedido_obj.estabelecimento %}
-                                                                    data-valor="0.00"
+                                                                data-valor="0.00"
                                                                 {% else %}
                                                                     {% if user|is_madrugada %}
-                                                                        data-valor="{{ bairro.valor_madrugada|floatformat:2 }}"
+                                                                data-valor="{{ bairro.valor_madrugada|floatformat:2 }}"
                                                                     {% else %}
-                                                                        data-valor="{{ bairro.valor|floatformat:2 }}"
+                                                                data-valor="{{ bairro.valor|floatformat:2 }}"
                                                                     {% endif %}
                                                                 {% endif %}
                                                         >
-                                                        {{ bairro.nome }}
+                                                            {{ bairro.nome }}
                                                         </option>
                                                     {% endfor %}
 
@@ -198,7 +198,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table table-responsive">
                                                 <thead>
                                                 <tr>
                                                     <th>Produto</th>
@@ -253,16 +253,21 @@
 
                                                 </tbody>
                                             </table>
-                                            <button type="submit" class="btn btn-danger
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-danger
                                                 {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
                                                 disabled
                                                 {% endif %}
                                                 "
-                                                    {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
-                                                    disabled="disabled"
-                                                    {% endif %}
-                                            >Finalizar Pedido
-                                            </button>
+                                                        {% if not pedido_obj.estabelecimento.is_online or not pedido_obj.itempedido_set.first %}
+                                                        disabled="disabled"
+                                                        {% endif %}
+                                                >Finalizar Pedido
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

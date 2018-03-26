@@ -16,9 +16,9 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>ID_PEDIDO</th>
                                         <th>NOTA</th>
                                         <th>CLIENTE</th>
+                                        <th>COMENTARIO</th>
                                         <th>CRIADO EM</th>
                                     </tr>
                                     </thead>
@@ -29,14 +29,12 @@
                                                 {{ classificacao.id }}
                                             </td>
                                             <td>
-                                                {{ classificacao.pedido.id }}
-                                            </td>
-                                            <td>
                                                 {{ classificacao.nota }}
                                             </td>
                                             <td>
-                                                {{ classificacao.pedido.cliente }}
+                                                {{ classificacao.cliente }}
                                             </td>
+                                            <td>{{ classificacao.comentario }}</td>
                                             <td>
                                                 {{ classificacao.created_at|date:"d/m/Y G:i" }}
                                             </td>
