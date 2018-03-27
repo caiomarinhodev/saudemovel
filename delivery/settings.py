@@ -94,7 +94,7 @@ PWA_APP_ICONS = [
         "type": "image/png"
     }
 ]
-# PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'js', 'pwabuilder-sw.js')
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
