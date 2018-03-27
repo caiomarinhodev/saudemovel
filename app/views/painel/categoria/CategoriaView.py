@@ -30,6 +30,7 @@ class CategoriaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
     def get_context_data(self, **kwargs):
         data = super(CategoriaCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
+            print(self.request.POST)
             data['produtoset'] = ProdutoFormSet(self.request.POST)
         else:
             data['produtoset'] = ProdutoFormSet()
@@ -62,8 +63,14 @@ class CategoriaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
     success_url = '/categoria/list'
     template_name = 'painel/categoria/edit_categoria.html'
 
+    def get_initial(self):
+        return {
+            'estabelecimento': Estabelecimento.objects.get(user=self.request.user)
+        }
+
     def get_context_data(self, **kwargs):
         data = super(CategoriaUpdateView, self).get_context_data(**kwargs)
+        print(self.request.POST)
         if self.request.POST:
             data['produtoset'] = ProdutoFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
@@ -80,11 +87,6 @@ class CategoriaUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
                 produtoset.instance = self.object
                 produtoset.save()
         return super(CategoriaUpdateView, self).form_valid(form)
-
-    def get_initial(self):
-        return {
-            'estabelecimento': Estabelecimento.objects.get(user=self.request.user)
-        }
 
 
 class CategoriaDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
