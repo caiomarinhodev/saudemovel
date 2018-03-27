@@ -20,6 +20,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>NOME</th>
+                                        <th>PRODUTOS</th>
                                         <th>ESTABELECIMENTO</th>
                                         <th>CRIADO EM</th>
                                         <th></th>
@@ -35,6 +36,7 @@
                                             <td>
                                                 {{ categoria.nome }}
                                             </td>
+                                            <td>{{ categoria.produto_set.all|length }}</td>
                                             <td>
                                                 {{ categoria.estabelecimento }}
                                             </td>

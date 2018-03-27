@@ -37,7 +37,6 @@ class CategoriaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
 
     def form_valid(self, form):
         context = self.get_context_data()
-        print(context)
         produtoset = context['produtoset']
         with transaction.atomic():
             self.object = form.save()

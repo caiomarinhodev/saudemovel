@@ -6,6 +6,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import Context
+from django.template.defaultfilters import floatformat
 from django.views.decorators.http import require_http_methods
 from django.views.generic import UpdateView
 
@@ -68,13 +69,21 @@ def make_obs(req):
     message = '<p><ul>'
     try:
         message += '<li>Forma de Pagamento: ' + str(req.forma_pagamento) + ' </li>'
-        message += '<li>Valor Total: ' + str(req.valor_total) + ' </li>'
-        message += '<li>Troco para: ' + str(req.forma_pagamento) + ' (' + str(req.resultado_troco) + ')</li>'
+        message += '<li>Valor Total: ' + floatformat(str(req.valor_total), 2) + ' </li>'
+        message += '<li>Troco para: ' + floatformat(str(req.forma_pagamento), 2) + ' ('
+        if req.resultado_troco:
+            message += floatformat(str(req.resultado_troco), 2) + ')</li>'
+        else:
+            message += ')</li>'
         message += '</ul></p>'
     except (Exception,):
         message += '<li>Forma de Pagamento: ' + unicode(req.forma_pagamento) + ' </li>'
-        message += '<li>Valor Total: ' + unicode(req.valor_total) + ' </li>'
-        message += '<li>Troco para: ' + unicode(req.forma_pagamento) + ' (' + unicode(req.resultado_troco) + ')</li>'
+        message += '<li>Valor Total: ' + floatformat(unicode(req.valor_total), 2) + ' </li>'
+        message += '<li>Troco para: ' + floatformat(unicode(req.forma_pagamento), 2) + ' ('
+        if req.resultado_troco:
+            message += floatformat(unicode(req.resultado_troco), 2) + ')</li>'
+        else:
+            message += ')</li>'
         message += '</ul></p>'
 
     return message

@@ -144,7 +144,7 @@
                         <center><label>Valor Total </label></center>
                     </div>
                     <div class="col-xs-12">
-                        <center><h3 style="margin-top: 0px;">R$ {{ pedido.valor_total }}</h3></center>
+                        <center><h3 style="margin-top: 0px;">R$ {{ pedido.valor_total|floatformat:2 }}</h3></center>
                     </div>
                 </div>
                 <div class="row">
