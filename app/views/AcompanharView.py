@@ -18,7 +18,7 @@ class AcompanharListView(LoginRequiredMixin, ListView, CustomContextMixin):
 
 class AcompanharDetailView(LoginRequiredMixin, DetailView, CustomContextMixin):
     model = Pedido
-    template_name = 'entrega/pedidos/../../templates/entrega/acompanhar/acompanhar_view.html'
+    template_name = 'entrega/acompanhar/acompanhar_view.html'
     context_object_name = 'pedido'
 
 

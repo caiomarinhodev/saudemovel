@@ -78,6 +78,7 @@ class Configuration(TimeStamped):
     has_loja_online = models.BooleanField(default=False)
     has_cozinha = models.BooleanField(default=True)
     status_entrega_gratis = models.BooleanField(default=False)
+    blocked_cozinha = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % self.plano
