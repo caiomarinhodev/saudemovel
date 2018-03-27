@@ -151,7 +151,7 @@
                                                                                                                    value="{{ opcional.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opcional.nome }}
-                                                                                                            ({{ opcional.descricao }} +R$ {{ opcional.valor }})
+                                                                                                            ({% if opcional.descricao %}{{ opcional.descricao }}{% endif %} +R$ {{ opcional.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
@@ -191,7 +191,7 @@
                                                                                                                    value="{{ opc.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opc.nome }}
-                                                                                                            ({{ opcional.descricao }} +R$ {{ opc.valor }})
+                                                                                                            ({% if opcional.descricao %}{{ opcional.descricao }}{% endif %} +R$ {{ opc.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
