@@ -70,9 +70,20 @@ def calcula_media_aval(loja):
 @register.filter
 def order_by(list, filter='-created_at'):
     try:
-       return list.order_by(str(filter))
+        return list.order_by(str(filter))
     except (Exception,):
         return None
+
+
+@register.filter
+def ja_avaliou(avaliacoes, cliente):
+    try:
+        for aval in avaliacoes:
+            if aval.cliente.id == cliente.id:
+                return True
+        return False
+    except (Exception,):
+        return False
 
 
 @register.filter

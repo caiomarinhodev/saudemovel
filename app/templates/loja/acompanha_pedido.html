@@ -167,8 +167,11 @@
                                         <div class="box-simple box-dark same-height">
                                             <div class="icon"><i class="fa fa-fire"></i></div>
                                             <h1 style="color: white;">{{ pedido_obj.status_pedido }}</h1>
-                                            <p><a href="{% url 'add_avaliacao' pedido_obj.pk %}"
-                                                  class="btn btn-primary btn-block btn-lg">AVALIAR PEDIDO</a></p>
+                                            {% if not pedido_obj.estabelecimento.avaliacao_set.all|ja_avaliou:pedido_obj.cliente %}
+                                                <p><a href="{% url 'add_avaliacao' pedido_obj.pk %}"
+                                                      class="btn btn-primary btn-block btn-lg">AVALIAR PEDIDO</a></p>
+
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
