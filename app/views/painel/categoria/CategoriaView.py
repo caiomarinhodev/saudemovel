@@ -24,7 +24,7 @@ class CategoriaCreateView(LoginRequiredMixin, CreateView, FocusMixin):
     context_object_name = 'categoria'
     form_class = FormCategoria
     model = Categoria
-    success_url = '/categoria/list'
+    success_url = '/categoria/list/'
     template_name = 'painel/categoria/add_categoria.html'
 
     def get_context_data(self, **kwargs):
