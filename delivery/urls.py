@@ -1,5 +1,5 @@
 """urls.py: Urls definidas."""
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -277,4 +277,6 @@ urlpatterns = [
     url(r'^chamado/edit/(?P<pk>[0-9]+)/$', ChamadoUpdateView.as_view(), name='edit_chamado'),
     url(r'^chamado/list/$', ChamadoListView.as_view(), name='list_chamados'),
     url(r'^chamado/delete/(?P<pk>[0-9]+)/$', ChamadoDeleteView.as_view(), name='delete_chamado'),
+
+    url('', include('pwa.urls')),
 ]

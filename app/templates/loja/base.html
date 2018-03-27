@@ -1,8 +1,11 @@
 {% load staticfiles %}
-{#{% load filters %}#}
+{% load filters %}
+{% load pwa %}
 <!DOCTYPE html>
 <html lang="en">
 {% block head %}
+
+    {% progressive_web_app_meta %}
     {% include 'loja/includes/head.html' %}
     <script src="{% static 'js/jquery.1.11.0.min.js' %}"></script>
     <link href="{% static 'css/sweetalert.min.css' %}" rel="stylesheet">
@@ -18,9 +21,10 @@
             margin-left: -25px;
             margin-top: -30px;
         }
-    .bar{
-        padding: 20px 0;
-    }
+
+        .bar {
+            padding: 20px 0;
+        }
     </style>
 {% endblock %}
 <body>
