@@ -140,7 +140,7 @@
                                                                                             :</b></label>
 
                                                                                         {% if grupo.tipo == 'radio' %}
-                                                                                            {% for opcional in grupo.opcional_set.all %}
+                                                                                            {% for opcional in grupo.opcional_set.all|order_by:'created_at' %}
                                                                                                 {% if opcional.disponivel %}
                                                                                                     <div class="checkbox">
                                                                                                         <label>
@@ -180,7 +180,7 @@
                                                                                                 }
                                                                                             </script>
                                                                                         {% else %}
-                                                                                            {% for opc in grupo.opcional_set.all %}
+                                                                                            {% for opc in grupo.opcional_set.all|order_by:'created_at' %}
                                                                                                 {% if opc.disponivel %}
                                                                                                     <div class="checkbox">
                                                                                                         <label>

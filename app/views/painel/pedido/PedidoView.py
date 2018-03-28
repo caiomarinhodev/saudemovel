@@ -54,6 +54,7 @@ def make_itens(req):
             for opc in it.opcionalchoice_set.all():
                 message += str(opc.opcional.nome) + ','
             message += ') </li>'
+            message += '<br/>' + str(it.observacoes)
         message += '</ul></p>'
     except (Exception,):
         for it in req.itempedido_set.all():
@@ -61,6 +62,7 @@ def make_itens(req):
             for opc in it.opcionalchoice_set.all():
                 message += unicode(opc.opcional.nome) + ','
             message += ') </li>'
+            message += '<br/>' + unicode(it.observacoes)
         message += '</ul></p>'
     return message
 
