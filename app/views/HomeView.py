@@ -14,20 +14,20 @@ __copyright__ = "Copyright 2017"
 
 
 class AppView(TemplateView):
-    template_name = 'page/index.html'
+    template_name = 'entrega/page/index.html'
 
 
 class CollectView(TemplateView):
-    template_name = 'page/collect.html'
+    template_name = 'entrega/page/collect.html'
 
 
 class ContributeView(TemplateView):
-    template_name = 'page/contribute.html'
+    template_name = 'entrega/page/contribute.html'
 
 
 class DashboardListPedidosView(LoginRequiredMixin, TemplateView, DashboardListMixin):
     login_url = '/login/'
-    template_name = 'admin/list_pedidos.html'
+    template_name = 'entrega/admin/list_pedidos.html'
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -37,7 +37,7 @@ class DashboardListPedidosView(LoginRequiredMixin, TemplateView, DashboardListMi
 
 class DashboardDataView(LoginRequiredMixin, TemplateView, DashboardMixin):
     login_url = '/login/'
-    template_name = 'admin/dashboard.html'
+    template_name = 'entrega/admin/dashboard.html'
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -47,11 +47,11 @@ class DashboardDataView(LoginRequiredMixin, TemplateView, DashboardMixin):
 
 class ListMotoristasView(LoginRequiredMixin, TemplateView, ListMotoristasMixin):
     login_url = '/login/'
-    template_name = 'admin/list_motoristas.html'
+    template_name = 'entrega/admin/list_motoristas.html'
 
 
 def set_feriado_admin(request):
     config = ConfigAdmin.objects.first()
     config.is_feriado = not config.is_feriado
     config.save()
-    return redirect('/dashboard')
+    return redirect('/app/dashboard/')

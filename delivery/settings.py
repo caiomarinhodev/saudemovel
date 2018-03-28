@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """settings.py: Arquivo de configuracao do projeto."""
 import os
 
@@ -44,7 +46,55 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    # 'pwa',
 ]
+
+# PWA_APP_NAME = 'Focus Delivery'
+# PWA_APP_DESCRIPTION = u"A Focus Delivery é uma plataforma online que está revolucionando o mercado de entregas expressas no Brasil."
+# PWA_APP_THEME_COLOR = '#555556'
+# PWA_APP_ICONS = [
+#     {
+#         "src": '/static/images/icon-72x72.png',
+#         "sizes": "72x72",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-96x96.png",
+#         "sizes": "96x96",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-128x128.png",
+#         "sizes": "128x128",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-144x144.png",
+#         "sizes": "144x144",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-152x152.png",
+#         "sizes": "152x152",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-192x192.png",
+#         "sizes": "192x192",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-384x384.png",
+#         "sizes": "384x384",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "/static/images/icon-512x512.png",
+#         "sizes": "512x512",
+#         "type": "image/png"
+#     }
+# ]
+# PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'js', 'pwabuilder-sw.js')
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

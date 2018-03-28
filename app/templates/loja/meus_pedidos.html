@@ -1,0 +1,67 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% load filters %}
+
+{% block content %}
+    <style>
+        .bg-red {
+            color: red;
+        {#background-color: red;#}
+        }
+
+        .bg-green {
+            color: green;
+        {#background-color: green;#}
+        }
+    </style>
+    {#    {% include 'carrossel.html' %}#}
+    <section class="bar background-white no-mb">
+        <div class="container">
+            <div class="heading text-center">
+                <h3>Meus Pedidos no Focus Delivery</h3>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Empresa</th>
+                                <th>Pagamento</th>
+                                <th>Hora</th>
+                                <th>Valor</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for pedido in user.cliente.request_set.all|order_by %}
+                                <tr>
+                                    <td>{{ pedido.id }}</td>
+                                    <td>{{ pedido.estabelecimento }}</td>
+                                    <td>{{ pedido.forma_pagamento }}</td>
+                                    <td>{{ pedido.published_at }}</td>
+                                    <td>R$ {{ pedido.valor_total }}</td>
+                                    <td>
+                                        <a href="{% url 'acompanhar_pedido' pedido.pk %}" class="btn btn-primary"><i class="fa fa-cutlery"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#pedidos').addClass('active');
+        });
+    </script>
+
+{% endblock %}

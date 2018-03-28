@@ -1,0 +1,455 @@
+{% extends 'entrega/admin/base_dash.html' %}
+{% load filters %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css' %}"/>
+    <style>
+        .leaflet-control-container .leaflet-routing-container-hide {
+            display: none;
+        }
+    </style>
+    <style>
+
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .message-item {
+            margin-bottom: 25px;
+            margin-left: 40px;
+            position: relative;
+        }
+
+        .message-item .message-inner {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            position: relative;
+        }
+
+        .message-item .message-inner:before {
+            border-right: 10px solid #ddd;
+            border-style: solid;
+            border-width: 10px;
+            color: rgba(0, 0, 0, 0);
+            content: "";
+            display: block;
+            height: 0;
+            position: absolute;
+            left: -20px;
+            top: 6px;
+            width: 0;
+        }
+
+        .message-item .message-inner:after {
+            border-right: 10px solid #fff;
+            border-style: solid;
+            border-width: 10px;
+            color: rgba(0, 0, 0, 0);
+            content: "";
+            display: block;
+            height: 0;
+            position: absolute;
+            left: -18px;
+            top: 6px;
+            width: 0;
+        }
+
+        .message-item:before {
+            background: #fff;
+            border-radius: 2px;
+            bottom: -30px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+            content: "";
+            height: 100%;
+            left: -30px;
+            position: absolute;
+            width: 3px;
+        }
+
+        .message-item:after {
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            content: "";
+            height: 15px;
+            left: -36px;
+            position: absolute;
+            top: 10px;
+            width: 15px;
+        }
+
+        .clearfix:before, .clearfix:after {
+            content: " ";
+            display: table;
+        }
+
+        .message-item .message-head {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+        }
+
+        .message-item .message-head .avatar {
+            margin-right: 20px;
+        }
+
+        .message-item .message-head .user-detail {
+            overflow: hidden;
+        }
+
+        .message-item .message-head .user-detail h5 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .message-item .message-head .post-meta {
+            float: left;
+            padding: 0 15px 0 0;
+        }
+
+        .message-item .message-head .post-meta > div {
+            color: #333;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .post-meta > div {
+            color: #777;
+            font-size: 12px;
+            line-height: 22px;
+        }
+
+        .message-item .message-head .post-meta > div {
+            color: #333;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .post-meta > div {
+            color: #777;
+            font-size: 12px;
+            line-height: 22px;
+        }
+
+    </style>
+    {#    <link rel="stylesheet" href="/static/plugins/leaflet/leaflet.css"/>#}
+    {#    <link rel="stylesheet" href="/static/plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>#}
+    {#    <script src="/static/plugins/leaflet/leaflet.js"></script>#}
+    {#    <script src="/static/plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>#}
+    {#    <script src="/static/plugins/leaflet-routing-machine/examples/Control.Geocoder.js"></script>#}
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-check-square-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Online</span>
+                    <span class="info-box-number">{{ motoristas_online|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-location-arrow"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Ocupados</span>
+                    <span class="info-box-number">{{ motoristas_ocupados|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-rocket"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Motoristas Livres</span>
+                    <span class="info-box-number">{{ motoristas_livres|length }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Meus Motoristas</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>FOTO</th>
+                                        <th>ID</th>
+                                        <th>LOGIN</th>
+                                        <th>CPF</th>
+                                        <th>MOTORISTA</th>
+                                        <th>PLACA</th>
+                                        <th>ONLINE</th>
+                                        <th>OCUPADO</th>
+                                        <th>Corridas Mes</th>
+                                        <th>Ganho Mes</th>
+                                        <th>Corridas Hoje</th>
+                                        <th>Ganhos Hoje</th>
+                                        <th>Ganhos Totais</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for motorista in motoristas %}
+                                        <tr>
+                                            <td>
+                                                {% if motorista.photo %}
+                                                    <img src='{{ motorista.photo }}' class=""
+                                                         style="max-height: 25px; "/>
+                                                {% else %}
+                                                    <img src='{% static 'img/300.png' %}' class=""
+                                                         style="max-height: 25px; "/>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ motorista.id }}
+                                            </td>
+                                            <td>
+                                                {{ motorista.user.username }}
+                                            </td>
+                                            <td>
+                                                {{ motorista.cpf }}
+                                            </td>
+                                            <td>
+                                                <a data-toggle="modal"
+                                                   href="#modal_{{ motorista.id }}"> {{ motorista.user.first_name }}</a>
+
+                                                <div class="modal fade" role="dialog" id="modal_{{ motorista.id }}">
+                                                    <div class="modal-dialog">
+
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;</button>
+                                                                <center><h3>Sobre {{ motorista.user.first_name }}</h3>
+                                                                </center>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="tab-content">
+                                                                    <center>
+                                                                        <div class="tab-pane active" id="about">
+                                                                            {% if motorista.photo %}
+                                                                                <img src="{{ motorista.photo }}"
+                                                                                     name="aboutme" width="140"
+                                                                                     height="140" border="0"
+                                                                                     class="img-circle">
+                                                                            {% else %}
+                                                                                <img src="{% static 'img/300.png' %}"
+                                                                                     name="aboutme" width="140"
+                                                                                     height="140" border="0"
+                                                                                     class="img-circle">
+                                                                            {% endif %}
+                                                                            <h3 class="media-heading">{{ motorista.user.first_name }}
+                                                                                <small> {{ motorista.placa }}</small>
+                                                                            </h3>
+                                                                            <span><strong>Rotas Realizadas: {{ motorista.user.pedido_set.all|length }}</strong></span>
+                                                                            <!--</center>-->
+                                                                            <hr>
+                                                                            <center>
+                                                                                <p class="text-center">
+                                                                                    <strong>Telefone: </strong><br>
+                                                                                    {{ motorista.phone }}</p>
+                                                                                <br>
+                                                                                <p class="text-center">
+                                                                                    <span><strong>Media Avaliacao: {{ motorista.user.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
+                                                                                </p>
+                                                                            </center>
+                                                                        </div>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Fechar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ motorista.placa }}</td>
+                                            <td>
+                                                {% if motorista.is_online %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        ONLINE</label>
+                                                {% else %}
+                                                    <label class="label label-danger"><i
+                                                            class=""></i> OFFLINE</label>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if motorista.ocupado %}
+                                                    <label class="label label-danger"><i
+                                                            class=""></i> OCUPADO</label>
+                                                {% elif motorista.is_online and not motorista.ocupado %}
+                                                    <label class="label label-success"><i
+                                                            class=""></i>
+                                                        LIVRE</label>
+                                                {% elif not motorista.is_online and not motorista.ocupado %}
+                                                     <label class="label label-danger"><i
+                                                            class=""></i>
+                                                        OFFLINE</label>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ motorista|corridas_mes|length }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_mes|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|corridas_hoje|length }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_hoje|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {{ motorista|ganhos_totais|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {% if motorista.is_approved %}
+                                                    <span><i class="fa fa-check green"></i></span>
+                                                {% else %}
+                                                    <span><i class="fa fa-close red"></i></span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Mapa</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="map" style="height: 450px;"></div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-">
+                            <div class="small-box bg-aqua">
+                                <div class="inner">
+                                    <h3>{{ motoristas|length }}</h3>
+
+                                    <p>Motoristas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-android-contact"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <script src="{% static 'plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js' %}"></script>
+    <script src="{% static 'plugins/leaflet-routing-machine/examples/Control.Geocoder.js' %}"></script>
+    <script>
+        var map = L.map('map').setView([-7.2428323, -35.936586], 12);
+        //
+        // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        // 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        // }).addTo(map);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1IjoiY2Fpb21hcmluaG84IiwiYSI6ImNpZ2RzdHR3cTJ2aHZ2OW04cnc5YTBiengifQ.oDcflEacffSkQxXd6RiQ2A'
+        }).addTo(map);
+
+        icon = L.divIcon({className: 'fa fa-street-view fa-2x green'});
+        icon_2 = L.divIcon({className: 'fa fa-street-view fa-2x red'});
+
+        icon_m = L.divIcon({className: 'fa fa-dot-circle-o fa-2x green'});
+        icon_m_2 = L.divIcon({className: 'fa fa-dot-circle-o fa-2x red'});
+
+        {% for est in motoristas %}
+            {% if est.is_online %}
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon}).bindPopup("{{ est.user.first_name }}").addTo(map);
+            {% else %}
+                L.marker([{{ est.lat }}, {{ est.lng }}], {icon: icon_2}).bindPopup("{{ est.user.first_name }}").addTo(map);
+            {% endif %}
+        {% endfor %}
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table').DataTable({
+                responsive: true,
+                order: [[1, "desc"]]
+            });
+            $('#motoristas').addClass('active');
+        });
+
+    </script>
+
+{% endblock %}

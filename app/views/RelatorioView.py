@@ -13,7 +13,7 @@ from app.models import Pedido, Motorista
 
 class RelatorioTemplateView(LoginRequiredMixin, TemplateView, CustomContextMixin):
     login_url = '/login/'
-    template_name = 'reports/relatorios_base.html'
+    template_name = 'entrega/reports/relatorios_base.html'
 
 
 class DashboardReportViewUser(LoginRequiredMixin, TemplateView, CustomContextMixin):
@@ -31,7 +31,7 @@ class DashboardReportViewUser(LoginRequiredMixin, TemplateView, CustomContextMix
 
 class TimelineView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login'
-    template_name = 'reports/timeline.html'
+    template_name = 'entrega/reports/timeline.html'
     model = Pedido
     context_object_name = 'rotas'
 
@@ -42,7 +42,7 @@ class TimelineView(LoginRequiredMixin, ListView, CustomContextMixin):
 
 class PromocaoListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
-    template_name = 'promo/list_motoristas.html'
+    template_name = 'entrega/promo/list_motoristas.html'
     model = Motorista
     context_object_name = 'motoristas'
 
