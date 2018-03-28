@@ -1,0 +1,249 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <style>
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: #301c1e;
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0px 0px 15px 0px;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        a {
+            text-decoration: none;
+            color: #301c1e;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+
+        a:focus, a:hover {
+            text-decoration: none;
+            color: #f25b6a;
+        }
+
+        /*------------------------
+         Account
+        --------------------------*/
+        .account-holder {
+            border: 1px solid #ededed;
+            padding: 30px;
+        }
+
+        .social-btn {
+            margin-bottom: 20px;
+        }
+
+        .fb-btn {
+            border: 1px solid #ededed;
+            padding: 7px 18px;
+            display: inline-block;
+            color: #3a549e;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .fb-btn-text {
+            padding-left: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #301c1e;
+            font-weight: 700;
+        }
+
+        .google-btn {
+            border: 1px solid #ededed;
+            padding: 7px 18px;
+            display: inline-block;
+            color: #f04c42;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .google-btn-text {
+            padding-left: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #301c1e;
+            font-weight: 700;
+        }
+
+        .forgot-password {
+            color: #f25b6a;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 15px;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 14px 24px;
+            margin-bottom: 4px;
+            letter-spacing: 2.2px;
+            border-radius: 0px;
+            line-height: 1.6;
+            border: transparent;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+            word-wrap: break-word;
+            white-space: normal !important;
+        }
+
+        .btn-primary {
+            background-color: #f25b6a;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #e14e5c;
+            color: #fff;
+        }
+
+        /*-----------------------
+           Form Elements:
+        -------------------------*/
+        label {
+        }
+
+        .control-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #301c1e;
+            margin-bottom: 10px;
+        }
+
+        .form-control:focus {
+        }
+
+        .textarea.form-control {
+        }
+
+        .required {
+        }
+
+        .form-control {
+            border-radius: 0px;
+            text-transform: capitalize;
+            color: #aca5a5;
+            font-size: 12px;
+            font-weight: 500;
+            width: 100%;
+            height: 50px;
+            padding: 14px;
+            line-height: 1.42857143;
+            background-image:;
+            border: transparent;
+            background-color: #f1f1f1;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 0px 0px rgba(0, 0, 0, .075);
+        }
+
+        .input-group {
+            position: relative;
+            display: table;
+            border-collapse: separate;
+        }
+
+        input[type=checkbox], input[type=radio] {
+            margin: 8px 0 0;
+            margin-top: 1px \9;
+            line-height: normal;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #595857 !important;
+        }
+
+        textarea::-webkit-input-placeholder {
+            color: #595857 !important;
+        }
+    </style>
+    <section class="bar background-white no-mb">
+
+        <div class="space-medium">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                        <div class="account-holder">
+                            <!--login-form-->
+                            <h3>Login como Cliente</h3>
+                            <br>
+                            <div class="row">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label required" for="email">CPF<sup
+                                                    style="color:red">*</sup> <h6>(somente números)</h6></label>
+                                            {{ form.cpf }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label required" for="email">Senha<sup
+                                                    style="color:red">*</sup></label>
+                                            {{ form.password }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                                        <button type="button" id="btn_entrar" class="btn btn-primary btn-block">Entrar</button>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="">
+
+                                                <p>Lembrar a Senha ?</p>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.login-form-->
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p>Ainda não tem conta?&nbsp;&nbsp;&nbsp; <a href="{% url 'registro_cliente' %}"
+                                                                     class="btn btn-primary">Fazer Registro</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.forms-->
+    </section>
+
+    <script>
+        $(document).ready(function () {
+            $('#btn_entrar').click(function () {
+                var cpf = String($('[name=cpf]').val());
+                console.log(cpf);
+                if (!valida_cpf(cpf)) {
+                    $('#loading').hide();
+                    swal("CPF Inválido", "Insira um CPF válido", "error");
+                } else {
+                    $('form').submit();
+                }
+            });
+        });
+    </script>
+
+
+
+{% endblock %}

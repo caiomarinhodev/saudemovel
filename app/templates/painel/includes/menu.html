@@ -1,0 +1,80 @@
+<ul class="sidebar-menu">
+    <li class="header">MENU</li>
+    <li id="dashboard">
+        <a href="{% url 'dashboard' %}">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+    </li>
+    <li id="bairro">
+        <a href="{% url 'list_bairro_gratis' %}">
+            <i class="fa fa-arrows"></i> <span>Bairros Gratis</span>
+        </a>
+    </li>
+    <li id="ger_entregas">
+        <a href="#">
+            <i class="fa fa-rocket"></i> <span>Gerenciamento de Entregas</span>
+        </a>
+    </li>
+    <li id="categoria">
+        <a href="{% url 'list_categoria' %}">
+            <i class="fa fa-check-square-o"></i> <span>Categorias</span>
+        </a>
+    </li>
+    <li id="produto">
+        <a href="{% url 'list_produto' %}">
+            <i class="fa fa-sitemap"></i> <span>Produtos</span>
+        </a>
+    </li>
+    <li id="grupo">
+        <a href="{% url 'list_grupo' %}">
+            <i class="fa fa-tag"></i> <span>Grupos</span>
+        </a>
+    </li>
+    <li id="opcional">
+        <a href="{% url 'list_opcional' %}">
+            <i class="fa fa-list-ol"></i> <span>Opcionais</span>
+        </a>
+    </li>
+
+    <li id="foto">
+        <a href="{% url 'list_foto' %}">
+            <i class="fa fa-image"></i> <span>Imagens</span>
+        </a>
+    </li>
+
+    <li id="pagamento">
+        <a href="{% url 'list_pagamento' %}">
+            <i class="fa fa-money"></i> <span>Formas de Pagamento</span>
+        </a>
+    </li>
+
+    <li id="entrega">
+        <a href="{% url 'list_entrega' %}">
+            <i class="fa fa-motorcycle"></i> <span>Formas de Entrega</span>
+        </a>
+    </li>
+
+    <li id="classificacao">
+        <a href="{% url 'list_classificacao' %}">
+            <i class="fa fa-sort-numeric-asc"></i> <span>Avaliações</span>
+        </a>
+    </li>
+
+    <li id="notificacao">
+        <a href="{% url 'list_notificacao' %}">
+            <i class="fa fa-exclamation-circle"></i> <span>Notificações</span>
+        </a>
+    </li>
+
+    <li id="pagamento">
+        <a href="{% url 'list_folhapagamento' %}">
+            <i class="fa fa-line-chart"></i> <span>Pagamentos</span>
+        </a>
+    </li>
+
+    <li id="logout">
+        <a href="{% url "auth_logout" %}">
+            <i class="fa fa-sign-out"></i> <span>Sair</span>
+        </a>
+    </li>
+</ul>

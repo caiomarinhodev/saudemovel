@@ -1,0 +1,105 @@
+{% extends 'base_painel.html' %}
+{% load staticfiles %}
+
+{% block content %}
+{#    {% include 'loading.html' %}#}
+
+    <div class="box box-primary" style="margin-top: 30px;">
+        <div class="box-header">
+            <h3 class="box-title">
+                <center style="font-size: 20px;">Editar</center>
+            </h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+         <form action="" method="post">{% csrf_token %}
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+                <hr/>
+                <h3>Itens do Pedido</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                     {{ itempedido_set.management_form }}
+                        <table class="table">
+                            {% for form in itempedido_set.forms %}
+                                {% if forloop.first %}
+                                    <thead>
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                            <th>{{ field.label|capfirst }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                {% endif %}
+                                <tr class="itempedido_set_row">
+                                    {% for field in form.visible_fields %}
+                                        <td>
+                                            {# Include the hidden fields in the form #}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <script src="{% static 'js/jquery.formset.js' %}"></script>
+                        <script type="text/javascript">
+                            $('.itempedido_set_row').formset({
+                                addText: 'Adicionar',
+                                deleteText: 'Remover',
+                                prefix: 'itempedido_set'
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class=" box-footer ">
+                <a href="#" id="btn_cancelar" class="btn btn-default pull-left">Voltar</a>
+                <button type="submit" id="btn_salvar" class="btn btn-primary pull-right">Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+             $('input[type=checkbox]').removeClass('form-control');
+
+            $('.add-row').click(function (evt) {
+                $('input[type=checkbox]').removeClass('form-control');
+            });
+
+            $('[name=obrigatoriedade]').removeClass('form-control');
+
+            $('#btn_salvar').click(function () {
+                if ($("select").filter(function () {
+                        return $.trim($(this).val()).length == 0
+                    }).length == 0) {
+                    $('form').submit();
+                } else {
+                    swal('Preencha todos os campos', 'Verifique se preencheu todos os campos', 'error');
+                }
+            });
+
+            $('#dashboard').addClass('active');
+            $('#btn_cancelar').click(function () {
+                return window.history.back();
+            });
+        });
+    </script>
+    <script>
+        $('.add-row').addClass('btn btn-primary');
+    </script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% load filters %}
+<script>
+    $(document).ready(function () {
+        {% if notificacao.type_message == 'NOVO_PEDIDO' %}
+            {% if notificacao.pedido %}
+                play('alert');
+                swal({
+                    title: "ALERTA!",
+                    text: '{{ notificacao.message }}',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Aceitar",
+                    cancelButtonText: "Rejeitar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false,
+                    showLoaderOnConfirm: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        setTimeout(function () {
+                            window.location.href = '{% url 'aceitar_pedido' notificacao.pedido.id %}'
+                        }, 1000);
+                    } else {
+                        window.location.href = '{% url 'rejeitar_pedido' notificacao.pedido.id %}'
+                    }
+                });
+            {% endif %}
+        {% endif %}
+    });
+</script>

@@ -1,0 +1,101 @@
+{% extends 'loja/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    {#    {% include 'carrossel.html' %}#}
+    <div class="bar background-pentagon no-mb text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <div class="form-group">
+                        <h2><i class="fa fa-map-marker"></i> Onde você está?</h2>
+                        <select class="form-control input-lg">
+                            <option value="Campina Grande">Campina Grande</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <section class="bar background-white no-mb">
+        <div class="container">
+            <div class="heading text-center">
+                <h2>Peça Comida Online!</h2>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        {% for loja in lojas %}
+                            {% if loja.configuration.has_loja_online %}
+                                <a href="{% url 'view_loja' loja.pk %}">
+                                    <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 text-center"
+                                         style="margin-bottom: 35px;">
+                                        <div class="thumbnail text-center" style="height: 110px; width: 110px;">
+
+                                            <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
+                                                 src="{{ loja.photo }}" style="height: 105px; width: 105px;"/>
+                                            <label class="label label-default">{{ loja.user.first_name }}</label>
+                                            {% if loja.is_online %}
+                                                <label class="label label-success">
+                                                    Online
+                                                </label>
+                                            {% else %}
+                                                <center>
+                                                    <label class="label label-danger">
+                                                        Offline
+                                                    </label>
+                                                </center>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        {% for loja in lojas_off %}
+                            {% if loja.configuration.has_loja_online %}
+                                <a href="{% url 'view_loja' loja.pk %}">
+                                    <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" style="margin-bottom: 35px;">
+                                        <div class="thumbnail text-center" style="height: 110px; width: 110px;">
+
+                                            <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
+                                                 src="{{ loja.photo }}" style="height: 105px; width: 105px;"/>
+                                            <label class="label label-default">{{ loja.user.first_name }}</label>
+                                            {% if loja.is_online %}
+                                                <label class="label label-success">
+                                                    Online
+                                                </label>
+                                            {% else %}
+                                                <center>
+                                                    <label class="label label-danger">
+                                                        Offline
+                                                    </label>
+                                                </center>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script type=" text/javascript">
+        $(document).ready(function () {
+            $('#inicio').addClass('active');
+        });
+    </script>
+
+{% endblock %}

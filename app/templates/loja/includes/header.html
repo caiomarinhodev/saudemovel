@@ -1,0 +1,143 @@
+{% load staticfiles %}
+<header>
+    <div id="top">
+        <div class="container">
+            <div class="row">
+{#                <div class="col-xs-4 contact">#}
+{#                    <p class="hidden-sm hidden-xs"></p>#}
+{##}
+{#                    <p class="hidden-md hidden-lg">#}
+{#                        <a href="#" data-animate-hover="pulse"><i#}
+{#                            class="fa fa-phone"></i></a> <a href="#" data-animate-hover="pulse"><i#}
+{#                            class="fa fa-envelope"></i></a>#}
+{#                    </p>#}
+{#                </div>#}
+                <div class="col-xs-10">
+{#                    <div class="social">#}
+{#                        <a href="#" class="external facebook" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-facebook"></i></a>#}
+{#                        <a href="#" class="external gplus" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-google-plus"></i></a>#}
+{#                        <a href="#" class="external twitter" data-animate-hover="pulse"><i#}
+{#                                class="fa fa-twitter"></i></a>#}
+{#                    </div>#}
+
+                    <div class="login" style="padding-right: 100px;">
+                        {% if user.is_authenticated %}
+                            {% if user.cliente %}
+                            {% else %}
+                                <a href="{% url 'dashboard' %}" style=""><i class="fa fa-sign-in"></i>
+                                    <span class="text-uppercase">Painel</span></a>
+                            {% endif %}
+
+                            <a href="{% url "auth_logout" %}" style=""><i class="fa fa-sign-in"></i>
+                                <span class="text-uppercase">Log out</span></a>
+                        {% else %}
+                            <a href="{% url "choose_login" %}" style=""><i class="fa fa-sign-in"></i>
+                                <span class="text-uppercase">Log in ou Registro</span></a> &nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** TOP END *** -->
+
+    <!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+    <div class="navbar-affixed-top">
+
+        <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+            <div class="container">
+                <div class="navbar-header">
+
+                    <a class="navbar-brand home" href="{% url 'home' %}">
+
+                        <h3 style="margin-top: 2px;"> <span id="logo_2"><img src='{% static 'img/logo_png.png' %}'
+                                                                             class="" style="max-height: 20px;"
+                                                                             alt="logo"/> Focus Delivery</span></h3>
+                    </a>
+
+                    <div class="navbar-buttons">
+                        <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse"
+                                data-target="#navigation">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-align-justify"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--/.navbar-header -->
+
+                <div class="navbar-collapse collapse" id="navigation">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="inicio" class="">
+                            <a id="home_link" href="{% url 'home' %}">Inicio</a>
+                        </li>
+                        {#                            <li id="menu_instituicoes" class="">#}
+                        {#                                <a id="instituicoes_link" href="{% url 'menu_institutes' %}">Instituições</a>#}
+                        {#                            </li>#}
+{#                        <li id="menu_contribua" class="">#}
+{#                            <a id="contribua_link" href="#">Sobre Nós</a>#}
+{#                        </li>#}
+{#                        <li id="menu_arrecade" class="">#}
+{#                            <a id="arrecade_link" href="#">Aplicativo</a>#}
+{#                        </li>#}
+                        <li class="dropdown">
+                            <a id="inscrevase_link" class="dropdown-toggle"
+                               data-toggle="dropdown">Registre-se<b
+                                    class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a id="register_user_link" href="{% url 'registro_cliente' %}">Cliente</a></a>
+                                </li>
+                                <li>
+                                    <a id="register_instituicao_link"
+                                       href="{% url 'registro' %}">Estabelecimento</a>
+                                </li>
+                                <li>
+                                    <a id="register_instituicao_link"
+                                       href="{% url 'register-driver' %}">Motoboy</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% if user.cliente %}
+                            <li id="pedidos">
+                                <a href="{% url 'meus_pedidos' %}">
+                                    <i class="fa fa-shopping-cart">
+                                        {% if pedido_obj %}
+                                            <label class="label label-default">
+                                                1
+                                            </label>
+                                        {% endif %}</i>Meus Pedidos</a>
+                            </li>
+                            <li id="login">
+                                <a href="#">Olá, {{ user.first_name }}</a>
+                            </li>
+
+                        {% elif user.estabelecimento %}
+                            <li id="login">
+                                <a href="{% url 'dashboard' %}">ACESSAR PAINEL</a>
+                            </li>
+                        {% else %}
+                            <li id="login">
+                                <a id="login" href="{% url 'choose_login' %}">Login</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                </div>
+                <!--/.nav-collapse -->
+
+            </div>
+
+        </div>
+        <!-- /#navbar -->
+    </div>
+    <!-- *** NAVBAR END *** -->
+</header>

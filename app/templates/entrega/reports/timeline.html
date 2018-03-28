@@ -1,0 +1,74 @@
+{% extends 'base_painel.html' %}
+{% load staticfiles %}
+{% load filters %}
+
+{% block content %}
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="small-box bg-blue-gradient">
+                <div class="inner">
+                    <h3>{{ user|get_entregas_hoje_motoristas|length }}</h3>
+
+                    <p>Entregas Hoje</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-arrows"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                  <span class="bg-red">
+                    {% now "d F Y" %}
+                  </span>
+                </li>
+                <!-- /.timeline-label -->
+                {% for rota in rotas %}
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> {{ rota.created_at|date:"G:i" }}</span>
+
+                            {% if rota.motorista %}
+                                <h3 class="timeline-header"><a href="#">{{ rota.motorista.first_name }}</a> aceitou
+                                    fazer a rota </h3>
+                            {% else %}
+                                <h3 class="timeline-header">Ninguém aceitou fazer a rota ainda</h3>
+                            {% endif %}
+
+                            <div class="timeline-body">
+                                {{ rota.estabelecimento.user.first_name }} fez o pedido
+                                com {{ rota.ponto_set.all|length }} entrega(s) para fazer.
+                            </div>
+                            <div class="timeline-footer">
+                                <label class="btn btn-primary btn-xs">R$ {{ rota.valor_total }}</label>
+                            </div>
+                        </div>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#timeline').addClass('active');
+
+        });
+
+    </script>
+    {% include 'entrega/includes/script_message_notify.html' %}
+
+
+{% endblock %}

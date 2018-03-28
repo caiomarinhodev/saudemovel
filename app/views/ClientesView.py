@@ -15,7 +15,7 @@ class ClientesListView(LoginRequiredMixin, ListView, CustomContextMixin):
     login_url = '/login/'
     model = Ponto
     context_object_name = 'clientes'
-    template_name = 'clientes/list_clientes.html'
+    template_name = 'entrega/clientes/list_clientes.html'
 
     def get_queryset(self):
         return Ponto.objects.filter(Q(pedido__estabelecimento=self.request.user.estabelecimento) | Q(
@@ -27,7 +27,7 @@ class ClienteCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
     model = Ponto
     success_url = '/app/clientes/'
     form_class = FormPontoCliente
-    template_name = 'clientes/cliente.html'
+    template_name = 'entrega/clientes/cliente.html'
 
     def form_valid(self, form):
         loja = self.request.user.estabelecimento
@@ -42,4 +42,4 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
     model = Ponto
     success_url = '/app/clientes/'
     form_class = FormPontoCliente
-    template_name = 'clientes/cliente.html'
+    template_name = 'entrega/clientes/cliente.html'

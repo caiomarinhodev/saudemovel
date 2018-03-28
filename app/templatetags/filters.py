@@ -1,24 +1,101 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 from django import template
 
-from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin
+from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin, BairroGratis, Avaliacao
 from app.views.geocoding import calculate_matrix_distance
 
 register = template.Library()
 
 
+@register.filter
+def is_madrugada(user):
+    try:
+        now_time = datetime.now().time()
+        if time(22, 59) <= now_time <= time(23, 59):
+            return True
+        elif time(0, 00) <= now_time <= time(5, 59):
+            return True
+        return False
+    except (ValueError, ZeroDivisionError, Exception):
+        return 0
+
+
+@register.filter
+def get_itens(pedido):
+    try:
+        message = ''
+        for it in pedido.itempedido_set.all():
+            message += ' ' + str(it.produto.nome) + u'('
+            for opc in it.opcionalchoice_set.all():
+                message += str(opc.opcional.nome) + u','
+            message += ') '
+        return message
+    except (Exception,):
+        return ''
+
+
+@register.filter
+def removehttp(photo):
+    try:
+        return photo.replace('https', 'http')
+    except (Exception,):
+        return ''
+
+
+@register.filter
+def is_entrega_gratis(bairro, loja):
+    try:
+        if loja.configuration.status_entrega_gratis:
+            qs = BairroGratis.objects.filter(estabelecimento=loja, bairro=bairro)
+            if qs.count() > 0:
+                return True
+        return False
+    except (Exception,):
+        return False
+
+
+@register.filter
+def calcula_media_aval(loja):
+    try:
+        media = 0
+        avals = Avaliacao.objects.filter(estabelecimento=loja)
+        for aval in avals:
+            media = media + int(aval.nota)
+        return float(float(media) / float(avals.count()))
+    except (Exception,):
+        return 4.0
+
+
+@register.filter
+def order_by(list, filter='-created_at'):
+    try:
+        return list.order_by(str(filter))
+    except (Exception,):
+        return None
+
+
+@register.filter
+def ja_avaliou(avaliacoes, cliente):
+    try:
+        for aval in avaliacoes:
+            if aval.cliente.id == cliente.id:
+                return True
+        return False
+    except (Exception,):
+        return False
+
 
 @register.filter
 def is_pedido_prepared(value):
     try:
-        pedido = value.pedido
+        pedido = value
         for entrega in pedido.ponto_set.all():
             if not entrega.is_prepared:
                 return False
         return True
     except (Exception,):
-        return True
+        return False
 
 
 @register.filter
@@ -150,6 +227,7 @@ def ganhos_totais(motorista):
         return ganho
     except (Motorista.DoesNotExist, Exception):
         return 0.0
+
 
 @register.filter
 def calculate_distance(pedido):
@@ -348,8 +426,8 @@ def get_data_grafico_seven(user):
 def get_data_anterior_grafico_seven(user):
     try:
         now = datetime.now()
-        start_date = now - timedelta(days=12)
-        end_date = now - timedelta(days=6)
+        start_date = now - timedelta(days=13)
+        end_date = now - timedelta(days=7)
         loja = Estabelecimento.objects.get(user=user)
         pedidos = Ponto.objects.filter(pedido__estabelecimento=loja, created_at__range=(start_date, end_date))
         # pedidos = loja.pedido_set.filter(created_at__range=(start_date, end_date))
