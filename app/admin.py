@@ -75,6 +75,10 @@ class BairroAdmin(admin.ModelAdmin):
     list_display = ('nome', 'valor', 'valor_madrugada', 'valor_feriado', 'valor_madrugada_feriado', 'id')
 
 
+class BairroGratisAdmin(admin.ModelAdmin):
+    list_display = ('id', 'estabelecimento', 'bairro')
+
+
 class ConfigAdminAdmin(admin.ModelAdmin):
     list_display = ('id', 'is_feriado',)
 
@@ -107,6 +111,8 @@ admin.site.register(FolhaPagamento, FolhaPagamentoAdmin)
 admin.site.register(ItemPagamento, ItemPagamentoAdmin)
 admin.site.register(PagamentoMotorista, PagamentoMotoristaAdmin)
 admin.site.register(Logger, LoggerAdmin)
+
+admin.site.register(BairroGratis, BairroGratisAdmin)
 
 
 class ItemPedidoInline(admin.TabularInline):
