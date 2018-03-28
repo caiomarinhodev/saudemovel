@@ -18,7 +18,7 @@ class RelatorioTemplateView(LoginRequiredMixin, TemplateView, CustomContextMixin
 
 class DashboardReportViewUser(LoginRequiredMixin, TemplateView, CustomContextMixin):
     login_url = '/login/'
-    template_name = 'admin/ver_relatorios_loja.html'
+    template_name = 'entrega/admin/ver_relatorios_loja.html'
 
     # def get_context_data(self, **kwargs):
     #     kwargs['user'] = User.objects.get(id=self.request.GET['pk'])
