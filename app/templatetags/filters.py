@@ -426,8 +426,8 @@ def get_data_grafico_seven(user):
 def get_data_anterior_grafico_seven(user):
     try:
         now = datetime.now()
-        start_date = now - timedelta(days=12)
-        end_date = now - timedelta(days=6)
+        start_date = now - timedelta(days=13)
+        end_date = now - timedelta(days=7)
         loja = Estabelecimento.objects.get(user=user)
         pedidos = Ponto.objects.filter(pedido__estabelecimento=loja, created_at__range=(start_date, end_date))
         # pedidos = loja.pedido_set.filter(created_at__range=(start_date, end_date))
