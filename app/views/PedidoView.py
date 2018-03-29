@@ -71,8 +71,6 @@ def liberar_corrida_cozinha(request, pk_pedido):
     except (Exception,):
         pass
     if Motorista.objects.get(user=pedido.motorista).is_online:
-        print(
-            '>>>>>>>> Motorista ' + pedido.motorista.first_name + ' foi liberado pela loja ' + pedido.estabelecimento.user.first_name)
         message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual esta no menu ENTREGAS. Quando terminar uma entrega, marque finalizar. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
         n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
         n.save()
@@ -186,7 +184,6 @@ def buscar_cliente(request):
             })
     except (Exception,):
         pass
-    print(results)
     return JsonResponse({'results': results})
 
 
@@ -221,24 +218,21 @@ class PedidoCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
             if pontoset.is_valid():
                 pontoset.instance = self.object
                 pontoset.save()
-        message = "Um novo pedido foi feito pela " + self.request.user.first_name
-        print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
         pedido = self.object
         if not pedido.is_draft:
-            a = func()
+            # a = func()
             no = Notification(type_message='NOTIFICACAO_COZINHA', to=self.request.user, message='NOVO PEDIDO REALIZADO')
-            no.save()
-            for m in Motorista.objects.all():
-                if m.is_online and not m.ocupado:
-                    n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
-                    n.save()
+            # no.save()
+            # for m in Motorista.objects.all():
+            #     if m.is_online and not m.ocupado:
+            #         n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
+            #         n.save()
         return super(PedidoCreateView, self).form_valid(form)
 
 
 def get_or_create_rota(request, loja, bairro):
     rotas = Pedido.objects.filter(coletado=False, status_cozinha=False)
     if rotas:
-        print(unicode(rotas))
         return rotas.last()
     else:
         rota = Pedido(estabelecimento=loja, valor_total='6')
@@ -252,9 +246,7 @@ def create_pedido_json(request):
     data = request.POST
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    print(body)
     content = body
-    print(content['bairro'])
     try:
         bairro = Bairro.objects.get(nome=content['bairro'])
         loja = Estabelecimento.objects.get(user__username=content['username'])
@@ -312,12 +304,10 @@ class PedidoUpdateView(LoginRequiredMixin, UpdateView, CustomContextMixin):
         context = self.get_context_data()
         pontoset = context['pontoset']
         with transaction.atomic():
-            print(pontoset.errors)
             if pontoset.is_valid():
                 pontoset.instance = self.object
                 pontoset.save()
             self.object = form.save()
-        print('>>>>>>>> Pedido editado pela loja ' + self.request.user.first_name)
         pedido = self.object
         if not pedido.is_draft:
             a = func()
@@ -346,8 +336,6 @@ def delete_pedido(request, pk):
                 motorista.save()
                 loja = Estabelecimento.objects.get(user=request.user)
                 if motorista.is_online:
-                    print(
-                        '>>>>>>>> Motorista ' + motorista.user.first_name + ' teve seu pedido cancelado pela loja ' + pedido.estabelecimento.user.first_name)
                     message = "O Pedido que voce ia entregar foi cancelado pela loja " + request.user.first_name + ". Desculpe pelo transtorno! Qualquer coisa, ligue para a loja: " + loja.phone
                     n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
                     n.save()
@@ -373,8 +361,6 @@ def cancel_pedido(request, pk):
                 motorista.save()
                 loja = Estabelecimento.objects.get(user=request.user)
                 if motorista.is_online:
-                    print(
-                        '>>>>>>>> Motorista ' + motorista.user.first_name + ' teve seu pedido cancelado pela loja ' + pedido.estabelecimento.user.first_name)
                     message = "O Pedido que voce ia entregar foi cancelado pela loja " + request.user.first_name + ". Desculpe pelo transtorno! Qualquer coisa, ligue para a loja: " + loja.phone
                     n = Notification(type_message='DELETE_LOJA', to=motorista.user, message=message)
                     n.save()
@@ -450,8 +436,6 @@ def liberar_corrida(request, pk_pedido):
     except (Exception,):
         pass
     if Motorista.objects.get(user=pedido.motorista).is_online:
-        print(
-            '>>>>>>>> Motorista ' + pedido.motorista.first_name + ' foi liberado pela loja ' + pedido.estabelecimento.user.first_name)
         message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual esta no menu ENTREGAS. Quando terminar uma entrega, marque finalizar. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
         n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
         n.save()
@@ -464,9 +448,6 @@ def avaliar_motorista(request, pk_pedido, nota):
     motorista = Motorista.objects.get(user=pedido.motorista)
     new_class = Classification(user=motorista.user, pedido=pedido, nota=nota)
     new_class.save()
-    if motorista.is_online:
-        print(
-            '>>>>>>>> Motorista ' + motorista.user.first_name + ' foi avaliado pela loja ' + pedido.estabelecimento.user.first_name)
     return redirect('/app/pedidos/loja')
 
 
@@ -486,19 +467,16 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
         except (Exception,):
             pass
         pto_entregues = len(pedido.ponto_set.filter(status=True))
-        print(len(pedido.ponto_set.all()) == pto_entregues)
         if len(pedido.ponto_set.all()) == pto_entregues:
             pedido.is_complete = True
             pedido.save()
             messages.success(request, 'Tudo entregue! Finalize esta Rota para poder pegar outros.')
         if pedido.estabelecimento.is_online:
-            print('>>>>>>>> Motorista ' + request.user.first_name + ' entregou pedido ao cliente ' + ponto.cliente)
             message = "Motorista " + request.user.first_name + " entregou pedido ao cliente " + ponto.cliente + " no endereco " + ponto.full_address
             n = Notification(type_message='ORDER_DELIVERED', to=pedido.estabelecimento.user, message=message)
             n.save()
         return HttpResponseRedirect('/app/pedido/route/' + str(pedido.pk))
     except:
-        print('******* error url ')
         messages.error(request, 'Este pedido foi deletado pela Loja')
         return HttpResponseRedirect('/app/pedidos/motorista/')
 
