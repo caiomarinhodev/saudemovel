@@ -76,6 +76,14 @@ def order_by(list, filter='-created_at'):
 
 
 @register.filter
+def filter_meus_pedidos(list):
+    try:
+        return list.filter(endereco_entrega__isnull=False, forma_pagamento__isnull=False)
+    except (Exception,):
+        return None
+
+
+@register.filter
 def ja_avaliou(avaliacoes, cliente):
     try:
         for aval in avaliacoes:
