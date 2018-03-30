@@ -123,32 +123,6 @@ class FinalizaRequest(LoginRequiredMixin, TemplateView, LojaFocusMixin):
     login_url = '/define/login/'
 
     def get(self, request, *args, **kwargs):
-        data = self.get_context_data()['pedido_obj']
-        dic = {}
-        try:
-            for it in data.itempedido_set.all():
-                p = it.produto
-                print(str(p))
-                for opcc in it.opcionalchoice_set.all():
-                    opc = opcc.opcional
-                    if str(opc.grupo.titulo) in dic:
-                        dic[str(opc.grupo.titulo)] += str(opc.nome)
-                    else:
-                        dic[str(opc.grupo.titulo)] = [str(opc.nome)]
-                print(dic)
-                dic = {}
-        except (Exception,):
-            for it in data.itempedido_set.all():
-                p = it.produto
-                print(unicode(p))
-                for opcc in it.opcionalchoice_set.all():
-                    opc = opcc.opcional
-                    if unicode(opc.grupo.titulo) in dic:
-                        dic[unicode(opc.grupo.titulo)] += unicode(opc)
-                    else:
-                        dic[unicode(opc.grupo.titulo)] = [unicode(opc)]
-                print(dic)
-                dic = {}
         if not check_loja_is_online(self.request):
             messages.error(self.request, u'A Loja não está mais online para receber pedidos.')
             return redirect('/')

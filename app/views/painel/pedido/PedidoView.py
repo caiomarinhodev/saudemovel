@@ -8,10 +8,12 @@ from django.shortcuts import redirect
 from django.template import Context
 from django.template.defaultfilters import floatformat
 from django.views.decorators.http import require_http_methods
+from django.views.generic import DetailView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from app.forms import FormRequest, GrupoUpdateFormSet, ItemPedidoFormSet
-from app.models import Notificacao, Pedido, Request, Ponto, Notification, FolhaPagamento, ItemPagamento
+from app.models import Notificacao, Pedido, Request, Ponto, Notification, FolhaPagamento, ItemPagamento, Chamado
 from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 from app.views.script_tools import logger
@@ -47,28 +49,44 @@ def get_or_create_rota(req):
 
 
 def make_itens(req):
-    message = '<p><ul>'
-    # for c in categorias
-    #     for g in c.grupos
-    #         for p in g.produtos
-    #             for opc in p.opcionais
-
     try:
+        message = '<p>'
+        dic = {}
         for it in req.itempedido_set.all():
-            message += '<li>' + str(it.produto.nome) + '  ('
-            for opc in it.opcionalchoice_set.all():
-                message += str(opc.opcional.nome) + ','
-            message += ') </li>'
-            message += '<br/>' + str(it.observacoes)
-        message += '</ul></p>'
+            p = it.produto
+            message += ("<br/><b>" + str(p.nome)) +"</b><br/>"
+            for opcc in it.opcionalchoice_set.all():
+                opc = opcc.opcional
+                if str(opc.grupo.titulo) in dic:
+                    dic[str(opc.grupo.titulo)] += [opc.nome]
+                else:
+                    dic[str(opc.grupo.titulo)] = [opc.nome]
+            for k, v in dic.items():
+                message += ('<ul><li>' + str(k))
+                for val in v:
+                    message += ('<ul><li>' + str(val) + '</li></ul>')
+                message += '</li></ul>'
+            dic = {}
+        message += '</p>'
     except (Exception,):
+        message = '<p>'
+        dic = {}
         for it in req.itempedido_set.all():
-            message += '<li>' + unicode(it.produto.nome) + '  ('
+            p = it.produto
+            message += ("<br/><b>" + unicode(p.nome))+"</b>"
             for opc in it.opcionalchoice_set.all():
-                message += unicode(opc.opcional.nome) + ','
-            message += ') </li>'
-            message += '<br/>' + unicode(it.observacoes)
-        message += '</ul></p>'
+                print(unicode(opc.opcional.grupo.titulo))
+                if unicode(opc.opcional.grupo.titulo) in dic:
+                    dic[unicode(opc.opcional.grupo.titulo)] += [opc.opcional.nome]
+                else:
+                    dic[unicode(opc.opcional.grupo.titulo)] = [opc.opcional.nome]
+            for k, v in dic.items():
+                message += ('<ul><li>' + unicode(k))
+                for val in v:
+                    message += ('<ul><li>' + unicode(val) + '</li></ul>')
+                message += '</li></ul>'
+            dic = {}
+        message += '</p>'
     return message
 
 
@@ -155,13 +173,41 @@ def chamar_motoboy_cozinha(request, pk):
     return redirect('/app/cozinha/')
 
 
-def rejeitar_pedido(request, pk):
-    mark_read(request)
-    pedido = Request.objects.get(id=pk)
-    pedido.status_pedido = 'REJEITADO'
-    pedido.save()
-    logger(request.user, "Rejeitou o pedido " + str(pedido))
+def cancelar_request(request, pk):
+    data = request.POST
+    entrega = Request.objects.get(id=pk)
+    text = "Cancelamento do Pedido #" + str(entrega.pk)
+    try:
+        text = text + " " + str(data['motivo'])
+    except (Exception,):
+        text = text + " " + unicode(data['motivo'])
+    chamado = Chamado(estabelecimento=entrega.estabelecimento, titulo='Cancelamento de Pedido', texto=text)
+    chamado.save()
+    entrega.status_pedido = 'REJEITADO'
+    entrega.save()
+    logger(request.user, "Rejeitou o pedido #" + str(entrega.pk))
     return redirect('/dashboard')
+
+
+class RejeitarRequestView(LoginRequiredMixin, DetailView):
+    template_name = 'painel/request/delete.html'
+    model = Request
+    context_object_name = 'request'
+
+
+# class RejeitarPedidoCozinhaView(LoginRequiredMixin, DetailView):
+#     template_name = 'painel/request/delete.html'
+#     model = Request
+#     context_object_name = 'pedido'
+
+#
+# def rejeitar_pedido(request, pk):
+#     mark_read(request)
+#     pedido = Request.objects.get(id=pk)
+#     pedido.status_pedido = 'REJEITADO'
+#     pedido.save()
+#     logger(request.user, "Rejeitou o pedido " + str(pedido))
+#     return redirect('/dashboard')
 
 
 class RequestUpdateView(LoginRequiredMixin, UpdateView):
