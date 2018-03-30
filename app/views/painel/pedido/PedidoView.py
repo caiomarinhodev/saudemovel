@@ -48,6 +48,11 @@ def get_or_create_rota(req):
 
 def make_itens(req):
     message = '<p><ul>'
+    # for c in categorias
+    #     for g in c.grupos
+    #         for p in g.produtos
+    #             for opc in p.opcionais
+
     try:
         for it in req.itempedido_set.all():
             message += '<li>' + str(it.produto.nome) + '  ('
