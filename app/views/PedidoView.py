@@ -25,13 +25,14 @@ from app.views.fcm import func
 from app.views.snippet_template import render_block_to_string
 from app.views.script_tools import logger
 
+
 class CozinhaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
     login_url = '/login/'
     context_object_name = 'rotas'
     template_name = 'entrega/acompanhar/view_cozinha.html'
 
     def get_queryset(self):
-        return Pedido.objects.filter(coletado=False,
+        return Pedido.objects.filter(coletado=False, estabelecimento=self.request.user.estabelecimento,
                                      btn_finalizado=False).order_by(
             '-created_at')
 
@@ -351,7 +352,8 @@ def cancel_pedido(request, pk):
 
 @require_http_methods(["GET"])
 def get_pedidos_motorista(request):
-    pedidos = Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False, chamar_motoboy=False).order_by(
+    pedidos = Pedido.objects.filter(is_complete=False, coletado=False, status=True, is_draft=False,
+                                    chamar_motoboy=False).order_by(
         '-created_at')
     context = Context({'pedidos': pedidos, 'user': request.user})
     return_str = render_block_to_string('entrega/includes/table_pedidos_motorista.html', context)
