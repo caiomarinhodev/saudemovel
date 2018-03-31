@@ -165,6 +165,9 @@ class FormRegister(ModelForm, BaseForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                                'maxlength': 200,
                                                                'placeholder': 'Nome Estabelecimento'}))
+    cnpj = forms.CharField(widget=forms.TextInput(attrs={'required': True,
+                                                         'maxlength': 200,
+                                                         'placeholder': 'CNPJ'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'required': True,
                                                              'maxlength': 200,
                                                              'placeholder': 'Login'}))
@@ -358,6 +361,7 @@ class FormOpcional(ModelForm, BaseForm):
     class Meta:
         model = Opcional
         fields = ['nome', 'descricao', 'valor', 'disponivel']
+
 
 ProdutoFormSet = inlineformset_factory(Categoria, Produto, form=FormProduto, extra=1)
 FotoProdutoFormSet = inlineformset_factory(Produto, FotoProduto, form=FormFotoProdutoInline, extra=1)

@@ -130,7 +130,10 @@ def aceitar_pedido(request, pk):
     req = Request.objects.get(id=pk)
     req.status_pedido = 'ACEITO'
     req.save()
-    logger(request.user, "Aceitou o pedido " + str(req))
+    try:
+        logger(request.user, "Aceitou o pedido " + str(req))
+    except (Exception,):
+        pass
     folha_pag = get_or_create_folha(datetime.now(), req.estabelecimento)
     item_pag = ItemPagamento(request=req, folha=folha_pag)
     item_pag.save()
@@ -185,7 +188,10 @@ def cancelar_request(request, pk):
     chamado.save()
     entrega.status_pedido = 'REJEITADO'
     entrega.save()
-    logger(request.user, "Rejeitou o pedido #" + str(entrega.pk))
+    try:
+        logger(request.user, "Rejeitou o pedido #" + str(entrega.pk))
+    except (Exception,):
+        pass
     return redirect('/dashboard')
 
 
@@ -227,7 +233,10 @@ class RequestUpdateView(LoginRequiredMixin, UpdateView):
         return data
 
     def form_valid(self, form):
-        logger(self.request.user, "Aceitou o pedido " + str(self.object))
+        try:
+            logger(self.request.user, "Aceitou o pedido " + str(self.object))
+        except (Exception,):
+            pass
         context = self.get_context_data()
         itempedido_set = context['itempedido_set']
         with transaction.atomic():
