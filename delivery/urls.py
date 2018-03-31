@@ -5,12 +5,12 @@ from django.contrib.auth import views as auth_views
 
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
+from app.views.ClientesView import *
 from app.views.HomeView import DashboardDataView, set_feriado_admin, ListMotoristasView, DashboardListPedidosView
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView, \
     SetOnlineMotoboyView
 from app.views.MotoristasAtivosView import MotoristasAtivosView
-from app.views.ClientesView import *
 from app.views.NotificationView import notificar_novo_pedido_motorista, notificar_delete_loja_motorista, \
     notificar_accept_order_loja, notificar_enable_rota_motorista, NotificacoesListView, notificar_all_delivered_loja, \
     notificar_admin_message, notificar_order_delivered_loja, notify_new_message_for_motorista, \
@@ -22,7 +22,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
-    set_to_prepared_pedido, liberar_corrida_cozinha, create_pedido_json
+    set_to_prepared_pedido, liberar_corrida_cozinha
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
@@ -62,8 +62,7 @@ from app.views.painel.opcional.OpcionalView import OpcionalCreateView, OpcionalL
 from app.views.painel.opcional.OpcionalView import OpcionalUpdateView
 from app.views.painel.pagamento.PagamentoView import PagamentoListView
 from app.views.painel.pedido.PedidoView import aceitar_pedido, notificacao_pedido, RequestUpdateView, chamar_motoboy, \
-    chamar_motoboy_cozinha
-from app.views.painel.pedido.PedidoView import rejeitar_pedido
+    chamar_motoboy_cozinha, cancelar_request, RejeitarRequestView
 from app.views.painel.produto.ProdutoView import ProdutoCreateView
 from app.views.painel.produto.ProdutoView import ProdutoDeleteView
 from app.views.painel.produto.ProdutoView import ProdutoListView
@@ -242,7 +241,10 @@ urlpatterns = [
     url(r'^notificacao/list/$', NotificacaoListView.as_view(), name='list_notificacao'),
 
     url(r'^aceitar-pedido/(?P<pk>[0-9]+)/$', aceitar_pedido, name='aceitar_pedido'),
-    url(r'^rejeitar-pedido/(?P<pk>[0-9]+)/$', rejeitar_pedido, name='rejeitar_pedido'),
+    url(r'^rejeitar-pedido/(?P<pk>[0-9]+)/$', RejeitarRequestView.as_view(), name='rejeitar_request'),
+    # url(r'^rejeitar-pedido-cozinha/(?P<pk>[0-9]+)/$', RejeitarPedidoCozinhaView.as_view(),
+    #     name='rejeitar_pedido_cozinha'),
+    url(r'^cancelar-pedido/(?P<pk>[0-9]+)/$', cancelar_request, name='cancelar_request'),
 
     url(r'^loja/$', HomeView.as_view(), name='home'),
 

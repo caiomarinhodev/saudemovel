@@ -58,7 +58,11 @@
                                     </div>
                                     <hr/>
                                     <div class="row">
-                                        <div class="col-xs-6 col-xs-offset-3">
+{#                                        <div class="col-xs-6">#}
+{#                                            <a href="{% url 'rejeitar_pedido_cozinha' entrega.id %}"#}
+{#                                               class="btn btn-danger btn-lg">Cancelar Pedido</a>#}
+{#                                        </div>#}
+                                        <div class="col-xs-6 col-xs-3">
                                             {% if entrega.is_prepared %}
                                                 <a href="#"
                                                    class="btn btn-info btn-lg btn-block disabled" disabled="disabled">Preparando
@@ -98,7 +102,7 @@
                                 </div>
 
                             </div>
-                        <br/>
+                            <br/>
                             <!-- /.box-body -->
                             <div class="row">
                                 <div class="col-xs-12 pull-left">
