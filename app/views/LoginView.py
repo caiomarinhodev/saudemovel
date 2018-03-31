@@ -193,6 +193,7 @@ class RegisterView(FormView):
             user_data['password'] = data['password']
             common_data['endereco'] = data['endereco']
             common_data['phone'] = data['phone']
+            common_data['cnpj'] = data['cnpj']
             common_data['numero'] = data['numero']
             common_data['bairro'] = data['bairro']
             common_data['photo'] = file
