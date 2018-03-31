@@ -215,7 +215,14 @@ class GrupoAdmin(admin.ModelAdmin):
         return obj.produto.categoria.estabelecimento
 
 
+class ProdutoInline(admin.TabularInline):
+    model = Produto
+
+
 class CategoriaAdmin(admin.ModelAdmin):
+    inlines = [
+        ProdutoInline,
+    ]
     list_display = ('nome', 'produtos_relacionados', 'id', 'estabelecimento', 'created_at',)
 
     def produtos_relacionados(self, obj):
@@ -230,7 +237,10 @@ class ProdutoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'id', 'preco_base', 'categoria', 'created_at', 'estabelecimento', 'disponivel')
 
     def estabelecimento(self, obj):
-        return obj.categoria.estabelecimento
+        try:
+            return obj.categoria.estabelecimento
+        except (Exception,):
+            return None
 
 
 class AvaliacaoAdmin(admin.ModelAdmin):
