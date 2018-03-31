@@ -28,7 +28,10 @@ class OpcionalCreateView(LoginRequiredMixin, CreateView, FocusMixin):
     form_class = FormOpcional
 
     def form_valid(self, form):
-        logger(self.request.user, "Criou o opcional " + str(self.object))
+        try:
+            logger(self.request.user, "Criou o opcional " + str(self.object))
+        except (Exception,):
+            pass
         return super(OpcionalCreateView, self).form_valid(form)
 
 
@@ -41,7 +44,10 @@ class OpcionalUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
     form_class = FormOpcional
 
     def form_valid(self, form):
-        logger(self.request.user, "Editou o opcional " + str(self.object))
+        try:
+            logger(self.request.user, "Editou o opcional " + str(self.object))
+        except (Exception,):
+            pass
         return super(OpcionalUpdateView, self).form_valid(form)
 
 
@@ -53,5 +59,8 @@ class OpcionalDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
     template_name = 'painel/opcional/delete.html'
 
     def post(self, request, *args, **kwargs):
-        logger(self.request.user, "Deletou o opcional " + str(self.object))
+        try:
+            logger(self.request.user, "Deletou o opcional " + str(self.object))
+        except (Exception,):
+            pass
         return super(OpcionalDeleteView, self).post(request, *args, **kwargs)

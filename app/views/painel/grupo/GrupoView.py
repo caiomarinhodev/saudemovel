@@ -37,7 +37,10 @@ class GrupoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
         return data
 
     def form_valid(self, form):
-        logger(self.request.user, "Criou o grupo " + str(self.object))
+        try:
+            logger(self.request.user, "Criou o grupo " + str(self.object))
+        except (Exception,):
+            pass
         context = self.get_context_data()
         print(context)
         opcionalset = context['opcionalset']
@@ -46,15 +49,6 @@ class GrupoCreateView(LoginRequiredMixin, CreateView, FocusMixin):
             if opcionalset.is_valid():
                 opcionalset.instance = self.object
                 opcionalset.save()
-        # message = "Um novo pedido foi feito pela " + self.request.user.first_name
-        # print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
-        # pedido = self.object
-        # if not pedido.is_draft:
-        #     a = func()
-        #     for m in Motorista.objects.all():
-        #         if m.is_online and not m.ocupado:
-        #             n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
-        #             n.save()
         return super(GrupoCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
@@ -79,7 +73,10 @@ class GrupoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
         return data
 
     def form_valid(self, form):
-        logger(self.request.user, "Alterou o grupo " + str(self.object))
+        try:
+            logger(self.request.user, "Alterou o grupo " + str(self.object))
+        except (Exception,):
+            pass
         context = self.get_context_data()
         print(context)
         opcionalset = context['opcionalset']
@@ -88,15 +85,6 @@ class GrupoUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
             if opcionalset.is_valid():
                 opcionalset.instance = self.object
                 opcionalset.save()
-        # message = "Um novo pedido foi feito pela " + self.request.user.first_name
-        # print('>>>>>>>> Novo Pedido criado pela loja ' + self.request.user.first_name)
-        # pedido = self.object
-        # if not pedido.is_draft:
-        #     a = func()
-        #     for m in Motorista.objects.all():
-        #         if m.is_online and not m.ocupado:
-        #             n = Notification(type_message='NOVO_PEDIDO', to=m.user, message=message)
-        #             n.save()
         return super(GrupoUpdateView, self).form_valid(form)
 
     def form_invalid(self, form):
@@ -112,5 +100,8 @@ class GrupoDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
     template_name = 'painel/grupo/delete.html'
 
     def post(self, request, *args, **kwargs):
-        logger(self.request.user, "Deletou o grupo " + str(self.object))
+        try:
+            logger(self.request.user, "Deletou o grupo " + str(self.object))
+        except (Exception,):
+            pass
         return super(GrupoDeleteView, self).post(request, *args, **kwargs)

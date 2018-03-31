@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView
 from app.forms import FormBairroGratis
 from app.models import Estabelecimento, BairroGratis
 from app.views.mixins.Mixin import FocusMixin
+from app.views.script_tools import logger
 
 
 class BairroGratisListView(LoginRequiredMixin, ListView, FocusMixin):
@@ -30,6 +31,13 @@ class BairroGratisCreateView(LoginRequiredMixin, CreateView, FocusMixin):
     def get_initial(self):
         return {'estabelecimento': self.request.user.estabelecimento}
 
+    def form_valid(self, form):
+        try:
+            logger(self.request.user, "Criou a Bairro Gratis #" + str(self.object.pk))
+        except (Exception,):
+            pass
+        return super(BairroGratisCreateView, self).form_valid(form)
+
     def form_invalid(self, form):
         print(form.errors)
         return super(BairroGratisCreateView, self).form_invalid(form)
@@ -46,6 +54,13 @@ class BairroGratisUpdateView(LoginRequiredMixin, UpdateView, FocusMixin):
     def get_initial(self):
         return {'estabelecimento': self.request.user.estabelecimento}
 
+    def form_valid(self, form):
+        try:
+            logger(self.request.user, "Editou a Bairro Gratis #" + str(self.object.pk))
+        except (Exception,):
+            pass
+        return super(BairroGratisUpdateView, self).form_valid(form)
+
     def form_invalid(self, form):
         print(form.errors)
         return super(BairroGratisUpdateView, self).form_invalid(form)
@@ -57,3 +72,10 @@ class BairroGratisDeleteView(LoginRequiredMixin, DeleteView, FocusMixin):
     model = BairroGratis
     success_url = '/bairro/list'
     template_name = 'painel/bairro_gratis/delete.html'
+
+    def post(self, request, *args, **kwargs):
+        try:
+            logger(self.request.user, "Deletou a Bairro Gratis #" + str(self.object.pk))
+        except (Exception,):
+            pass
+        return super(BairroGratisDeleteView, self).post(request, *args, **kwargs)

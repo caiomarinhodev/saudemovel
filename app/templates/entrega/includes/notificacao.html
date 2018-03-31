@@ -23,9 +23,7 @@
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true
             }, function () {
-                setTimeout(function () {
-                    window.location.href = '{% url 'pedidos_motorista' %}'
-                }, 2000);
+                window.location.href = '{% url 'pedidos_motorista' %}'
             });
 
         {% elif notificacao.type_message == 'NOTIFICACAO_COZINHA' %}
@@ -37,12 +35,10 @@
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true
             }, function () {
-                setTimeout(function () {
-                    window.location.href = '{% url 'cozinha_view' %}'
-                }, 1000);
+                window.location.href = '{% url 'cozinha_view' %}'
             });
         {% elif notificacao.type_message == 'ACCEPT_ORDER' %}
-            play('alert');
+{#            play('alert');#}
             swal({
                 title: "Motorista a caminho!",
                 text: '{{ notificacao.message }}',
@@ -51,31 +47,27 @@
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true
             }, function () {
-                setTimeout(function () {
-                    window.location.href = window.location.href;
-                }, 1000);
+                window.location.href = window.location.href;
             });
 
         {% elif notificacao.type_message == 'ALL_DELIVERED' %}
-            play('alert');
+{#            play('alert');#}
             swal({
                 title: "Motorista finalizou a Rota!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
                 closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
-                showLoaderOnConfirm: true
             });
 
         {% elif notificacao.type_message == 'ORDER_DELIVERED' %}
-            play('alert');
+{#            play('alert');#}
             swal({
                 title: "Motorista finalizou uma entrega!",
                 text: '{{ notificacao.message }}',
                 type: 'success',
                 closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
-                showLoaderOnConfirm: true
             });
 
         {% elif notificacao.type_message == 'ADMIN_MESSAGE' %}
@@ -85,7 +77,6 @@
                 type: 'warning',
                 closeOnConfirm: true,
                 confirmButtonClass: 'btn-primary',
-                showLoaderOnConfirm: true
             });
         {% elif notificacao.type_message == 'LOJA_MESSAGE' %}
             play('alert');
@@ -105,7 +96,7 @@
             }, function () {
                 setTimeout(function () {
                     window.location.href = '{% url 'pedidos_motorista' %}'
-                }, 1000);
+                }, 500);
             });
         {% endif %}
     });

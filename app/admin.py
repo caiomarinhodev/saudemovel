@@ -15,16 +15,18 @@ class PontoInline(admin.TabularInline):
 
 class MotoristaAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user', 'view_birth_date', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados',
-        'ocupado', 'photo',
-        'created_at')
+        'id', 'user', 'nome_completo', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados',
+        'ocupado', 'photo', 'created_at')
 
-    def view_birth_date(self, obj):
+    def nome_completo(self, obj):
         return obj.user.first_name
 
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'cnpj', 'id', 'full_address', 'photo', 'is_online', 'created_at')
+    list_display = ('user', 'nome_loja', 'phone', 'cnpj', 'id', 'full_address', 'photo', 'is_online', 'created_at')
+
+    def nome_loja(self, obj):
+        return obj.user.first_name
 
 
 class PontoAdmin(admin.ModelAdmin):
