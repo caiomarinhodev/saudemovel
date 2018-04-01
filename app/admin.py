@@ -174,7 +174,7 @@ class ClienteAdmin(admin.ModelAdmin):
         return obj.usuario.email
 
     def qtd_pedidos(self, obj):
-        return obj.pedido_set.all()
+        return obj.request_set.all()
 
 
 class EnderecoAdmin(admin.ModelAdmin):
