@@ -305,7 +305,7 @@ class Classification(TimeStamped):
 
 class Cliente(TimeStamped, ):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
-    cpf = models.CharField(max_length=12, blank=True, null=True, default="", unique=True)
+    cpf = models.CharField(max_length=12, blank=True, null=True, default="")
     foto = models.URLField(blank=True, null=True, default="http://placehold.it/100x100")
     telefone = models.CharField(max_length=30, blank=True, null=True)
     is_online = models.BooleanField(default=False)
@@ -378,10 +378,10 @@ class Categoria(TimeStamped):
 
 
 class Produto(TimeStamped):
-    nome = models.CharField(max_length=100,  blank=True, null=True)
+    nome = models.CharField(max_length=100, blank=True, null=True)
     descricao = models.TextField(default="", blank=True, null=True)
-    preco_base = models.CharField(max_length=10,  blank=True, null=True)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE,  blank=True, null=True)
+    preco_base = models.CharField(max_length=10, blank=True, null=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
     disponivel = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -575,8 +575,8 @@ class Request(TimeStamped):
                 self.valor_total = total
         else:
             self.valor_total = subtotal
-        if self.troco and (self.troco != u'' or self.troco != ""):
-            self.troco = str(self.troco.replace(',', '.'))
+        if self.troco and (str(self.troco).replace(" ", "") != u'' or str(self.troco).replace(" ", "") != ""):
+            self.troco = str(self.troco.replace(',', '.').replace(" ", ""))
             self.resultado_troco = float(
                 float(self.troco) - float(str(self.valor_total).replace(',', '.')))
         super(Request, self).save(*args, **kwargs)
@@ -594,11 +594,11 @@ class ItemPedido(TimeStamped):
     valor_total = models.CharField(max_length=10, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        valor_base = float(str(self.produto.preco_base).replace(',', '.'))
+        valor_base = float(str(self.produto.preco_base).replace(',', '.').replace(" ", ""))
         valor_opcionais = 0.0
         if self.opcionalchoice_set.first():
             for opc in self.opcionalchoice_set.all():
-                valor_opcionais = float(valor_opcionais) + float(str(opc.opcional.valor).replace(',', '.'))
+                valor_opcionais = float(valor_opcionais) + float(str(opc.opcional.valor).replace(',', '.').replace(" ", ""))
         valor_unitario = float(valor_base) + float(valor_opcionais)
         self.valor_total = float(float(valor_unitario) * float(self.quantidade))
         super(ItemPedido, self).save(*args, **kwargs)

@@ -137,7 +137,6 @@ def submit_pedido(request):
         cliente = request.user.cliente
         pedido = Request.objects.get(id=request.session['pedido'])
         pedido.cliente = cliente
-        pedido.save()
     except (Exception,):
         messages.error(request, 'Faça Login para finalizar o pedido')
         return redirect('/define/login/')
