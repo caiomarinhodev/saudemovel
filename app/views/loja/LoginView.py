@@ -64,7 +64,7 @@ class ClienteLoginView(FormView):
         data = form.cleaned_data
         try:
             user_data = {}
-            user_data['username'] = data['cpf']
+            user_data['username'] = data['telefone']
             user_data['password'] = data['password']
             user = authenticate(**user_data)
             if user is not None:
@@ -92,19 +92,19 @@ class RegistroCliente(FormView):
         data = form.cleaned_data
         try:
             user_data = {}
-            if not str(data['cpf']).isdigit():
-                messages.error(self.request, 'Insira apenas numeros no CPF')
+            if not str(data['telefone']).isdigit():
+                messages.error(self.request, 'Insira apenas numeros no Telefone')
                 return self.form_invalid(form)
-            if not cpfcnpj.validate(str(data['cpf'])):
-                messages.error(self.request, 'CPF invalido')
-                return self.form_invalid(form)
-            user_data['username'] = data['cpf']
+            # if not cpfcnpj.validate(str(data['cpf'])):
+            #     messages.error(self.request, 'CPF invalido')
+            #     return self.form_invalid(form)
+            user_data['username'] = data['telefone']
             user_data['first_name'] = data['nome']
             user_data['last_name'] = data['sobrenome']
             user_data['password'] = data['password']
             user = User.objects.create_user(**user_data)
             cliente = Cliente(
-                cpf=data['cpf'],
+                cpf=' ',
                 telefone=data['telefone'],
                 usuario=user
             )
