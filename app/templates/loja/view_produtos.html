@@ -191,7 +191,7 @@
                                                                                                                    value="{{ opc.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opc.nome }}
-                                                                                                            ({% if opcional.descricao %}{{ opcional.descricao }}{% endif %} +R$ {{ opc.valor }})
+                                                                                                            ({% if opc.descricao %}{{ opc.descricao }}{% endif %} +R$ {{ opc.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
