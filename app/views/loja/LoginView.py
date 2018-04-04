@@ -102,7 +102,11 @@ class RegistroCliente(FormView):
             user_data['first_name'] = data['nome']
             user_data['last_name'] = data['sobrenome']
             user_data['password'] = data['password']
-            user = User.objects.create_user(**user_data)
+            try:
+                user = User.objects.create_user(**user_data)
+            except (Exception,):
+                messages.error(self.request, 'Ja existe uma conta com este numero')
+                return self.form_invalid(form)
             cliente = Cliente(
                 cpf=' ',
                 telefone=data['telefone'],
