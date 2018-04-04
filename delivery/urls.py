@@ -2,7 +2,9 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from rest_framework import routers
 
+from api.views import UserViewSet
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.ClientesView import *
@@ -86,6 +88,9 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
+router = routers.DefaultRouter()
+router.register(r'^users', UserViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -281,4 +286,7 @@ urlpatterns = [
     url(r'^chamado/delete/(?P<pk>[0-9]+)/$', ChamadoDeleteView.as_view(), name='delete_chamado'),
 
     url('', include('pwa.urls')),
+
+    url(r'^api/$', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
