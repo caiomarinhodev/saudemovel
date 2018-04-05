@@ -4,7 +4,9 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from rest_framework import routers
 
-from api.views import UserViewSet
+from api import views as views_api
+from api.views import UserViewSet, BairroViewSet, ConfigurationViewSet, EstabelecimentoViewSet, PedidoViewSet, \
+    PontoViewSet
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.ClientesView import *
@@ -90,7 +92,16 @@ Including another URLconf
 """
 
 router = routers.DefaultRouter()
-router.register(r'^api/users/$', UserViewSet, base_name='users')
+router.register(r'users', UserViewSet, base_name='users')
+router.register(r'districts', BairroViewSet, base_name='districts')
+router.register(r'configurations', ConfigurationViewSet, base_name='configurations')
+# router.register(r'stores', EstabelecimentoViewSet, base_name='stores')
+router.register(r'orders', PedidoViewSet, base_name='orders')
+router.register(r'points', PontoViewSet, base_name='points')
+
+url_api = [
+    url(r'^stores/$', views_api.EstabelecimentoList.as_view()),
+]
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -291,3 +302,5 @@ urlpatterns = [
 ]
 
 urlpatterns += router.urls
+
+urlpatterns += url_api
