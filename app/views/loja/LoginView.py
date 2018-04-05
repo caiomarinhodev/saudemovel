@@ -90,34 +90,40 @@ class RegistroCliente(FormView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        try:
-            user_data = {}
-            if not str(data['telefone']).isdigit():
-                messages.error(self.request, 'Insira apenas numeros no Telefone')
-                return self.form_invalid(form)
-            # if not cpfcnpj.validate(str(data['cpf'])):
-            #     messages.error(self.request, 'CPF invalido')
-            #     return self.form_invalid(form)
-            user_data['username'] = data['telefone']
-            user_data['first_name'] = data['nome']
-            user_data['last_name'] = data['sobrenome']
-            user_data['password'] = data['password']
-            try:
-                user = User.objects.create_user(**user_data)
-            except (Exception,):
-                messages.error(self.request, 'Ja existe uma conta com este numero')
-                return self.form_invalid(form)
-            cliente = Cliente(
-                cpf=' ',
-                telefone=data['telefone'],
-                usuario=user
-            )
-            cliente.save()
-            messages.success(self.request, 'Registrado com Sucesso')
-            return HttpResponseRedirect(self.get_success_url())
-        except (Exception,):
-            messages.error(self.request, 'Houve algum erro, tente novamente')
+        # try:
+        user_data = {}
+        if not str(data['telefone']).isdigit():
+            messages.error(self.request, 'Insira apenas numeros no Telefone')
             return self.form_invalid(form)
+        if len(data['telefone']) < 8:
+            messages.error(self.request, 'Insira um Telefone valido')
+            return self.form_invalid(form)
+        if len(data['password']) < 5:
+            messages.error(self.request, 'Insira uma senha maior que 5 caracteres')
+            return self.form_invalid(form)
+        # if not cpfcnpj.validate(str(data['cpf'])):
+        #     messages.error(self.request, 'CPF invalido')
+        #     return self.form_invalid(form)
+        user_data['username'] = data['telefone']
+        user_data['first_name'] = data['nome']
+        user_data['last_name'] = data['sobrenome']
+        user_data['password'] = data['password']
+        try:
+            user = User.objects.create_user(**user_data)
+        except (Exception,):
+            messages.error(self.request, 'Ja existe uma conta com este numero')
+            return self.form_invalid(form)
+        cliente = Cliente(
+            cpf=' ',
+            telefone=data['telefone'],
+            usuario=user
+        )
+        cliente.save()
+        messages.success(self.request, 'Registrado com Sucesso')
+        return HttpResponseRedirect(self.get_success_url())
+        # except (Exception,):
+        #     messages.error(self.request, 'Houve algum erro, tente novamente')
+        #     return self.form_invalid(form)
 
     def form_invalid(self, form):
         return super(RegistroCliente, self).form_invalid(form)
