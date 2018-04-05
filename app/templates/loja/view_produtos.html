@@ -100,7 +100,7 @@
                                                                     />
                                                                     <div class="caption text-center">
                                                                         <h4>{{ produto.nome }}</h4>
-                                                                        <p>R$ {{ produto.preco_base }}</p>
+                                                                        <p>R$ {{ produto.preco_base|floatformat:2 }}</p>
                                                                     </div>
                                                                 </div>
                                                             </a>
@@ -114,7 +114,7 @@
                                                                         <input name="produto" value="{{ produto.id }}"
                                                                                class="hidden"/>
                                                                         <h3 class="modal-title">{{ produto.nome }}
-                                                                            (R$ {{ produto.preco_base }})</h3>
+                                                                            (R$ {{ produto.preco_base|floatformat:2 }})</h3>
                                                                         <button type="button" class="close fechar"
                                                                                 data-dismiss="modal"
                                                                                 aria-label="Close">
@@ -236,7 +236,7 @@
                                                                             </h3>
                                                                             <script>
                                                                                 $(document).ready(function () {
-                                                                                    $('#total_item_{{ produto.pk }}').text('{{ produto.preco_base }}');
+                                                                                    $('#total_item_{{ produto.pk }}').text(parseFloat('{{ produto.preco_base }}').toFixed(2));
                                                                                     $('input').change(function () {
                                                                                         var total_calc_{{ produto.pk }} = parseFloat('' +{{ produto.preco_base }});
                                                                                         var all_{{ produto.pk }} = $("input:checked").map(function () {
@@ -245,7 +245,7 @@
                                                                                         for (i = 0; i < all_{{ produto.pk }}.length; i++) {
                                                                                             total_calc_{{ produto.pk }} = total_calc_{{ produto.pk }} + parseFloat(all_{{ produto.pk }}[i]);
                                                                                         }
-                                                                                        $('#total_item_{{ produto.pk }}').text('' + total_calc_{{ produto.pk }});
+                                                                                        $('#total_item_{{ produto.pk }}').text(parseFloat(total_calc_{{ produto.pk }}).toFixed(2));
                                                                                     })
                                                                                 });
                                                                             </script>
