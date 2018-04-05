@@ -181,7 +181,7 @@ class Pedido(TimeStamped):
     coletado = models.BooleanField(default=False)
     is_complete = models.BooleanField(default=False)
     status_cozinha = models.BooleanField(default=False)
-    valor_total = models.CharField(max_length=6)
+    valor_total = models.CharField(max_length=300)
     btn_finalizado = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False, )
     motorista = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -540,7 +540,7 @@ class Request(TimeStamped):
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     status_pedido = models.CharField(max_length=100, choices=STATUS, blank=True, null=True, default='AGUARDANDO')
     subtotal = models.CharField(max_length=10, blank=True, null=True)
-    valor_total = models.CharField(max_length=10, blank=True, null=True)
+    valor_total = models.CharField(max_length=300, blank=True, null=True)
     troco = models.CharField(max_length=10, blank=True, null=True)
     resultado_troco = models.CharField(max_length=10, blank=True, null=True)
     forma_pagamento = models.ForeignKey(FormaPagamento, blank=True, null=True, on_delete=models.CASCADE)
@@ -591,7 +591,7 @@ class ItemPedido(TimeStamped):
     produto = models.ForeignKey(Produto)
     quantidade = models.CharField(max_length=10, blank=True, null=True, default="1")
     observacoes = models.TextField(blank=True, null=True)
-    valor_total = models.CharField(max_length=10, blank=True, null=True)
+    valor_total = models.CharField(max_length=300, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         valor_base = float(str(self.produto.preco_base).replace(',', '.').replace(" ", ""))
@@ -671,7 +671,7 @@ class FolhaPagamento(TimeStamped):
         verbose_name = u'Pagamento'
         verbose_name_plural = u'Pagamentos'
 
-    valor_total = models.CharField(max_length=50)
+    valor_total = models.CharField(max_length=300)
     valor_cobrar = models.CharField(max_length=50, blank=True, null=True)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE, blank=True, null=True)
     link_pagamento = models.URLField(blank=True, null=True, default="#")
@@ -700,7 +700,7 @@ class PagamentoMotorista(TimeStamped):
         verbose_name = u'Pagamento de Motoboy'
         verbose_name_plural = u'Pagamentos de Motoboys'
 
-    valor_total = models.CharField(max_length=50, default="15.00")
+    valor_total = models.CharField(max_length=300, default="15.00")
     motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, blank=True, null=True)
     link_pagamento = models.URLField(default="#")
     status_pagamento = models.BooleanField(default=False)
