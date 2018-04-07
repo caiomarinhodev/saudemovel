@@ -42,17 +42,33 @@ class EstabelecimentoList(generics.ListAPIView):
     serializer_class = EstabelecimentoFullSerializer
 
 
-class PedidoViewSet(viewsets.ModelViewSet):
+class RequestViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Pedido.objects.all().order_by('-created_at')
-    serializer_class = PedidoSerializer
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
 
 
-class PontoViewSet(viewsets.ModelViewSet):
+class ItemPedidoViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Ponto.objects.all().order_by('-created_at')
-    serializer_class = PontoSerializer
+    queryset = ItemPedido.objects.all().order_by('-created_at')
+    serializer_class = ItemPedidoSerializer
+
+
+class OpcionalChoiceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = OpcionalChoice.objects.all().order_by('-created_at')
+    serializer_class = OpcionalChoiceSerializer
+
+
+class EnderecoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Endereco.objects.all().order_by('-created_at')
+    serializer_class = EnderecoSerializer

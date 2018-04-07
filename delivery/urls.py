@@ -5,8 +5,8 @@ from django.contrib.auth import views as auth_views
 from rest_framework import routers
 
 from api import views as views_api
-from api.views import UserViewSet, BairroViewSet, ConfigurationViewSet, EstabelecimentoViewSet, PedidoViewSet, \
-    PontoViewSet
+from api.views import UserViewSet, BairroViewSet, ConfigurationViewSet, ItemPedidoViewSet, \
+    OpcionalChoiceViewSet, EnderecoViewSet, RequestViewSet
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.ClientesView import *
@@ -95,9 +95,10 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, base_name='users')
 router.register(r'districts', BairroViewSet, base_name='districts')
 router.register(r'configurations', ConfigurationViewSet, base_name='configurations')
-# router.register(r'stores', EstabelecimentoViewSet, base_name='stores')
-router.register(r'orders', PedidoViewSet, base_name='orders')
-router.register(r'points', PontoViewSet, base_name='points')
+router.register(r'requests', RequestViewSet, base_name='requests')
+router.register(r'items', ItemPedidoViewSet, base_name='items')
+router.register(r'optionals', OpcionalChoiceViewSet, base_name='optionals')
+router.register(r'addresses', EnderecoViewSet, base_name='addresses')
 
 url_api = [
     url(r'^stores/$', views_api.EstabelecimentoList.as_view()),

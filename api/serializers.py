@@ -1,20 +1,20 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from app.models import Bairro, Estabelecimento, Pedido, Ponto, Configuration, Categoria, FolhaPagamento, Request, \
-    Avaliacao, BairroGratis, Chamado, Produto, Grupo, Opcional
+from app.models import Bairro, Estabelecimento, Pedido, Configuration, Categoria, Request, \
+    Produto, Grupo, Opcional, ItemPedido, OpcionalChoice, Endereco, BairroGratis, FormaPagamento
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 
 class BairroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bairro
-        fields = ('nome', 'valor', 'valor_madrugada', 'valor_madrugada_feriado', 'valor_feriado')
+        fields = ('id', 'nome', 'valor', 'valor_madrugada', 'valor_madrugada_feriado', 'valor_feriado')
 
 
 class ConfigurationSerializer(serializers.ModelSerializer):
@@ -29,62 +29,77 @@ class EstabelecimentoQuickSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Estabelecimento
-        fields = ('user', 'configuration', 'phone', 'photo', 'is_online', 'cnpj', 'full_address', 'is_approved',
+        fields = ('id', 'user', 'configuration', 'phone', 'photo', 'is_online', 'cnpj', 'full_address', 'is_approved',
                   'bairro', 'endereco', 'numero', 'complemento', 'lat', 'lng',)
 
 
-class GrupoQuickSerializer(serializers.ModelSerializer):
+class CategoriaQuickSerializer(serializers.ModelSerializer):
+    estabelecimento = EstabelecimentoQuickSerializer()
+
     class Meta:
-        model = Grupo
-        fields = ('id', 'identificador', 'titulo', 'limitador', 'obrigatoriedade', 'tipo', 'disponivel')
+        model = Categoria
+        fields = ('id', 'nome', 'estabelecimento')
 
 
 class ProdutoQuickSerializer(serializers.ModelSerializer):
+    categoria = CategoriaQuickSerializer()
+
     class Meta:
         model = Produto
-        fields = ('id', 'nome', 'descricao', 'preco_base', 'disponivel')
+        fields = ('id', 'nome', 'descricao', 'categoria', 'preco_base', 'disponivel')
 
 
-class CategoriaQuickSerializer(serializers.ModelSerializer):
+class GrupoQuickSerializer(serializers.ModelSerializer):
+    produto = ProdutoQuickSerializer()
+
     class Meta:
-        model = Categoria
-        fields = ('id', 'nome',)
+        model = Grupo
+        fields = ('id', 'identificador', 'titulo', 'limitador', 'produto', 'obrigatoriedade', 'tipo', 'disponivel')
 
 
 class OpcionalFullSerializer(serializers.ModelSerializer):
-    grupo_set = GrupoQuickSerializer(many=True, read_only=True)
-
     class Meta:
         model = Opcional
-        fields = ('id', 'nome', 'descricao', 'grupo', 'valor', 'disponivel', 'grupo_set')
+        fields = ('id', 'nome', 'descricao', 'grupo', 'valor', 'disponivel',)
 
 
 class GrupoFullSerializer(serializers.ModelSerializer):
-    produto = ProdutoQuickSerializer()
     opcional_set = OpcionalFullSerializer(many=True, read_only=True)
 
     class Meta:
         model = Grupo
-        fields = ('id', 'identificador', 'titulo', 'limitador', 'obrigatoriedade', 'tipo', 'disponivel', 'produto',
+        fields = ('id', 'identificador', 'titulo', 'limitador', 'obrigatoriedade', 'tipo', 'disponivel',
                   'opcional_set')
 
 
 class ProdutoFullSerializer(serializers.ModelSerializer):
-    categoria = CategoriaQuickSerializer()
     grupo_set = GrupoFullSerializer(many=True, read_only=True)
 
     class Meta:
         model = Produto
-        fields = ('id', 'nome', 'descricao', 'preco_base', 'categoria', 'disponivel', 'grupo_set')
+        fields = ('id', 'nome', 'descricao', 'preco_base', 'disponivel', 'grupo_set')
 
 
 class CategoriaFullSerializer(serializers.ModelSerializer):
-    estabelecimento = EstabelecimentoQuickSerializer()
     produto_set = ProdutoFullSerializer(many=True, read_only=True)
 
     class Meta:
         model = Categoria
-        fields = ('id', 'nome', 'estabelecimento', 'produto_set',)
+        fields = ('id', 'nome', 'produto_set',)
+
+
+class BairroGratisSerializer(serializers.ModelSerializer):
+    bairro = BairroSerializer()
+
+    class Meta:
+        model = BairroGratis
+        fields = ('id', 'bairro',)
+
+
+class FormaPagamentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FormaPagamento
+        fields = ('id', 'forma', 'cartao')
 
 
 class EstabelecimentoFullSerializer(serializers.ModelSerializer):
@@ -92,21 +107,15 @@ class EstabelecimentoFullSerializer(serializers.ModelSerializer):
     bairro = BairroSerializer()
     user = UserSerializer()
     categoria_set = CategoriaFullSerializer(many=True, read_only=True)
-    pedido_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    ponto_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    formapagamento_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    request_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    avaliacao_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    folhapagamento_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    bairrogratis_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    chamado_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    bairrogratis_set = BairroGratisSerializer(many=True, read_only=True)
+    formapagamento_set = FormaPagamentoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Estabelecimento
         fields = ('id', 'user', 'configuration', 'phone', 'photo', 'is_online', 'cnpj', 'full_address', 'is_approved',
-                  'bairro', 'endereco', 'numero', 'complemento', 'lat', 'lng', 'pedido_set', 'ponto_set',
-                  'categoria_set', 'formapagamento_set', 'request_set', 'avaliacao_set', 'folhapagamento_set',
-                  'bairrogratis_set', 'chamado_set')
+                  'bairro', 'endereco', 'numero', 'complemento', 'lat', 'lng', 'categoria_set', 'bairrogratis_set',
+                  'formapagamento_set'
+                  )
 
 
 class PedidoSerializer(serializers.ModelSerializer):
@@ -115,16 +124,43 @@ class PedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = (
-            'status', 'estabelecimento', 'coletado', 'is_complete', 'status_cozinha', 'valor_total', 'btn_finalizado',
-            'is_draft', 'motorista', 'duration', 'distance')
+        fields = ('id',
+                  'status', 'estabelecimento', 'coletado', 'is_complete', 'status_cozinha', 'valor_total',
+                  'btn_finalizado',
+                  'is_draft', 'motorista', 'duration', 'distance')
 
 
-class PontoSerializer(serializers.ModelSerializer):
-    estabelecimento = EstabelecimentoQuickSerializer()
-    pedido = PedidoSerializer()
-
+class RequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ponto
-        fields = ('cliente', 'telefone', 'observacoes', 'estabelecimento', 'pedido', 'full_address', 'status',
-                  'duration', 'distance', 'itens', 'is_prepared')
+        model = Request
+        fields = (
+            'id',
+            'cliente',
+            'estabelecimento',
+            'status_pedido',
+            'subtotal',
+            'valor_total',
+            'troco',
+            'resultado_troco',
+            'forma_pagamento',
+            'endereco_entrega',
+            'pedido'
+        )
+
+
+class ItemPedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemPedido
+        fields = ('id', 'pedido', 'produto', 'observacoes')
+
+
+class OpcionalChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpcionalChoice
+        fields = ('id', 'opcional', 'item_pedido',)
+
+
+class EnderecoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Endereco
+        fields = ('id', 'cliente', 'endereco_completo', 'valor_entrega', 'endereco', 'numero', 'bairro', 'complemento')
