@@ -1,8 +1,18 @@
 # Create your views here.
+from django.contrib.auth.models import User
+from rest_framework import authentication
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.decorators import authentication_classes
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from api.serializers import *
+from api.serializers import UserSerializer, BairroSerializer, ConfigurationSerializer, EstabelecimentoFullSerializer, \
+    OpcionalChoiceSerializer, ItemPedidoSerializer, RequestSerializer, EnderecoSerializer, ClienteSerializer
+from app.models import Bairro, Configuration, Estabelecimento, Request, ItemPedido, OpcionalChoice, Endereco, Cliente
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -72,3 +82,53 @@ class EnderecoViewSet(viewsets.ModelViewSet):
     """
     queryset = Endereco.objects.all().order_by('-created_at')
     serializer_class = EnderecoSerializer
+
+
+@authentication_classes([])
+@permission_classes([])
+class ClienteViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Cliente.objects.all().order_by('-created_at')
+    serializer_class = ClienteSerializer
+
+
+class ListMyRequests(APIView):
+    """
+    View to list all users in the system.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self, *args, **kwargs):
+        return Request.objects.filter(endereco_entrega__isnull=False, forma_pagamento__isnull=False,
+                                      cliente__usuario=self.request.user.id)
+
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        requests = [RequestSerializer(request).data for request in
+                    Request.objects.filter(endereco_entrega__isnull=False, forma_pagamento__isnull=False,
+                                           cliente__usuario=request.user.id)]
+        return Response(requests)
+
+
+class ListMyAddress(APIView):
+    """
+    View to list all users in the system.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self, *args, **kwargs):
+        return Endereco.objects.filter(cliente__usuario=self.request.user.id)
+
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        enderecos = [EnderecoSerializer(endereco).data for endereco in
+                    Endereco.objects.filter(cliente__usuario=self.request.user.id)]
+        return Response(enderecos)

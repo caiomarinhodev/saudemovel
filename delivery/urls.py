@@ -6,7 +6,7 @@ from rest_framework import routers
 
 from api import views as views_api
 from api.views import UserViewSet, BairroViewSet, ConfigurationViewSet, ItemPedidoViewSet, \
-    OpcionalChoiceViewSet, EnderecoViewSet, RequestViewSet
+    OpcionalChoiceViewSet, EnderecoViewSet, RequestViewSet, ListMyRequests, ClienteViewSet, ListMyAddress
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.ClientesView import *
@@ -99,9 +99,12 @@ router.register(r'requests', RequestViewSet, base_name='requests')
 router.register(r'items', ItemPedidoViewSet, base_name='items')
 router.register(r'optionals', OpcionalChoiceViewSet, base_name='optionals')
 router.register(r'addresses', EnderecoViewSet, base_name='addresses')
+router.register(r'clients', ClienteViewSet, base_name='clients')
 
 url_api = [
     url(r'^stores/$', views_api.EstabelecimentoList.as_view()),
+    url(r'my-requests/$', ListMyRequests.as_view()),
+    url(r'my-addresses/$', ListMyAddress.as_view()),
 ]
 
 urlpatterns = [

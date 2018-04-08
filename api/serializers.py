@@ -2,19 +2,28 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from app.models import Bairro, Estabelecimento, Pedido, Configuration, Categoria, Request, \
-    Produto, Grupo, Opcional, ItemPedido, OpcionalChoice, Endereco, BairroGratis, FormaPagamento
+    Produto, Grupo, Opcional, ItemPedido, OpcionalChoice, Endereco, BairroGratis, FormaPagamento, Motorista, Cliente
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password')
 
 
-class BairroSerializer(serializers.ModelSerializer):
+class MotoristaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Bairro
-        fields = ('id', 'nome', 'valor', 'valor_madrugada', 'valor_madrugada_feriado', 'valor_feriado')
+        model = Motorista
+        fields = ('id', 'configuration', 'cpf', 'photo', 'phone', 'ocupado', 'is_online', 'place', 'is_approved',
+                  'creditos_expirados')
+
+
+class UserMotoristaSerializer(serializers.HyperlinkedModelSerializer):
+    motorista = MotoristaSerializer()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'motorista')
 
 
 class ConfigurationSerializer(serializers.ModelSerializer):
@@ -23,14 +32,37 @@ class ConfigurationSerializer(serializers.ModelSerializer):
         fields = ('tema', 'plano', 'has_cozinha', 'tempo_de_entrega',)
 
 
+class BairroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bairro
+        fields = ('id', 'nome', 'valor', 'valor_madrugada', 'valor_madrugada_feriado', 'valor_feriado')
+
+
+class BairroGratisSerializer(serializers.ModelSerializer):
+    bairro = BairroSerializer()
+
+    class Meta:
+        model = BairroGratis
+        fields = ('id', 'bairro',)
+
+
+class FormaPagamentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FormaPagamento
+        fields = ('id', 'forma', 'cartao')
+
+
 class EstabelecimentoQuickSerializer(serializers.ModelSerializer):
     configuration = ConfigurationSerializer()
     bairro = BairroSerializer()
+    bairrogratis_set = BairroGratisSerializer(many=True, read_only=True)
+    formapagamento_set = FormaPagamentoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Estabelecimento
         fields = ('id', 'user', 'configuration', 'phone', 'photo', 'is_online', 'cnpj', 'full_address', 'is_approved',
-                  'bairro', 'endereco', 'numero', 'complemento', 'lat', 'lng',)
+                  'bairro', 'endereco', 'numero', 'complemento', 'lat', 'lng', 'bairrogratis_set',
+                  'formapagamento_set')
 
 
 class CategoriaQuickSerializer(serializers.ModelSerializer):
@@ -88,20 +120,6 @@ class CategoriaFullSerializer(serializers.ModelSerializer):
         fields = ('id', 'nome', 'produto_set',)
 
 
-class BairroGratisSerializer(serializers.ModelSerializer):
-    bairro = BairroSerializer()
-
-    class Meta:
-        model = BairroGratis
-        fields = ('id', 'bairro',)
-
-
-class FormaPagamentoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FormaPagamento
-        fields = ('id', 'forma', 'cartao')
-
-
 class EstabelecimentoFullSerializer(serializers.ModelSerializer):
     configuration = ConfigurationSerializer()
     bairro = BairroSerializer()
@@ -120,7 +138,7 @@ class EstabelecimentoFullSerializer(serializers.ModelSerializer):
 
 class PedidoSerializer(serializers.ModelSerializer):
     estabelecimento = EstabelecimentoQuickSerializer()
-    motorista = UserSerializer()
+    motorista = UserMotoristaSerializer()
 
     class Meta:
         model = Pedido
@@ -164,3 +182,23 @@ class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endereco
         fields = ('id', 'cliente', 'endereco_completo', 'valor_entrega', 'endereco', 'numero', 'bairro', 'complemento')
+
+
+class ClienteSerializer(serializers.ModelSerializer):
+    usuario = UserSerializer(required=True)
+
+    class Meta:
+        model = Cliente
+        fields = ('id', 'usuario', 'cpf', 'foto', 'telefone', 'is_online',)
+
+    def create(self, validated_data):
+        """
+        Overriding the default create method of the Model serializer.
+        :param validated_data: data containing all the details of student
+        :return: returns a successfully created student record
+        """
+        user_data = validated_data.pop('usuario')
+        user = User.objects.create_user(**user_data)
+        client, created = Cliente.objects.update_or_create(usuario=user, cpf=validated_data.pop('cpf'),
+                                                           telefone=validated_data.pop('telefone'))
+        return client
