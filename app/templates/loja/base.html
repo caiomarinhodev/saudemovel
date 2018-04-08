@@ -65,7 +65,7 @@
         {% if message.tags == 'error' %}
             <script>
                 $(document).ready(function () {
-                    swal("Erro", "{{ message|safe }}", "error")
+                    swal("Ops...", "{{ message|safe }}", "error")
                 });
             </script>
         {% else %}
