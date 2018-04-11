@@ -575,10 +575,10 @@ class Request(TimeStamped):
                 self.valor_total = total
         else:
             self.valor_total = subtotal
-        if self.troco and (str(self.troco).replace(" ", "") != u'' or str(self.troco).replace(" ", "") != ""):
-            self.troco = str(self.troco.replace(',', '.').replace(" ", ""))
-            self.resultado_troco = float(
-                float(self.troco) - float(str(self.valor_total).replace(',', '.')))
+        # if self.troco and (str(self.troco).replace(" ", "") != u'' or str(self.troco).replace(" ", "") != ""):
+        #     self.troco = str(self.troco.replace(',', '.').replace(" ", ""))
+        #     self.resultado_troco = float(
+        #         float(self.troco) - float(str(self.valor_total).replace(',', '.')))
         super(Request, self).save(*args, **kwargs)
 
 
