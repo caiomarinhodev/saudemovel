@@ -53,7 +53,8 @@
                                             </p>
                                             <p>
                                                 <a href="#" class="btn btn-xs btn-default">
-                                                    <span class="fa fa-star"></span> {{ loja|calcula_media_aval|floatformat:1 }}
+                                                    <span class="fa fa-star"></span>
+                                                    {{ loja|calcula_media_aval|floatformat:1 }}
                                                 </a>
                                             </p>
                                             <p>
@@ -114,7 +115,8 @@
                                                                         <input name="produto" value="{{ produto.id }}"
                                                                                class="hidden"/>
                                                                         <h3 class="modal-title">{{ produto.nome }}
-                                                                            (R$ {{ produto.preco_base|floatformat:2 }})</h3>
+                                                                            (R$
+                                                                            {{ produto.preco_base|floatformat:2 }})</h3>
                                                                         <button type="button" class="close fechar"
                                                                                 data-dismiss="modal"
                                                                                 aria-label="Close">
@@ -151,7 +153,10 @@
                                                                                                                    value="{{ opcional.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opcional.nome }}
-                                                                                                            ({% if opcional.descricao %}{{ opcional.descricao }}{% endif %} +R$ {{ opcional.valor }})
+                                                                                                            (
+                                                                                                            {% if opcional.descricao %}
+                                                                                                                {{ opcional.descricao }}{% endif %}
+                                                                                                            +R$ {{ opcional.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
@@ -191,7 +196,10 @@
                                                                                                                    value="{{ opc.id }}"
                                                                                                                    onclick="return keepcoun{{ grupo.pk }}t();">
                                                                                                             {{ opc.nome }}
-                                                                                                            ({% if opc.descricao %}{{ opc.descricao }}{% endif %} +R$ {{ opc.valor }})
+                                                                                                            (
+                                                                                                            {% if opc.descricao %}
+                                                                                                                {{ opc.descricao }}{% endif %}
+                                                                                                            +R$ {{ opc.valor }})
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 {% endif %}
@@ -317,7 +325,7 @@
                                                 (
                                                 {% for opc in itempedido.opcionalchoice_set.all %}
                                                     {{ opc.opcional.nome }},
-                                                {% empty %}
+                                                    {% empty %}
                                                     -
                                                 {% endfor %}
                                                 )
@@ -329,7 +337,7 @@
                                                     class="fa fa-close"></i></a>
                                         </td>
                                     </tr>
-                                {% empty %}
+                                    {% empty %}
                                     <tr>
                                         <td></td>
                                         <td>Seu carrinho está vazio</td>
@@ -366,6 +374,23 @@
                             </div>
                         </div>
                     </div>
+                    {% if loja.bairrogratis_set.first %}
+                        <div class="box box mt-0 mb-4 p-0">
+                            <div class="box-header mt-0">
+                                <h4>Entrega Grátis</h4>
+                            </div>
+                            <p class="text-muted">
+                            <ul>
+                                {% for bairro in loja.bairrogratis_set.all %}
+                                    <li>{{ bairro }}</li>
+                                {% endfor %}
+                            </ul>
+
+
+                            </p>
+                            <p>{{ loja.endereco_completo }}</p>
+                        </div>
+                    {% endif %}
                     {% if loja.endereco_completo %}
                         <div class="box box mt-0 mb-4 p-0">
                             <div class="box-header mt-0">
