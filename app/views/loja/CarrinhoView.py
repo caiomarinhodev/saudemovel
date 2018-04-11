@@ -133,6 +133,7 @@ class FinalizaRequest(LoginRequiredMixin, TemplateView, LojaFocusMixin):
 
 def submit_pedido(request):
     data = request.POST
+    endereco = None
     try:
         cliente = request.user.cliente
         pedido = Request.objects.get(id=request.session['pedido'])
@@ -141,7 +142,6 @@ def submit_pedido(request):
         messages.error(request, 'Faça Login para finalizar o pedido')
         return redirect('/define/login/')
     try:
-        endereco = None
         if 'endereco' in data:
             if data['endereco'] != '':
                 endereco = Endereco.objects.get(id=data['endereco'])
@@ -153,6 +153,9 @@ def submit_pedido(request):
                     endereco = Endereco(cliente=cliente, bairro=bairro, endereco=data['rua'], numero=data['numero'],
                                         complemento=data['complemento'])
                     endereco.save()
+                else:
+                    messages.error(request, u'Nao conseguimos cadastrar seu endereco')
+                    return redirect('/finaliza-pedido/')
             else:
                 messages.error(request, u'Selecione o endereco de entrega ou Informe o endereco de entrega')
                 return redirect('/finaliza-pedido/')
@@ -163,16 +166,16 @@ def submit_pedido(request):
         if 'pgto' in data:
             if data['pgto'] != u'':
                 forma_pagamento = FormaPagamento.objects.get(id=data['pgto'])
-                if forma_pagamento.forma == 'DINHEIRO':
-                    if 'troco' in data:
-                        if data['troco'] != u'':
-                            pedido.troco = data['troco']
-                        else:
-                            messages.error(request, u'Insira o valor do Troco')
-                            return redirect('/finaliza-pedido/')
-                    else:
-                        messages.error(request, u'Insira o valor do Troco')
-                        return redirect('/finaliza-pedido/')
+                # if forma_pagamento.forma == 'DINHEIRO':
+                    # if 'troco' in data:
+                    #     if data['troco'] != u'':
+                    #         pedido.troco = data['troco']
+                    #     else:
+                    #         messages.error(request, u'Insira o valor do Troco')
+                    #         return redirect('/finaliza-pedido/')
+                    # else:
+                    #     messages.error(request, u'Insira o valor do Troco')
+                    #     return redirect('/finaliza-pedido/')
             else:
                 messages.error(request, u'Insira uma forma de pagamento')
                 return redirect('/finaliza-pedido/')
@@ -182,12 +185,12 @@ def submit_pedido(request):
     except (Exception,):
         messages.error(request, u'Insira uma forma de pagamento')
         return redirect('/finaliza-pedido/')
-    try:
-        if 'troco' in data and forma_pagamento.forma == 'DINHEIRO':
-            if data['troco'] != u'':
-                pedido.troco = data['troco']
-    except (Exception,):
-        pass
+    # try:
+    #     if 'troco' in data and forma_pagamento.forma == 'DINHEIRO':
+    #         if data['troco'] != u'':
+    #             pedido.troco = data['troco']
+    # except (Exception,):
+    #     pass
     try:
         pedido.forma_pagamento = forma_pagamento
         if endereco:

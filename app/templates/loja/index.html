@@ -37,18 +37,27 @@
 
                                             <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
                                                  src="{{ loja.photo }}"/>
-                                            <label class="label" style="color: #0c0c0c">{{ loja.user.first_name }}</label>
-                                            {% if loja.is_online %}
-                                                <label class="label label-success">
-                                                    Online
-                                                </label>
-                                            {% else %}
-                                                <center>
-                                                    <label class="label label-danger">
-                                                        Offline
-                                                    </label>
-                                                </center>
-                                            {% endif %}
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <label class="label"
+                                                               style="color: #0c0c0c; font-size: 10px;">{{ loja.user.first_name }}</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        {% if loja.is_online %}
+                                                            <label class="label label-success">
+                                                                Online
+                                                            </label>
+                                                        {% else %}
+                                                            <center>
+                                                                <label class="label label-danger">
+                                                                    Offline
+                                                                </label>
+                                                            </center>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>
@@ -67,8 +76,9 @@
                                         <div class="thumbnail text-center">
 
                                             <img title="{{ loja.user.first_name }}" alt="{{ loja.user.first_name }}"
-                                                 src="{{ loja.photo }}" />
-                                            <label class="label" style="color: #0c0c0c">{{ loja.user.first_name }}</label>
+                                                 src="{{ loja.photo }}"/>
+                                            <label class="label"
+                                                   style="color: #0c0c0c">{{ loja.user.first_name }}</label>
                                             {% if loja.is_online %}
                                                 <label class="label label-success">
                                                     Online
