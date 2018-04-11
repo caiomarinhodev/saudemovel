@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'rest_framework',
-    'pwa',
+    # 'pwa',
 ]
 
 PWA_APP_NAME = 'Focus Delivery'
