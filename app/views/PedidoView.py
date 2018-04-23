@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -130,8 +131,26 @@ class PedidosLojaListView(LoginRequiredMixin, ListView, CustomContextMixin):
     context_object_name = 'pedidos'
     template_name = 'entrega/pedidos/list_pedidos_loja.html'
 
-    def get_queryset(self):
-        return Pedido.objects.filter(estabelecimento__user=self.request.user).order_by('-created_at')
+    def get(self, request, *args, **kwargs):
+        now = datetime.now()
+        if 'type' in self.request.GET:
+            if self.request.GET['type'] == 'tudo':
+                self.queryset = Pedido.objects.filter(estabelecimento__user=self.request.user).order_by('-created_at')
+            elif self.request.GET['type'] == 'mes':
+                self.queryset = Pedido.objects.filter(estabelecimento__user=self.request.user,
+                                                      created_at__month=now.month,
+                                                      created_at__year=now.year).order_by('-created_at')
+            else:
+                self.queryset = Pedido.objects.filter(estabelecimento__user=self.request.user,
+                                                      created_at__month=now.month,
+                                                      created_at__year=now.year, created_at__day=now.day).order_by(
+                    '-created_at')
+        else:
+            self.queryset = Pedido.objects.filter(estabelecimento__user=self.request.user,
+                                                  created_at__month=now.month,
+                                                  created_at__year=now.year, created_at__day=now.day).order_by(
+                '-created_at')
+        return super(PedidosLojaListView, self).get(request, *args, **kwargs)
 
 
 class PedidosMotoristaListView(LoginRequiredMixin, RedirectMotoristaOcupadoView, ListView, CustomContextMixin):
