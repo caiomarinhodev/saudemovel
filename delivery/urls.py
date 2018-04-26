@@ -31,7 +31,7 @@ from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUs
 from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
     remove_cart
-from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script, bootstrap
+from app.views.loja.HomeView import HomeView, LojaProdutosListView, SetOnlineView, script, bootstrap, SobreView
 from app.views.loja.LoginView import ClienteLoginView
 from app.views.loja.LoginView import EscolheLoginView, RegistroCliente
 from app.views.painel.bairro_gratis.BairroGratisView import BairroGratisCreateView, BairroGratisUpdateView, \
@@ -302,7 +302,9 @@ urlpatterns = [
 
     url('', include('pwa.urls')),
 
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    url(r'^sobre/$',  SobreView.as_view(), name='about'),
 ]
 
 urlpatterns += router.urls
