@@ -167,7 +167,7 @@ class FotoProdutoAdmin(admin.ModelAdmin):
 class ClienteAdmin(admin.ModelAdmin):
     inlines = [EnderecoInline, ]
     list_display = (
-        'id', 'usuario', 'qtd_pedidos', 'cpf', 'telefone', 'email_cliente', 'is_online',
+        'id', 'usuario', 'qtd_pedidos', 'nome_cliente', 'telefone', 'email_cliente', 'is_online',
         'created_at')
 
     def email_cliente(self, obj):
@@ -175,6 +175,9 @@ class ClienteAdmin(admin.ModelAdmin):
 
     def qtd_pedidos(self, obj):
         return obj.request_set.all()
+
+    def nome_cliente(self, obj):
+        return obj.usuario.first_name
 
 
 class EnderecoAdmin(admin.ModelAdmin):
