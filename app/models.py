@@ -541,7 +541,7 @@ class Request(TimeStamped):
     status_pedido = models.CharField(max_length=100, choices=STATUS, blank=True, null=True, default='AGUARDANDO')
     subtotal = models.CharField(max_length=10, blank=True, null=True)
     valor_total = models.CharField(max_length=300, blank=True, null=True)
-    troco = models.CharField(max_length=10, blank=True, null=True)
+    troco = models.CharField(max_length=300, blank=True, null=True)
     resultado_troco = models.CharField(max_length=10, blank=True, null=True)
     forma_pagamento = models.ForeignKey(FormaPagamento, blank=True, null=True, on_delete=models.CASCADE)
     forma_entrega = models.ForeignKey(FormaEntrega, blank=True, null=True, on_delete=models.CASCADE)
@@ -575,10 +575,6 @@ class Request(TimeStamped):
                 self.valor_total = total
         else:
             self.valor_total = subtotal
-        # if self.troco and (str(self.troco).replace(" ", "") != u'' or str(self.troco).replace(" ", "") != ""):
-        #     self.troco = str(self.troco.replace(',', '.').replace(" ", ""))
-        #     self.resultado_troco = float(
-        #         float(self.troco) - float(str(self.valor_total).replace(',', '.')))
         super(Request, self).save(*args, **kwargs)
 
 

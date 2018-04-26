@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, date, time
 
 from django import template
+from django.template.defaultfilters import floatformat
 
 from app.models import Motorista, Estabelecimento, Ponto, ConfigAdmin, BairroGratis, Avaliacao
 from app.views.geocoding import calculate_matrix_distance
@@ -168,6 +169,36 @@ def corridas_hoje(motorista):
                                                 created_at__year=now.year)
     except (Motorista.DoesNotExist, Exception):
         return None
+
+
+@register.filter
+def make_obs(ponto):
+    pedido = ponto.pedido
+    req = None
+    for request in pedido.request_set.all():
+        from app.views.painel.pedido.PedidoView import make_itens
+        if request.cliente.telefone == ponto.telefone and make_itens(request) == ponto.itens:
+            req = request
+    if req is None:
+        return ponto.observacoes
+    try:
+        message = '<p><ul>'
+        try:
+
+            if 'valor_total' in req and req.valor_total:
+                message += '<li>Valor Total: ' + floatformat(str(req.valor_total), 2) + ' </li>'
+            if 'troco' in req and req.troco:
+                message += '<li>Troco para: ' + req.troco +'</li>'
+            message += '<li>Forma de Pagamento: ' + str(req.forma_pagamento) + ' </li>'
+            message += '</ul></p>'
+        except (Exception,):
+            message += '<li>Forma de Pagamento: ' + unicode(req.forma_pagamento) + ' </li>'
+            message += '<li>Valor Total: ' + floatformat(unicode(req.valor_total), 2) + ' </li>'
+            message += '<li>Troco para: ' + unicode(req.troco) + '</li>'
+            message += '</ul></p>'
+        return message
+    except (Exception,):
+        return ""
 
 
 @register.filter

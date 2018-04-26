@@ -57,7 +57,7 @@
                                                     {{ loja|calcula_media_aval|floatformat:1 }}
                                                 </a>
                                             </p>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -85,8 +85,18 @@
                                                           action="{% url 'add_cart' loja.id %}">{% csrf_token %}
                                                         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
                                                              style="margin-bottom: 50px;">
-                                                            <a href="#p{{ produto.pk }}" data-toggle="modal"
-                                                               data-target="#p{{ produto.pk }}">
+                                                            <a
+                                                                    {% if user.cliente %}
+                                                                        href="#p{{ produto.pk }}"
+                                                                        data-toggle="modal"
+                                                                        data-target="#p{{ produto.pk }}"
+                                                                    {% else %}
+                                                                        href="#login_pop"
+                                                                        data-toggle="modal"
+                                                                        data-target="#login_pop"
+                                                                    {% endif %}
+
+                                                            >
                                                                 <div class="thumbnail"
                                                                      style="height: 180px; width: 180px;">
                                                                     <img title="{{ produto.nome }}"
@@ -275,7 +285,62 @@
                                 {% endif %}
 
                             {% endfor %}
-
+                            <form action="{% url 'login_cliente' %}" method="post">
+                                {% csrf_token %}
+                                <div class="modal fade" id="login_pop" tabindex="-1"
+                                     role="dialog" aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-center">
+                                                <h3 class="modal-title">
+                                                    Login
+                                                </h3>
+                                                <button type="button" class="close fechar"
+                                                        data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row text-center">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label required pull-left" for="email">Numero
+                                                                Telefone<sup
+                                                                        style="color:red">*</sup> <h6>(somente
+                                                                    números)</h6></label>
+                                                            <input class="form-control input-lg" type="text"
+                                                                   name="telefone"
+                                                                   id="id_telefone"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label required pull-left" for="email">Senha<sup
+                                                                    style="color:red">*</sup></label>
+                                                            <input class="form-control input-lg" type="password"
+                                                                   name="password" id="id_password"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <button type="submit" id="btn_entrar"
+                                                                class="btn btn-primary btn-block">Entrar
+                                                        </button>
+                                                    </div>
+                                                    <hr/>
+                                                    <div class="col-xs-12">
+                                                        <br/>
+                                                    <br/>
+                                                    <br/>
+                                                        <a href="{% url 'registro_cliente' %}">Fazer meu Cadastro.</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <br/><br/>
                         <p>Todas as imagens são meramente ilustrativas.</p>
@@ -320,7 +385,7 @@
                                                 (
                                                 {% for opc in itempedido.opcionalchoice_set.all %}
                                                     {{ opc.opcional.nome }},
-                                                    {% empty %}
+                                                {% empty %}
                                                     -
                                                 {% endfor %}
                                                 )
@@ -332,7 +397,7 @@
                                                     class="fa fa-close"></i></a>
                                         </td>
                                     </tr>
-                                    {% empty %}
+                                {% empty %}
                                     <tr>
                                         <td></td>
                                         <td>Seu carrinho está vazio</td>
@@ -453,7 +518,6 @@
             </div>
         </div>
     </section>
-
 
     <script type="text/javascript">
         $(document).ready(function () {
