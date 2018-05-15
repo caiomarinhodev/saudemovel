@@ -212,12 +212,10 @@ class BairroAdmin(admin.ModelAdmin):
 
 class GrupoAdmin(admin.ModelAdmin):
     list_display = (
-        'identificador', 'id', 'titulo', 'produto', 'limitador', 'estabelecimento', 'created_at', 'obrigatoriedade',
+        'identificador', 'id', 'titulo', 'produto', 'limitador', 'created_at', 'obrigatoriedade',
         'disponivel')
     inlines = [OpcionalInline, ]
 
-    def estabelecimento(self, obj):
-        return obj.produto.categoria.estabelecimento
 
 
 class ProdutoInline(admin.TabularInline):
