@@ -54,6 +54,12 @@ class CustomContextMixin(ContextMixin):
                                                                     status=True, is_complete=False,
                                                                     coletado=False).order_by(
                     '-created_at')
+                kwargs['vendas_totais'] = Request.objects.filter(status_pedido='ENTREGUE', estabelecimento=self.request.user.estabelecimento)
+                kwargs['vendas_mes'] = Request.objects.filter(created_at__month=datetime.now().month,
+                                                              created_at__year=datetime.now().year,
+                                                              status_pedido='ENTREGUE',
+                                                              estabelecimento=self.request.user.estabelecimento
+                                                              )
 
         except:
             if 'messages_m' not in kwargs:

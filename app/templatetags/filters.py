@@ -266,6 +266,17 @@ def get_valor_vendas(requests):
         return 0.0
 
 
+@register.filter
+def get_ticket_medio(requests):
+    try:
+        ganho = 0.0
+        for req in requests:
+            ganho = float(req.subtotal) + float(ganho)
+        return float(ganho/float(len(requests)))
+    except (Exception,):
+        return 0.0
+
+
 
 @register.filter
 def ganhos_totais(motorista):
