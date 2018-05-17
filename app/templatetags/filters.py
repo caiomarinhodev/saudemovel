@@ -255,6 +255,17 @@ def ganhos_hoje(motorista):
     except (Motorista.DoesNotExist, Exception):
         return 0.0
 
+@register.filter
+def get_valor_vendas(requests):
+    try:
+        ganho = 0.0
+        for req in requests:
+            ganho = float(req.subtotal) + float(ganho)
+        return ganho
+    except (Exception,):
+        return 0.0
+
+
 
 @register.filter
 def ganhos_totais(motorista):
