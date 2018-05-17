@@ -141,6 +141,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     cnpj = models.CharField(max_length=50, blank=True, null=True)
     phone = models.CharField(max_length=30, blank=True)
     is_online = models.BooleanField(default=False)
+    description = models.TextField(blank=True, null=True)
     full_address = models.CharField(max_length=300, blank=True, null=True)
 
     def save(self, *args, **kwargs):

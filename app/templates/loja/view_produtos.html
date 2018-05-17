@@ -60,6 +60,12 @@
 
                                         </div>
                                     </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="media-body text-center">
+                                            {{ loja.description|safe }}
+
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -331,8 +337,8 @@
                                                     <hr/>
                                                     <div class="col-xs-12">
                                                         <br/>
-                                                    <br/>
-                                                    <br/>
+                                                        <br/>
+                                                        <br/>
                                                         <a href="{% url 'registro_cliente' %}">Fazer meu Cadastro.</a>
                                                     </div>
                                                 </div>
@@ -385,7 +391,7 @@
                                                 (
                                                 {% for opc in itempedido.opcionalchoice_set.all %}
                                                     {{ opc.opcional.nome }},
-                                                {% empty %}
+                                                    {% empty %}
                                                     -
                                                 {% endfor %}
                                                 )
@@ -397,7 +403,7 @@
                                                     class="fa fa-close"></i></a>
                                         </td>
                                     </tr>
-                                {% empty %}
+                                    {% empty %}
                                     <tr>
                                         <td></td>
                                         <td>Seu carrinho está vazio</td>
