@@ -102,10 +102,10 @@
                                                                     <img title="{{ produto.nome }}"
                                                                          alt="{{ produto.nome }}"
                                                                          src="{{ produto.fotoproduto_set.first }}"
-                                                                         style="height: 170px; width: 170px;"
+                                                                         style="height: 100px; width: 180px;"
                                                                     />
                                                                     <div class="caption text-center">
-                                                                        <h4>{{ produto.nome }}</h4>
+                                                                        <h4>{{ produto.nome|truncatechars:"19" }}</h4>
                                                                         <p>R$ {{ produto.preco_base|floatformat:2 }}</p>
                                                                     </div>
                                                                 </div>
