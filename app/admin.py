@@ -15,7 +15,7 @@ class PontoInline(admin.TabularInline):
 
 class MotoristaAdmin(admin.ModelAdmin):
     search_fields = (
-        'user__first_name', 'cpf', 'placa', 'phone'
+        'user__first_name',
     )
     list_display = (
         'id', 'user', 'nome_completo', 'cpf', 'phone', 'is_online', 'placa', 'is_approved', 'creditos_expirados',
@@ -27,7 +27,7 @@ class MotoristaAdmin(admin.ModelAdmin):
 
 class EstabelecimentoAdmin(admin.ModelAdmin):
     search_fields = (
-        'user__first_name', 'cnpj',
+        'user__first_name',
     )
     list_display = ('user', 'nome_loja', 'phone', 'cnpj', 'id', 'full_address', 'photo', 'is_online', 'created_at')
 
@@ -38,16 +38,16 @@ class EstabelecimentoAdmin(admin.ModelAdmin):
 class PontoAdmin(admin.ModelAdmin):
     list_filter = ('bairro',)
     search_fields = (
-        'cliente', 'telefone', 'bairro',
+        'telefone',
     )
     list_display = (
         'id', 'cliente', 'telefone', 'endereco', 'numero', 'bairro', 'created_at', 'status', 'duration', 'distance')
 
 
 class FolhaPagamentoAdmin(admin.ModelAdmin):
-    list_filter = ('estabelecimento__user__first_name', 'status_pagamento',)
+    list_filter = ('estabelecimento', 'status_pagamento',)
     search_fields = (
-        'estabelecimento__user__first_name', 'status_pagamento', 'valor_total',
+        'estabelecimento__user__first_name',
     )
     list_display = ('id', 'loja', 'valor_total', 'valor_cobrar', 'link_pagamento', 'status_pagamento', 'created_at',)
 
@@ -183,7 +183,7 @@ class FotoProdutoAdmin(admin.ModelAdmin):
 
 class ClienteAdmin(admin.ModelAdmin):
     search_fields = (
-        'telefone', 'nome_cliente',
+        'telefone',
     )
     inlines = [EnderecoInline, ]
     list_display = (
@@ -214,7 +214,7 @@ class EstabelecimentoAdmin(admin.ModelAdmin):
 
 
 class RequestAdmin(admin.ModelAdmin):
-    list_filter = ('status_pedido', 'forma_entrega', 'endereco_entrega__bairro')
+    list_filter = ('status_pedido', 'endereco_entrega__bairro')
     search_fields = (
         'cliente__usuario__first_name',
     )
@@ -235,9 +235,9 @@ class BairroAdmin(admin.ModelAdmin):
 
 
 class GrupoAdmin(admin.ModelAdmin):
-    list_filter = ('produto__categoria__estabelecimento__user__first_name', 'obrigatoriedade')
+    list_filter = ('produto__categoria__estabelecimento', 'obrigatoriedade')
     search_fields = (
-        'titulo',
+        'identificador',
     )
     list_display = (
         'identificador', 'id', 'titulo', 'produto', 'limitador', 'created_at', 'obrigatoriedade',
@@ -250,7 +250,7 @@ class ProdutoInline(admin.TabularInline):
 
 
 class CategoriaAdmin(admin.ModelAdmin):
-    list_filter = ('estabelecimento__user__first_name', 'disponibilidade')
+    list_filter = ('estabelecimento', 'disponibilidade')
     search_fields = (
         'nome',
     )
@@ -264,7 +264,7 @@ class CategoriaAdmin(admin.ModelAdmin):
 
 
 class ProdutoAdmin(admin.ModelAdmin):
-    list_filter = ('categoria__estabelecimento__user__first_name', 'disponivel')
+    list_filter = ('categoria__estabelecimento', 'disponivel')
     search_fields = (
         'nome',
     )
