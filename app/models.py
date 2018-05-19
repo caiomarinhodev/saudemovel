@@ -370,6 +370,7 @@ class Endereco(TimeStamped, BaseAddress):
 class Categoria(TimeStamped):
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     nome = models.CharField(max_length=100)
+    disponibilidade = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u'%s' % self.nome
