@@ -500,7 +500,7 @@
 
                 {% else %}
                     {% if user.estabelecimento.configuration.has_loja_online %}
-                        <li class="treeview" id="loja">
+                        <li class="treeview active" id="loja">
                             <a href="#" id="click">
                                 <i class="fa fa-pie-chart"></i>
                                 <span>Painel Loja</span>
@@ -508,7 +508,7 @@
                               <i class="fa fa-angle-left pull-right"></i>
                             </span>
                             </a>
-                            <ul class="treeview-menu" style="display: none;">
+                            <ul class="treeview-menu">
                                 {# -------------------------------- #}
                                 <li id="dashboard">
                                     <a href="{% url 'dashboard' %}">
