@@ -26,7 +26,7 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     RouteMotoristaDetailView, MapRouteMotoristaView, finalizar_entrega, finalizar_pedido, PedidoUpdateView, \
     cancel_pedido, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
-    set_to_prepared_pedido, liberar_corrida_cozinha
+    set_to_prepared_pedido, liberar_corrida_cozinha, select_motoboy_fixo_cozinha, select_motoboy_fixo_painel
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
 from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
@@ -304,7 +304,11 @@ urlpatterns = [
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    url(r'^sobre/$',  SobreView.as_view(), name='about'),
+    url(r'^sobre/$', SobreView.as_view(), name='about'),
+
+    url(r'^ativar-motoboy/(?P<pk>[0-9]+)/$', select_motoboy_fixo_cozinha, name='ativar_motoboy'),
+
+    url(r'^ativar-motoboy-painel/(?P<pk>[0-9]+)/$', select_motoboy_fixo_painel, name='ativar_motoboy_painel'),
 ]
 
 urlpatterns += router.urls

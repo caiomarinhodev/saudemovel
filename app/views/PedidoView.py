@@ -57,6 +57,55 @@ def set_to_prepared_pedido(request, id_ponto):
         ponto.save()
         return HttpResponseRedirect('/app/cozinha/')
 
+def select_motoboy_fixo_painel(request, pk):
+    id_motorista = request.GET['motoboy']
+    print(id_motorista)
+    motorista = Motorista.objects.get(id=id_motorista)
+    pedido = Pedido.objects.get(id=pk)
+    if pedido.motorista:
+        try:
+            messages.error(request,
+                           'O motorista ' + pedido.motorista.first_name + ' pegou esta entrega antes de você')
+        except (Exception,):
+            messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
+        return HttpResponseRedirect('/app/pedidos/motorista/')
+    else:
+        pedido.status = False
+        pedido.motorista = motorista.user
+        pedido.save()
+        motorista.ocupado = True
+        motorista.save()
+        try:
+            logger(request.user, "Aceitou fazer a Rota #" + str(pedido.pk))
+        except (Exception,):
+            pass
+    return redirect('/app/pedidos/loja')
+
+
+def select_motoboy_fixo_cozinha(request, pk):
+    id_motorista = request.GET['motoboy']
+    print(id_motorista)
+    motorista = Motorista.objects.get(id=id_motorista)
+    pedido = Pedido.objects.get(id=pk)
+    if pedido.motorista:
+        try:
+            messages.error(request,
+                           'O motorista ' + pedido.motorista.first_name + ' pegou esta entrega antes de você')
+        except (Exception,):
+            messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
+        return HttpResponseRedirect('/app/pedidos/motorista/')
+    else:
+        pedido.status = False
+        pedido.motorista = motorista.user
+        pedido.save()
+        motorista.ocupado = True
+        motorista.save()
+        try:
+            logger(request.user, "Aceitou fazer a Rota #" + str(pedido.pk))
+        except (Exception,):
+            pass
+    return redirect('/app/cozinha')
+
 
 @require_http_methods(["GET"])
 def liberar_corrida_cozinha(request, pk_pedido):

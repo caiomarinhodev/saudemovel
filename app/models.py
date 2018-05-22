@@ -79,6 +79,7 @@ class Configuration(TimeStamped):
     has_cozinha = models.BooleanField(default=True)
     status_entrega_gratis = models.BooleanField(default=False)
     blocked_cozinha = models.BooleanField(default=False)
+    has_fixos = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % self.plano
@@ -143,6 +144,7 @@ class Estabelecimento(TimeStamped, BaseAddress):
     is_online = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
     full_address = models.CharField(max_length=300, blank=True, null=True)
+    motoboys = models.ManyToManyField(Motorista, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         try:

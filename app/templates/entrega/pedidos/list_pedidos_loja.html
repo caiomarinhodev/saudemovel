@@ -83,6 +83,7 @@
                                     $('#loading').show();
                                     $('#form').submit();
                                 }
+
                                 $(document).ready(function () {
 
                                 });
@@ -115,7 +116,8 @@
                                                 <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.id }}</a>
                                             </td>
                                             <td>
-                                                <a href="{% url 'view_pedido_view' pedido.id %}">{{ pedido.created_at|date:"d/m/Y G:i" }}</a>
+                                                <a href="{% url 'view_pedido_view' pedido.id %}">
+                                                    {{ pedido.created_at|date:"d/m/Y G:i" }}</a>
                                             </td>
                                             <td>
                                                 <a href="{% url 'view_pedido_view' pedido.id %}"> {{ pedido.ponto_set.all|length }} </a>
@@ -134,7 +136,8 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close"
-                                                                            data-dismiss="modal">&times;</button>
+                                                                            data-dismiss="modal">&times;
+                                                                    </button>
                                                                     <center><h3>
                                                                         Sobre {{ pedido.motorista.first_name }}</h3>
                                                                     </center>
@@ -167,7 +170,8 @@
                                                                                     </p>
                                                                                     <br>
                                                                                     <p class="text-center">
-                                                                                        <span><strong>Media Avaliacao: {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
+                                                                                        <span><strong>Media Avaliacao:
+                                                                                            {{ pedido.motorista.classification_set.all|soma_avaliacao|floatformat:2 }}</strong></span>
                                                                                     </p>
                                                                                 </center>
                                                                             </div>
@@ -282,6 +286,7 @@
                                                             function negative(number) {
                                                                 return !!number.match(/^-\d+$/);
                                                             }
+
                                                             $(document).ready(function () {
                                                                 $('.aval_{{ pedido.id }}').click(function () {
                                                                     swal({
@@ -324,6 +329,40 @@
                                                     {% endif %}
                                                 {% else %}
                                                     <div class="row">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                {% if user.estabelecimento.configuration.has_fixos %}
+                                                                    <form method="get"
+                                                                          action="{% url 'ativar_motoboy_painel' pedido.id %}">
+
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-append">
+                                                                                <div class="input-group margin">
+                                                                                    <span class="input-group-addon">Fixos :</span>
+                                                                                    <select class="form-control input-group-addon"
+                                                                                            name="motoboy"
+                                                                                            id="motoboy">
+                                                                                        {% for motoboy in user.estabelecimento.motoboys|options_motoboys_fixos %}
+                                                                                            <option value="{{ motoboy.id }}">{{ motoboy.user.first_name }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                    <span class="input-group-btn">
+                                                                                        <button class="btn btn-info">
+                                                                                            Ativar
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </form>
+
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
                                                         <div class="col-xs-12">
                                                             <a class="btn btn-info btn-block"
                                                                href="{% url 'chamar_motoboy' pedido.id %}">
