@@ -243,6 +243,14 @@ def rotas_promo(motorista):
 
 
 @register.filter
+def options_motoboys_fixos(motoristas):
+    try:
+        return motoristas.filter(ocupado=False)
+    except (Exception):
+        return None
+
+
+@register.filter
 def ganhos_hoje(motorista):
     try:
         now = datetime.now()
