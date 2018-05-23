@@ -10,6 +10,7 @@ from django.views.generic import UpdateView
 from app.forms import FormPontoCliente
 from app.mixins.CustomContextMixin import CustomContextMixin
 from app.models import Ponto
+from app.views.script_tools import logger
 
 
 class ClientesListView(LoginRequiredMixin, ListView, CustomContextMixin):
@@ -57,6 +58,10 @@ class ClienteCreateView(LoginRequiredMixin, CreateView, CustomContextMixin):
         pto = self.object
         pto.estabelecimento = loja
         pto.save()
+        try:
+            logger(self.request.user, 'Criou um cliente')
+        except:
+            pass
         return super(ClienteCreateView, self).form_valid(form)
 
 
