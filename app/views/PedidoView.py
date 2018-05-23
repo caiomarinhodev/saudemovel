@@ -55,6 +55,10 @@ def set_to_prepared_pedido(request, id_ponto):
         ponto.is_prepared = True
         pedido.save()
         ponto.save()
+        try:
+            logger(request.user, 'setou para preparar o pedido')
+        except:
+            pass
         return HttpResponseRedirect('/app/cozinha/')
 
 def select_motoboy_fixo_painel(request, pk):
@@ -125,6 +129,10 @@ def liberar_corrida_cozinha(request, pk_pedido):
         message = "Voce foi liberado pela loja para realizar a(s) entrega(s). Sua Rota atual esta no menu ENTREGAS. Quando terminar uma entrega, marque finalizar. Qualquer problema, ligue para a loja: " + pedido.estabelecimento.phone
         n = Notification(type_message='ENABLE_ROTA', to=pedido.motorista, message=message)
         n.save()
+    try:
+        logger(request.user, "Liberou a rota pela cozinha. A Rota #" + str(pedido.pk))
+    except (Exception,):
+        pass
     return redirect('/app/cozinha')
 
 
@@ -531,6 +539,10 @@ def finalizar_entrega(request, pk_ponto, pk_pedido):
             message = "Motorista " + request.user.first_name + " entregou pedido ao cliente " + ponto.cliente + " no endereco " + ponto.full_address
             n = Notification(type_message='ORDER_DELIVERED', to=pedido.estabelecimento.user, message=message)
             n.save()
+        try:
+            logger(request.user, "Finalizou a Entrega #" + str(ponto.pk))
+        except (Exception,):
+            pass
         return HttpResponseRedirect('/app/pedido/route/' + str(pedido.pk))
     except:
         messages.error(request, 'Este pedido foi deletado pela Loja')
@@ -552,6 +564,10 @@ def finalizar_pedido(request, pk_pedido):
         n.save()
         message = 'Voce concluiu a Rota, se voce estiver com algum material (maquineta ou bag) da Loja ' + pedido.estabelecimento.user.first_name + ',  favor devolver. Obrigado!'
         messages.success(request, message)
+        try:
+            logger(request.user, "Finalizou a Rota #" + str(pedido.pk))
+        except (Exception,):
+            pass
         if motorista.configuration.plano == 'PREMIUM':
             return HttpResponseRedirect('/app/pedidos/motorista/premium/')
         return HttpResponseRedirect('/app/pedidos/motorista/')
