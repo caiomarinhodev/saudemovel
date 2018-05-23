@@ -102,8 +102,6 @@ class DashboardListMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         now = datetime.now()
         kwargs['lojas'] = Estabelecimento.objects.all().order_by('-created_at')
-        # kwargs['grupos'] = Grupo.objects.all().order_by('-created_at')
-        # kwargs['produtos'] = Produto.objects.all().order_by('-created_at')
         kwargs['motoristas_online'] = Motorista.objects.filter(is_online=True)
         kwargs['motoristas_livres'] = Motorista.objects.filter(is_online=True, ocupado=False)
         kwargs['motoristas_ocupados'] = Motorista.objects.filter(is_online=True, ocupado=True)

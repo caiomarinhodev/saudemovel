@@ -60,10 +60,12 @@ def set_feriado_admin(request):
 
 def copy_group(request):
     data = request.GET
+    print(data)
     try:
-        grupo_origem = Grupo.objects.get(id=data['grupo'])
+        grupo_origem = Grupo.objects.filter(identificador=data['grupo']).first()
         produto_destino = Produto.objects.get(id=data['produto'])
-
+        print(grupo_origem)
+        print (produto_destino)
         grupo = Grupo(identificador=grupo_origem.identificador, titulo=grupo_origem.titulo,
                       limitador=grupo_origem.limitador,
                       produto=produto_destino,
