@@ -10,7 +10,8 @@ from api.views import UserViewSet, BairroViewSet, ConfigurationViewSet, ItemPedi
 from app.views.AcompanharView import AcompanharListView, AcompanharDetailView, LojasMotoristaListView
 from app.views.ChatView import ListChatView, get_chat, ChatPedidoView, submit_message, ChatMotoristaPedidoView
 from app.views.ClientesView import *
-from app.views.HomeView import DashboardDataView, set_feriado_admin, ListMotoristasView, DashboardListPedidosView
+from app.views.HomeView import DashboardDataView, set_feriado_admin, ListMotoristasView, DashboardListPedidosView, \
+    copy_catalogo, copy_group, delete_catalogo, delete_group
 from app.views.LocationView import get_position_motorista, send_position_motorista
 from app.views.LoginView import LoginView, LogoutView, RegisterView, AppView, EditarPerfilView, RegisterMotoristaView, \
     SetOnlineMotoboyView
@@ -309,6 +310,11 @@ urlpatterns = [
     url(r'^ativar-motoboy/(?P<pk>[0-9]+)/$', select_motoboy_fixo_cozinha, name='ativar_motoboy'),
 
     url(r'^ativar-motoboy-painel/(?P<pk>[0-9]+)/$', select_motoboy_fixo_painel, name='ativar_motoboy_painel'),
+
+    url(r'^copiar-catalogo/$', copy_catalogo, name='copiar_catalogo'),
+    url(r'^copiar-grupo/$', copy_group, name='copiar_grupo'),
+    url(r'^deletar-catalogo/$', delete_catalogo, name='deletar_catalogo'),
+    url(r'^deletar-grupo/$', delete_group, name='deletar_grupo'),
 ]
 
 urlpatterns += router.urls
