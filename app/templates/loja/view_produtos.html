@@ -13,6 +13,16 @@
             color: green;
         {#background-color: green;#}
         }
+
+        @media only screen and (min-width: 680px) {
+            .thumbnail {
+                height: 180px;
+                width: 180px;
+            }
+        }
+
+
+
     </style>
     {#    {% include 'carrossel.html' %}#}
     <section class="bar background-white no-mb">
@@ -106,8 +116,7 @@
                                                                         {% endif %}
 
                                                                 >
-                                                                    <div class="thumbnail"
-                                                                         style="height: 180px; width: 180px;">
+                                                                    <div class="thumbnail">
                                                                         <img title="{{ produto.nome }}"
                                                                              alt="{{ produto.nome }}"
                                                                              src="{{ produto.fotoproduto_set.first }}"
@@ -386,8 +395,8 @@
                             <h3>Meu Pedido</h3>
                         </div>
                         <p class="text-muted">Verifique abaixo seu itens no pedido</p>
-                        <div class="table-responsive">
-                            <table class="table table-responsive">
+                        <div class="">
+                            <table class="table">
                                 <tbody>
                                 {% for itempedido in pedido_obj.itempedido_set.all %}
                                     <tr>
