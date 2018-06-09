@@ -572,13 +572,13 @@ class Request(TimeStamped):
         subtotal = 0.0
         for item in self.itempedido_set.all():
             subtotal = float(subtotal) + float(str(item.valor_total).replace(',', '.'))
-        self.subtotal = float(subtotal)
+        self.subtotal = float(format(subtotal, '.2f'))
         if self.endereco_entrega:
             if not self.is_entrega_gratis(self.endereco_entrega.bairro, self.estabelecimento):
                 total = float(self.subtotal) + float(str(self.endereco_entrega.valor_entrega).replace(',', '.'))
-                self.valor_total = total
+                self.valor_total = format(total, '.2f')
         else:
-            self.valor_total = subtotal
+            self.valor_total = format(subtotal, '.2f')
         super(Request, self).save(*args, **kwargs)
 
 
@@ -600,7 +600,7 @@ class ItemPedido(TimeStamped):
             for opc in self.opcionalchoice_set.all():
                 valor_opcionais = float(valor_opcionais) + float(str(opc.opcional.valor).replace(',', '.').replace(" ", ""))
         valor_unitario = float(valor_base) + float(valor_opcionais)
-        self.valor_total = float(float(valor_unitario) * float(self.quantidade))
+        self.valor_total = format(float(float(valor_unitario) * float(self.quantidade)), '.2f')
         super(ItemPedido, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -680,7 +680,7 @@ class FolhaPagamento(TimeStamped):
     def save(self, *args, **kwargs):
         valor = 0.0
         for it in self.itempagamento_set.all():
-            valor = float(valor) + float(it.request.subtotal)
+            valor = float(valor) + float(it.request.valor_total)
         self.valor_total = valor
         self.valor_cobrar = float(0.07 * valor)
         return super(FolhaPagamento, self).save(*args, **kwargs)
