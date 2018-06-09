@@ -176,8 +176,7 @@ def submit_pedido(request):
         messages.error(request, u'Insira uma forma de pagamento')
         return redirect('/finaliza-pedido/')
     try:
-        if 'troco' in data:
-            pedido.troco = data['troco']
+        pedido.troco = data['troco']
     except (Exception,):
         pass
     try:
