@@ -93,7 +93,7 @@
                                             <td>{{ pedido.forma_pagamento }}</td>
                                             <td>{{ pedido.subtotal|floatformat:2 }}</td>
                                             <td>{{ pedido.valor_total|floatformat:2 }}</td>
-                                            <td>{% if pedido.troco %}{{ pedido.troco|floatformat:2 }}{% endif %}</td>
+                                            <td>{% if pedido.troco %}{{ pedido.troco }}{% endif %}</td>
                                             <td>{% if pedido.troco %}
                                                 {{ pedido.resultado_troco|floatformat:2 }}{% endif %}</td>
                                             <td>{{ pedido.created_at|date:"d/m/Y" }}</td>
