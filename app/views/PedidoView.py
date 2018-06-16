@@ -74,6 +74,7 @@ def select_motoboy_fixo_painel(request, pk):
             messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
         return HttpResponseRedirect('/app/pedidos/motorista/')
     else:
+        a = func()
         pedido.status = False
         pedido.motorista = motorista.user
         pedido.save()
@@ -99,6 +100,7 @@ def select_motoboy_fixo_cozinha(request, pk):
             messages.error(request, 'Outro Motorista pegou esta entrega antes de você')
         return HttpResponseRedirect('/app/pedidos/motorista/')
     else:
+        a = func()
         pedido.status = False
         pedido.motorista = motorista.user
         pedido.save()
