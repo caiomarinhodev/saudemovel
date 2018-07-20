@@ -29,6 +29,8 @@ from app.views.PedidoView import PedidosMotoristaListView, \
     PedidoDetailView, avaliar_motorista, get_pedidos, buscar_cliente, PedidosMotoristaPremiumListView, CozinhaListView, \
     set_to_prepared_pedido, liberar_corrida_cozinha, select_motoboy_fixo_cozinha, select_motoboy_fixo_painel
 from app.views.RelatorioView import RelatorioTemplateView, DashboardReportViewUser, TimelineView, PromocaoListView
+from app.views.aplicativo.HomeView import ListLojas, ListProducts
+from app.views.aplicativo.LoginView import LoginClienteView, LogoutClienteView, RegistroClienteView
 from app.views.loja.AvaliacaoView import AvaliacaoView, add_avaliacao
 from app.views.loja.CarrinhoView import add_cart, FinalizaRequest, AcompanharRequest, submit_pedido, MeusRequests, \
     remove_cart, CarrinhoReqView
@@ -177,9 +179,6 @@ urlpatterns = [
 
     url(r'finalizar-pedido/(?P<pk_pedido>[0-9]+)/$', finalizar_pedido, name="finalizar_pedido"),
 
-
-
-
     url(r'send-location/(-?\d+\.\d+)/(-?\d+\.\d+)/$', send_position_motorista, name="send_position_motorista"),
 
     url(r'get-location/(?P<pk_user>[0-9]+)/$', get_position_motorista, name=" get_position_motorista"),
@@ -319,6 +318,14 @@ urlpatterns = [
     url(r'^copiar-grupo/$', copy_group, name='copiar_grupo'),
     url(r'^deletar-catalogo/$', delete_catalogo, name='deletar_catalogo'),
     url(r'^deletar-grupo/$', delete_group, name='deletar_grupo'),
+
+    # --------------------------------------------------------------------------
+
+    url(r'^aplicativo/loja/$', ListLojas.as_view(), name='home_app'),
+    url(r'^aplicativo/login/$', LoginClienteView.as_view(), name='login_app'),
+    url(r'^aplicativo/logout/$', LogoutClienteView.as_view(), name='logout_app'),
+    url(r'^aplicativo/registro/$', RegistroClienteView.as_view(), name='registro_app'),
+    url(r'^aplicativo/loja/(?P<pk>[0-9]+)/$', ListProducts.as_view(), name='view_loja_app'),
 ]
 
 urlpatterns += router.urls
