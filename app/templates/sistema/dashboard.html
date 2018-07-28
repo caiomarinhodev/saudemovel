@@ -1,0 +1,74 @@
+{% extends 'base_painel.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Consultas</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap" id="example1_wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table" class="table table-bordered table-striped" class="display"
+                                       cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>PACIENTE</th>
+                                        <th>ESPECIALISTA</th>
+                                        <th>DATA</th>
+                                        <th>LOCAL</th>
+                                        <th>CIDADE</th>
+                                        <th>ESTADO</th>
+                                        <th>CRIADO EM</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for consulta in consultas %}
+                                        <tr>
+                                            <td>{{ consulta.id }}</td>
+                                            <td>{{ consulta.paciente.user.first_name }} {{ consulta.paciente.user.last_name }}</td>
+                                            <td>{{ consulta.especialista.user.first_name }} {{ consulta.especialista.user.last_name }}</td>
+                                            <td>{{ consulta.data|date:"d/m/Y G:i" }}</td>
+                                            <td>{{ consulta.local }}</td>
+                                            <td>{{ consulta.cidade }}</td>
+                                            <td>{{ consulta.estado }}</td>
+                                            <td>{{ pedido.created_at|date:"d/m/Y" }}</td>
+                                            <td>
+                                                <a href="{% url 'edit_consulta' consulta.pk %}"> <i class="fa fa-eye"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="#"> <i
+                                                        class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table').DataTable({
+                responsive: true,
+                order: [[0, "desc"]]
+            });
+            $('#consultas').addClass('active');
+        });
+
+    </script>
+
+{% endblock %}

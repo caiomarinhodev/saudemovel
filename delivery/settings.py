@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'rest_framework',
+    # 'rest_framework',
     # 'pwa',
 ]
 
-PWA_APP_NAME = 'Focus Delivery'
-PWA_APP_DESCRIPTION = u"A Focus Delivery é uma plataforma online que está revolucionando o mercado de entregas expressas no Brasil."
+PWA_APP_NAME = 'Saude Movel Web'
+PWA_APP_DESCRIPTION = u"A SM Web é uma plataforma online que está revolucionando o mercado de médico no Brasil."
 PWA_APP_THEME_COLOR = '#555556'
 PWA_APP_ICONS = [
     {

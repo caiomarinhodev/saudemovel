@@ -1,0 +1,42 @@
+<nav>
+        <!-- SIDENAV CATEGORY-->
+        <ul id="nav-mobile-category" class="side-nav">
+            <li class="sidenav-logo">
+                <i class="fa fa-leaf" aria-hidden="true"></i> Saúde Móvel App
+            </li>
+            <li>
+                <div class="search-wrapper ">
+                    <input id="search"><i class="material-icons">search</i>
+                    <div class="search-results"></div>
+                </div>
+            </li>
+        </ul>
+        <!-- END SIDENAV CATEGORY-->
+        <!-- SIDENAV ACCOUNT-->
+        <ul id="nav-mobile-account" class="side-nav">
+            <li class="profile">
+                <div class="li-profile-info">
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <div class="emailprofile">{{ user.email }}</div>
+                    <div class="balance">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a class="waves-effect waves-blue" href="#"><i class="fas fa-home"></i>Home</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-heart"></i>Consultas</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-heart"></i>Atestado</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-cog"></i>Perfil</a>
+            </li>
+            <li>
+                <a href="{% url 'auth_logout' %}"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+            </li>
+        </ul>
+    <!-- END SIDENAV ACCOUNT-->
+</nav>
