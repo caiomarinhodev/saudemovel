@@ -38,6 +38,9 @@ class Perfil(TimeStamped, Addressable):
 class Paciente(Perfil):
     cpf = models.CharField(max_length=300, blank=True, null=True)
 
+    def __str__(self):
+        return "%s %s" % (self.user.first_name, self.user.last_name)
+
     def __unicode__(self):
         return "%s %s" % (self.user.first_name, self.user.last_name)
 
@@ -45,12 +48,18 @@ class Paciente(Perfil):
 class Atendente(Perfil):
     horario = models.CharField(max_length=300, blank=True, null=True)
 
+    def __str__(self):
+        return "%s %s" % (self.user.first_name, self.user.last_name)
+
     def __unicode__(self):
         return "%s %s" % (self.user.first_name, self.user.last_name)
 
 
 class Especialista(Perfil):
     crm = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return "%s %s" % (self.user.first_name, self.user.last_name)
 
     def __unicode__(self):
         return "%s %s" % (self.user.first_name, self.user.last_name)
